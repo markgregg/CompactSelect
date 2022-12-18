@@ -1,0 +1,10 @@
+.toolTip {
+  position: relative;
+  display: inline-block;
+}
+
+.toolTipText {
+  position: absolute;
+  z-index: 1;
+  padding: 3px;
+}

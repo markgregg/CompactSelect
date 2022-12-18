@@ -1,0 +1,50 @@
+.csCompactSelect {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  padding: 4px;
+}
+
+.csClearSelection {
+  width: 30px;
+  display: flex;
+  align-items: center;
+}
+
+.csTextDisplay {
+  flex: 1;
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+}
+
+.csInput {
+  background-color: transparent;
+  border: none;
+  flex: 1;
+}
+
+.csInput:focus,
+input:focus {
+  outline: none;
+}
+
+.csSelectTitle {
+  position: absolute;
+  top: -30px;
+}
+
+.csChoiceContainer {
+  position: absolute;
+  top: 40px;
+  width: 100%;
+  overflow: auto;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.csChoiceList {
+  padding-inline-start: 0px;
+  margin-block-start: 2px;
+  margin-block-end: 2px;
+}

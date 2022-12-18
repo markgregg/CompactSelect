@@ -1,0 +1,24 @@
+{
+  "name": "compact-select",
+  "private": true,
+  "description": "Compact select for react",
+  "keywords": [],
+  "author": "Mark Gregg <gregg.mark@gmail.com> (https://github.com/markgregg)",
+  "workspaces": [
+    "examples/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "lerna run build --scope compact-select",
+    "clean": "lerna run clean --scope compact-select",
+    "watch": "lerna run watch --scope compact-select",
+    "package": "lerna exec --scope select-flex-package -- npm pack"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0",
+    "prettier": "^2.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {}
+}
