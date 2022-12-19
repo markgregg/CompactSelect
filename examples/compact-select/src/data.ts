@@ -1,3 +1,72 @@
+import { TiDeleteOutline } from "react-icons/ti";
+import { MdClear, MdDeleteForever, MdRemove, MdStarRate, MdOutlineCheckBox, MdRadioButtonChecked } from "react-icons/md";
+import { GiCheckMark } from "react-icons/gi";
+import { IconType } from "react-icons/lib";
+
+export const clearIconMap = new Map<string,IconType>();
+clearIconMap.set( "Circle Cross", TiDeleteOutline);
+clearIconMap.set( "Cross", MdClear);
+clearIconMap.set( "Trash Can", MdDeleteForever);
+clearIconMap.set( "Minus", MdRemove);
+
+export const selectedIconMap = new Map<string,IconType>();
+selectedIconMap.set( "Tick", GiCheckMark);
+selectedIconMap.set( "Check Box", MdOutlineCheckBox);
+selectedIconMap.set( "Radio", MdRadioButtonChecked);
+selectedIconMap.set( "Star", MdStarRate);
+
+export const fontSizes = [
+  "xx-large",
+  "x-large",
+  "larger",
+  "large",
+  "medium",
+  "small",
+  "smaller",
+  "x-small",
+  "xx-small"
+];
+
+export const fontFamiles = [
+  "sans-serif",
+  "emoji",
+  "fangsong",
+  "monospace",
+  "ui-sans-serif",
+  "inherit",
+  "fantasy",
+  "cursive"
+];
+
+export const fontWeights = [
+  "normal",
+  "bold",
+  "bolder",
+  "lighter",
+  "100",
+  "200",
+  "300",
+  "400",
+  "500",
+  "600",
+  "700",
+  "800",
+  "900"
+];
+
+export const borderStyles = [
+  "none",
+  "hidden",
+  "dotted",
+  "dashed",
+  "solid",
+  "double",
+  "groove",
+  "ridge",
+  "inset",
+  "outset"
+]
+
 export const choices = [
   "mark",
   "andrew",

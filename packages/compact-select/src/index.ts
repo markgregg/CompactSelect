@@ -5,7 +5,8 @@ export type {
   ChoiceProps,
   SelectProps,
   ToolTipStyle,
-  SelectStyle
+  SelectStyle,
+  ToolTipProps
 } from './types';
 export type { CompactSelectProps } from './CompactSelect';
 export type { Cache, createCache } from "./cache/cache";

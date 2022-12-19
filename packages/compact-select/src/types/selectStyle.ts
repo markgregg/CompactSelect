@@ -2,6 +2,16 @@ import CSS from "csstype";
 import { IconType } from "react-icons/lib";
 
 export interface SelectStyle {
+  selectStyle: CSS.Properties;
+  selectDisabledStyle: CSS.Properties;
+  inputStyle?: CSS.Properties;
+  inputDisabledStyle?: CSS.Properties;
+  clearSelectionStyle?: CSS.Properties;
+  clearSelectionDisabledStyle?: CSS.Properties;
+  clearSelectionHoverStyle?: CSS.Properties;
+  titleStyle?: CSS.Properties;
+  titleDisabledStyle?: CSS.Properties;
+  listStyle?: CSS.Properties;
   height?: CSS.Property.Height;
   width?: CSS.Property.Width;
   minWidth?: CSS.Property.MinWidth;
@@ -19,7 +29,6 @@ export interface SelectStyle {
   border?: CSS.Property.Border;
   borderColor?: CSS.Property.Color;
   borderRadius?: CSS.Property.BorderRadius;
-  borderStyle?: CSS.Property.BorderStyle;
   clearSelectionIcon?: IconType;
   clearSelectionColor?: CSS.Property.Color;
   clearSelectionDisabledColor?: CSS.Property.Color;
@@ -35,7 +44,6 @@ export interface SelectStyle {
   choiceListBackgroundColor?: CSS.Property.BackgroundColor;
   choiceListBackgroundImage?: CSS.Property.BackgroundImage;
   choiceListBorderRadius?: CSS.Property.BorderRadius;
-  choiceListBorderStyle?: CSS.Property.BorderStyle;
   choiceListBorder?: CSS.Property.Border;
   choiceListBorderColor?: CSS.Property.Color;
 }

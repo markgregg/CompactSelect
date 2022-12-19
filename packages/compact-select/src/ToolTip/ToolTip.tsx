@@ -1,17 +1,12 @@
 import { FC } from "react";
 import CSS from "csstype";
-import { ToolTipStyle } from "../types";
+import { ToolTipProps, ToolTipStyle } from "../types";
 import scssClasses from "./styles.module.scss";
-
-interface ToolTipProps {
-  tip: string;
-  show: boolean;
-  children?: JSX.Element;
-}
 
 const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
   tip,
   show,
+  toolTipStyle,
   toolTipBackgroundColor,
   toolTipBackgroundImage,
   toolTipFontFamily,
@@ -22,7 +17,6 @@ const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
   toolTipBorderColor,
   toolTipBorder,
   toolTopBorderRadius,
-  toolTipBorderStyle,
   toolTipFontStyle,
   toolTipPosition,
   children,
@@ -56,7 +50,7 @@ const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
   };
 
   const toolTip = (): CSS.Properties => {
-    return {
+    return toolTipStyle ? toolTipStyle : {
       color: toolTipColor ?? "black",
       font: toolTipFontFamily,
       fontWeight: toolTipFontWeight,
@@ -65,7 +59,6 @@ const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
       textAlign: toolTipTextAlign ?? "center",
       borderColor: toolTipBorderColor,
       borderRadius: toolTopBorderRadius ?? "5px",
-      borderStyle: toolTipBorderStyle,
       border: toolTipBorder,
       backgroundColor: toolTipBackgroundColor,
       backgroundImage: toolTipBackgroundImage,

@@ -1,10 +1,9 @@
 import { Choice } from "compact-select";
-import { bigChoices, bigObjectChoices, bigTypedObjectChoices } from "./Choices";
+import { bigChoices, bigObjectChoices, bigTypedObjectChoices } from "./data";
 
 export interface Complex {
   name: string;
 }
-
 
 export const fetchItems = (text: string): Promise<string[]> => {
   return new Promise<string[]>((resolve, reject) => {

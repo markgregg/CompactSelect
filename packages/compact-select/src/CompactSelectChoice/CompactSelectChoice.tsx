@@ -33,7 +33,7 @@ const CompactSelectChoice = <T extends object | string>(
   const background = (): CSS.Properties =>
     props.choiceDisabled
       ? {
-          backgroundColor: props.choicedisabledBackgroundColor ?? "Gainsboro",
+          backgroundColor: props.choiceDisabledBackgroundColor ?? "Gainsboro",
           backgroundImage: props.choiceDisabledBackgroundImage
        }
       : props.choiceHighlighted
@@ -58,24 +58,30 @@ const CompactSelectChoice = <T extends object | string>(
       } 
       : {};
       
-
   const choiceStyle = (): CSS.Properties => {
-    return {
-      height: "35px",
-      color: props.choiceDisabled
-        ? props.choiceDisabledColor ?? "darkgray"
-        : props.choiceColor ?? "black",
-      fontWeight: props.choiceFontWeight,
-      fontFamily: props.choiceFontFamily,
-      fontSize: props.choiceFontSize,
-      fontStyle: props.choiceFontStyle,
-      ...border(),
-      ...background(),
-    };
+    return props.choiceDisabled && props.choiceDisabledStyle 
+      ? props.choiceDisabledStyle
+      : props.choiceSelected && props.choiceSelectedStyle
+      ? props.choiceSelectedStyle
+      : props.choiceHighlighted && props.choiceHoverStyle
+      ? props.choiceHoverStyle
+      : props.choiceStyle ??
+      {
+        height: "35px",
+        color: props.choiceDisabled
+          ? props.choiceDisabledColor ?? "darkgray"
+          : props.choiceColor ?? "black",
+        fontWeight: props.choiceFontWeight,
+        fontFamily: props.choiceFontFamily,
+        fontSize: props.choiceFontSize,
+        fontStyle: props.choiceFontStyle,
+        ...border(),
+        ...background(),
+      };
   };
 
   const selectSelected = (): CSS.Properties => {
-    return {
+    return props.choiceSelectedIconStyle ?? {
       fontSize: props.choiceSelectedIconSize ?? "large",
       color: props.choiceSelectedColor ?? "green",
     };

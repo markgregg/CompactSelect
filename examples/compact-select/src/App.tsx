@@ -1,221 +1,13 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import CSS from "csstype";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import CompactSelect, { CompactSelectProps } from "compact-select";
-import { bigString, bigTypesObjectString, choices, objectChoices, typedObjectChoices } from "./Choices";
-import { TiDeleteOutline } from "react-icons/ti";
-import { MdClear, MdDeleteForever, MdRemove, MdStarRate, MdOutlineCheckBox, MdRadioButtonChecked } from "react-icons/md";
-import { GiCheckMark } from "react-icons/gi";
+import { bigString, bigTypesObjectString, choices,  clearIconMap,  objectChoices, selectedIconMap, typedObjectChoices } from "./data";
 import { fetchItems, searchItems, slowFetchItems, searchObjects, slowFetchObjects, fetchObjects, fetchTyped, searchTyped } from "./utils";
-import { SketchPicker } from "react-color";
 import "./App.css";
-import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import "react-tabs/style/react-tabs.css";
-import { IconType } from "react-icons/lib";
-import ClipboardCopy from "./ClipboardCopy";
-
-const clearIconMap = new Map<string,IconType>();
-clearIconMap.set( "Circle Cross", TiDeleteOutline);
-clearIconMap.set( "Cross", MdClear);
-clearIconMap.set( "Trash Can", MdDeleteForever);
-clearIconMap.set( "Minus", MdRemove);
-
-const selectedIconMap = new Map<string,IconType>();
-selectedIconMap.set( "Tick", GiCheckMark);
-selectedIconMap.set( "Check Box", MdOutlineCheckBox);
-selectedIconMap.set( "Radio", MdRadioButtonChecked);
-selectedIconMap.set( "Star", MdStarRate);
-
-const fontSizes = [
-  "xx-large",
-  "x-large",
-  "larger",
-  "large",
-  "medium",
-  "small",
-  "smaller",
-  "x-small",
-  "xx-small"
-];
-
-const fontFamiles = [
-  "Helvetica (sans-serif)",
-  "Arial (sans-serif)",
-  "Arial Black (sans-serif)",
-  "Verdana (sans-serif)",
-  "Tahoma (sans-serif)",
-  "Trebuchet MS (sans-serif)",
-  "Impact (sans-serif)",
-  "Gill Sans (sans-serif)",
-  "Times New Roman (serif)",
-  "Georgia (serif)",
-  "Palatino (serif)",
-  "Baskerville (serif)",
-  "Andalé Mono (monospace)",
-  "Courier (monospace)",
-  "Lucida (monospace)",
-  "Monaco (monospace)",
-  "Bradley Hand (cursive)",
-  "Brush Script MT (cursive)",
-  "Luminari (fantasy)",
-  "Comic Sans MS (cursive)"
-];
-
-const fontWeights = [
-  "normal",
-  "bold",
-  "bolder",
-  "lighter",
-  "100",
-  "200",
-  "300",
-  "400",
-  "500",
-  "600",
-  "700",
-  "800",
-  "900"
-];
-
-const borderStyle = [
-  "none",
-  "hidden",
-  "dotted",
-  "dashed",
-  "solid",
-  "double",
-  "groove",
-  "ridge",
-  "inset",
-  "outset"
-]
-
-const FontSizeProperty = (name: string, value:  CSS.Property.FontSize | undefined, setValue: (value?: CSS.Property.FontSize) => void) => 
-<div className="example">
-  <p>{name}</p>
-  <CompactSelect 
-    selected={value as string}
-    title={name}
-    choices={fontSizes}
-    maximumSelections={1}
-    selectType="dropdown"
-    onChange={ s => setValue(s as string) }
-    width="200px"
-  />
-</div>
-
-const FontFamilyProperty = (name: string, value: CSS.Property.FontFamily | undefined, setValue: (value?: CSS.Property.FontFamily) => void) => 
-<div className="example">
-  <p>{name}</p>
-  <CompactSelect 
-    selected={value}
-    title={name}
-    choices={fontFamiles}
-    maximumSelections={1}
-    selectType="dropdown"
-    onChange={ s => setValue(s as string) }
-    width="200px"
-  />
-</div>
-
-const FontWeightProperty = (name: string, value: CSS.Property.FontWeight | undefined, setValue: (value?: CSS.Property.FontWeight) => void) => 
-<div className="example">
-  <p>{name}</p>
-  <CompactSelect 
-    title={name}
-    selected={value}
-    choices={fontWeights}
-    maximumSelections={1}
-    selectType="dropdown"
-    onChange={ s => setValue(s as string) }
-    width="200px"
-  />
-</div>
-
-const FontStyleProperty = (name: string, value: CSS.Property.FontStyle | undefined, setValue: (value?: CSS.Property.FontStyle) => void) => 
-<div className="example">
-  <p>{name}</p>
-  <CompactSelect 
-    title={name}
-    selected={value}
-    choices={["normal","italic","oblique"]}
-    maximumSelections={1}
-    selectType="dropdown"
-    onChange={ s => setValue(s as string) }
-    width="200px"
-  />
-</div>
-
-const BorderStyleProperty = (name: string, value: CSS.Property.BorderStyle | undefined, setValue: (value?: CSS.Property.BorderStyle) => void) => 
-<div className="example">
-  <p>{name}</p>
-  <CompactSelect 
-    title={name}
-    selected={value}
-    choices={borderStyle}
-    maximumSelections={1}
-    selectType="dropdown"
-    onChange={ s => setValue(s as string) }
-    width="200px"
-  />
-</div>
-
-
-const ColorProperty = (name: string, value: CSS.Property.Color | undefined, setValue: (value?: CSS.Property.Color) => void) => {
-  const [visible,setVisible] = useState<boolean>(false)
-
-  const getColor = (): CSS.Properties => {
-    return value ? {backgroundColor: value} : {};
-  }
-
-  return (
-    <div className="example">
-      <p>{name}</p>
-      <button
-        className="colorDot" 
-        style={getColor()}
-        onClick={() => setVisible(true)}
-      />
-      <Popup 
-        open={visible}
-        position="right center"
-        onClose={() => setVisible(false)}
-        contentStyle={{ padding: "0px", border: "none", width: "220px" }}
-      >
-        <div className="popup">
-          <SketchPicker
-            color={ value }
-            onChangeComplete={e => setValue(e.hex) }
-          />
-        </div>
-      </Popup>
-  </div>)
-}
-
-const stringProperty = (name: string, value: string | undefined, setValue: (value?: string) => void) => 
-<div className="example">
-  <p>{name}</p>
-  <input
-    value={value ?? ''}
-    onChange ={ e => setValue(e.target.value) }
-  />
-</div>
-
-const listProperty = (name: string, value: string | undefined, setValue: (value?: string) => void, items: string[]) => 
-<div className="example">
-  <p>{name}</p>
-  <CompactSelect 
-    title={name}
-    selected={value}
-    choices={items}
-    maximumSelections={1}
-    selectType="dropdown"
-    onChange={ s => setValue(s as string) }
-    width="200px"
-    height="20px"
-  />
-</div>
+import { ClipboardCopy, FontFamilyProperty, FontSizeProperty, FontStyleProperty, FontWeightProperty, ColorProperty, StringProperty, ListProperty, BorderStyleProperty } from "./components";
 
 const App = () => {
   const [fontSize,setFontSize] = useState<CSS.Property.FontSize>();
@@ -349,7 +141,7 @@ const App = () => {
       choiceBackgroundColor={choiceBackgroundColor}
       choiceBackgroundImage={choiceBackgroundImage}
       choiceDisabledColor={choiceDisabledColor}
-      choicedisabledBackgroundColor={choicedisabledBackgroundColor}
+      choiceDisabledBackgroundColor={choicedisabledBackgroundColor}
       choiceDisabledBackgroundImage={choiceDisabledBackgroundImage}
       choiceSelectIndiacatorType={getIndiacatorType()}
       choiceSelectedIcon={choiceSelectedIcon ? selectedIconMap.get(choiceSelectedIcon) : undefined}
@@ -377,102 +169,86 @@ const App = () => {
 
   const darkStyle = () => {
     setTheme( {
-      backgroundImage: "linear-gradient(to right, #050505, black)",
-      color: "OldLace"
+      backgroundColor: "#1B0B09",
+      color: "White"
     });
-    setBackgroundImage("linear-gradient(to right, white, Linen)");
-    setBorder("2px solid MidnightBlue")
-    setColor("black");
-    setFontWeight("bold")
+    setBackgroundColor("#641C3B");
+    setBackgroundImage(undefined);
+    setBorder("2px solid #641C3B")
+    setColor("GhostWhite");
     setTitleColor("GhostWhite");
-    setChoiceColor("black");
+    setChoiceColor("GhostWhite");
     setDisabledColor("SlateGray");
-    setDisableBackgroundImage("linear-gradient(to right, Gainsboro, Gray)");
+    setDisableBackgroundImage(undefined);
+    setDisableBackgroundColor("#88231A");
     setClearSelectionIcon("Cross");
-    setClearSelectionColor("black");
-    setClearSelectionHoverColor("lightblue");
-    setDisabledTitleColor("SlateGray");
+    setClearSelectionColor("GhostWhite");
+    setClearSelectionHoverColor("SlateGray");
+    setDisabledTitleColor("GhostWhite");
     setChoiceSelectedColor("Lime");
     setChoiceSelectedIcon("Star");
-    setChoiceDisabledBackgroundImage("linear-gradient(to right, Gainsboro, Gray)");
-    setChoiceHoverBackgroundImage("linear-gradient(to right, CornflowerBlue, Blue)");
-    setToolTipColor("black");
-    setToolTipBackgroundImage("linear-gradient(to right, Gainsboro, Gray)");
+    setChoicedisabledBackgroundColor("#88231A");
+    setChoiceDisabledBackgroundImage(undefined)
+    setChoiceHoverBackgroundColor("#A851C2")
+    setChoiceHoverBackgroundImage(undefined);
+    setToolTipColor("GhostWhite");
+    setToolTipBackgroundColor("#88231A");
+    setToolTipBackgroundImage(undefined);
   }
 
   const lightStyle = () => {
     setTheme( {
-      backgroundImage: "linear-gradient(to right, Linen, Bisque)",
-      color: "Maroon"
+      backgroundColor: "#FFF3D7",
+      color: "#332709"
     });
-    setBackgroundImage("linear-gradient(to right, White, GhostWhite)");
-    setBorder("2px solid BurlyWood")
-    setColor("DarkGoldenRod");
-    setTitleColor("BurlyWood");
-    setChoiceColor("DarkGoldenRod");
-    setDisabledColor("BurlyWood");
-    setDisableBackgroundImage("linear-gradient(to right, WhiteSmoke, Gainsboro)");
+    setBackgroundImage(undefined);
+    setBackgroundColor("#FFF3D7");
+    setBorder("2px solid #FED777")
+    setColor("#332709");
+    setTitleColor("#A77802");
+    setChoiceColor("#332709");
+    setDisabledColor("#A77802");
+    setDisableBackgroundImage("linear-gradient(to right, #FFF3D7, #FED777)");
     setClearSelectionIcon("Circle Cross");
-    setClearSelectionColor("DarkGoldenRod");
-    setClearSelectionHoverColor("BurlyWood");
+    setClearSelectionColor("#332709");
+    setClearSelectionHoverColor("#FED777");
     setDisabledTitleColor("SlateGray");
-    setChoiceDisabledColor("BurlyWood");
+    setChoiceDisabledColor("#A77802");
     setChoiceSelectedColor("LightSeaGreen");
     setChoiceSelectedIcon("Tick");
-    setChoiceDisabledBackgroundImage("linear-gradient(to right, WhiteSmoke, Gainsboro)");
-    setChoiceHoverBackgroundImage("linear-gradient(to right, AntiqueWhite, BurlyWood)");
-    setToolTipColor("DarkGoldenRod");
-    setToolTipBackgroundImage("linear-gradient(to right, WhiteSmoke, Gainsboro)");
+    setChoiceDisabledBackgroundImage("linear-gradient(to right, #FFF3D7, #FED777)");
+    setChoiceHoverBackgroundColor("#FDB90F")
+    setChoiceHoverBackgroundImage(undefined);
+    setToolTipColor("#332709");
+    setToolTipBackgroundColor("#FED777")
+    setToolTipBackgroundImage(undefined);
   }
 
   const blue = () => {
     setTheme( {
-      backgroundImage: "linear-gradient(to right, Azure, LightBlue)",
-      color: "MidnightBlue"
+      backgroundColor: "#091034",
+      color: "#DDE3FD"
     });
-    setBackgroundImage("linear-gradient(to right, White, GhostWhite)");
-    setBorder("2px solid LightSkyBlue")
-    setColor("MidnightBlue");
-    setTitleColor("lightgray");
-    setChoiceColor("MidnightBlue");
-    setDisabledColor("LightSteelBlue");
-    setDisableBackgroundImage("linear-gradient(to right, AliceBlue, LightSteelBlue)");
+    setBackgroundImage("linear-gradient(to right, White, #DDE3FD)");
+    setBorder("2px solid #0A2299")
+    setColor("#091034");
+    setTitleColor("#798EF6");
+    setChoiceColor("#091034");
+    setDisabledColor("#091034");
+    setDisableBackgroundImage("linear-gradient(to right, #DDE3FD, #0A2299)");
     setClearSelectionIcon("Circle Cross");
-    setClearSelectionColor("MidnightBlue");
-    setClearSelectionHoverColor("lightgray");
-    setDisabledTitleColor("LightSteelBlue");
-    setChoiceDisabledColor("Gray");
+    setClearSelectionColor("#091034");
+    setClearSelectionHoverColor("#798EF6");
+    setDisabledTitleColor("#0A2299");
+    setChoiceDisabledColor("#0A2299");
     setChoiceSelectedColor("LightSeaGreen");
     setChoiceSelectedIcon("Tick");
-    setChoiceDisabledBackgroundImage("linear-gradient(to right, AliceBlue, LightSteelBlue)");
-    setChoiceHoverBackgroundImage("linear-gradient(to right, LightCyan, LightSkyBlue)");
-    setToolTipColor("MidnightBlue");
-    setToolTipBackgroundImage("linear-gradient(to right, AliceBlue, LightSteelBlue)");
+    setChoiceDisabledBackgroundImage("linear-gradient(to right, #DDE3FD, #0A2299)");
+    setChoiceHoverBackgroundImage("linear-gradient(to right, #DDE3FD, #798EF6)");
+    setToolTipColor("#0A2299");
+    setToolTipBackgroundImage("linear-gradient(to right, #DDE3FD, #0A2299)");
   }
 
-  const green = () => {
-    setTheme( {
-      backgroundImage: "linear-gradient(to right, HoneyDew, Khaki)",
-      color: "DarkGreen"
-    });
-    setBackgroundImage("linear-gradient(to right, White, GhostWhite)");
-    setBorder("2px solid Silver")
-    setColor("DarkGreen");
-    setTitleColor("DarkSeaGreen");
-    setChoiceColor("DarkGreen");
-    setDisabledColor("DarkSeaGreen");
-    setDisableBackgroundImage("linear-gradient(to right, HoneyDew, MediumAquaMarine)");
-    setClearSelectionIcon("Circle Cross");
-    setClearSelectionColor("DarkGreen");
-    setClearSelectionHoverColor("DarkSeaGreen");
-    setDisabledTitleColor("DarkSeaGreen");
-    setChoiceDisabledColor("Gray");
-    setChoiceSelectedColor("LightSeaGreen");
-    setChoiceSelectedIcon("Tick");
-    setChoiceDisabledBackgroundImage("linear-gradient(to right, HoneyDew, MediumAquaMarine)");
-    setChoiceHoverBackgroundImage("linear-gradient(to right, HoneyDew, PaleGreen)");
-    setToolTipBackgroundImage("linear-gradient(to right, WhiteSmoke, Gainsboro)");
-  }
   return (
     <div className="styledExample" style={theme}>
       <div className="styles">
@@ -480,7 +256,6 @@ const App = () => {
           <button className="dark" onClick={darkStyle}>Dark</button>
           <button className="light" onClick={lightStyle}>Light</button>
           <button className="veryBlue" onClick={blue}>V Blue</button>
-          <button className="green" onClick={green}>Green</button>
         </div>
         <div className="properties">
           <Tabs>
@@ -690,20 +465,19 @@ const App = () => {
               {FontStyleProperty("FontSize", fontStyle, setFontStyle)}
               {ColorProperty("Text color", color, setColor)}
               {ColorProperty("BackgroundColor", backgroundColor, setBackgroundColor)}
-              {stringProperty("BackgroundImage", backgroundImage, setBackgroundImage)}
+              {StringProperty("BackgroundImage", backgroundImage, setBackgroundImage)}
               {ColorProperty("DisabledFontColor", disabledColor, setDisabledColor)}
               {ColorProperty("DisableBackgroundColor", disableBackgroundColor, setDisableBackgroundColor)}
-              {stringProperty("DisableBackgroundImage", disableBackgroundImage, setDisableBackgroundImage)}
-              {stringProperty("Border", border, setBorder)}
+              {StringProperty("DisableBackgroundImage", disableBackgroundImage, setDisableBackgroundImage)}
+              {StringProperty("Border", border, setBorder)}
               {ColorProperty("BorderColor", borderColor, setBorderColor)}
-              {stringProperty("BorderRadius", borderRadius, setBorderRadius)}
+              {StringProperty("BorderRadius", borderRadius, setBorderRadius)}
               {BorderStyleProperty("BorderStyle", borderStyle, setBorderStyle)}
             </div>
           </TabPanel>
-          
           <TabPanel>
             <div className="propertyList">
-              {listProperty("ClearSelectionIcon", clearSelectionIcon, setClearSelectionIcon, ["Circle Cross","Cross", "Trash Can","Minus"])}
+              {ListProperty("ClearSelectionIcon", clearSelectionIcon, setClearSelectionIcon, ["Circle Cross","Cross", "Trash Can","Minus"])}
               {ColorProperty("ClearSelectionColor", clearSelectionColor, setClearSelectionColor)}
               {ColorProperty("ClearSelectionDisabledColor", clearSelectionDisabledColor, setClearSelectionDisabledColor)}
               {ColorProperty("ClearSelectionHoverColor", clearSelectionHoverColor, setClearSelectionHoverColor)}
@@ -723,10 +497,10 @@ const App = () => {
           <TabPanel>
             <div className="propertyList">
               {ColorProperty("ChoiceListBackgroundColor", choiceListBackgroundColor, setChoiceListBackgroundColor)}
-              {stringProperty("ChoiceListBackgroundImage", choiceListBackgroundImage, setChoiceListBackgroundImage)}
-              {stringProperty("ChoiceListBorder", choiceListBorder, setChoiceListBorder)}
+              {StringProperty("ChoiceListBackgroundImage", choiceListBackgroundImage, setChoiceListBackgroundImage)}
+              {StringProperty("ChoiceListBorder", choiceListBorder, setChoiceListBorder)}
               {ColorProperty("ChoiceListBorderColor", choiceListBorderColor, setChoiceListBorderColor)}
-              {stringProperty("ChoiceListBorderRadius", choiceListBorderRadius, setChoiceListBorderRadius)}
+              {StringProperty("ChoiceListBorderRadius", choiceListBorderRadius, setChoiceListBorderRadius)}
               {BorderStyleProperty("ChoiceListBorderStyle", choiceListBorderStyle, setChoiceListBorderStyle)}
             </div>
           </TabPanel>
@@ -738,39 +512,39 @@ const App = () => {
               {FontWeightProperty("ChoiceFontWeight", choiceFontWeight, setChoiceFontWeight)}
               {FontStyleProperty("ChoiceFontStyle", choiceFontStyle, setChoiceFontStyle)}
               {ColorProperty("ChoiceBackgroundColor", choiceBackgroundColor, setChoiceBackgroundColor)}
-              {stringProperty("ChoiceBackgroundImage", choiceBackgroundImage, setChoiceBackgroundImage)}
+              {StringProperty("ChoiceBackgroundImage", choiceBackgroundImage, setChoiceBackgroundImage)}
               {ColorProperty("ChoiceDisabledColor", choiceDisabledColor, setChoiceDisabledColor)}
               {ColorProperty("ChoicedisabledBackgroundColor", choicedisabledBackgroundColor, setChoicedisabledBackgroundColor)}
-              {stringProperty("ChoiceDisabledBackgroundImage", choiceDisabledBackgroundImage, setChoiceDisabledBackgroundImage)}
+              {StringProperty("ChoiceDisabledBackgroundImage", choiceDisabledBackgroundImage, setChoiceDisabledBackgroundImage)}
               {ColorProperty("ChoiceHoverBackgroundColor", choiceHoverBackgroundColor, setChoiceHoverBackgroundColor)}
-              {stringProperty("ChoiceHoverBackgroundImage", choiceHoverBackgroundImage, setChoiceHoverBackgroundImage)}
+              {StringProperty("ChoiceHoverBackgroundImage", choiceHoverBackgroundImage, setChoiceHoverBackgroundImage)}
             </div>
           </TabPanel>
-          <TabPanel>
+          <TabPanel> 
             <div className="propertyList">
-              {listProperty("ChoiceSelectIndiacatorType", choiceSelectIndiacatorType, setChoiceSelectIndiacatorType, ["icon", "color", "border"])}
-              {listProperty("ClearSelectionIcon", choiceSelectedIcon, setChoiceSelectedIcon, ["Tick", "Check Box", "Radio", "Star"])}
-              {stringProperty("ChoiceSelectedBorder", choiceSelectedBorder, setChoiceSelectedBorder)}
+              {ListProperty("ChoiceSelectIndiacatorType", choiceSelectIndiacatorType, setChoiceSelectIndiacatorType, ["icon", "color", "border"])}
+              {ListProperty("ClearSelectionIcon", choiceSelectedIcon, setChoiceSelectedIcon, ["Tick", "Check Box", "Radio", "Star"])}
+              {StringProperty("ChoiceSelectedBorder", choiceSelectedBorder, setChoiceSelectedBorder)}
               {FontSizeProperty("ChoiceSelectedIconSize", choiceSelectedIconSize, setChoiceSelectedIconSize)}
               {ColorProperty("ChoiceSelectedColor", choiceSelectedColor, setChoiceSelectedColor)}
               {ColorProperty("ChoiceSelectedBackgroundColor", choiceSelectedBackgroundColor, setChoiceSelectedBackgroundColor)}
-              {stringProperty("ChoiceSelectedBackgroundImage", choiceSelectedBackgroundImage, setChoiceSelectedBackgroundImage)}
+              {StringProperty("ChoiceSelectedBackgroundImage", choiceSelectedBackgroundImage, setChoiceSelectedBackgroundImage)}
             </div>
           </TabPanel>
           <TabPanel>
             <div className="propertyList">
               {ColorProperty("ToolTipBackgroundColor", toolTipBackgroundColor, setToolTipBackgroundColor)}
-              {stringProperty("ToolTipBackgroundImage", toolTipBackgroundImage, setToolTipBackgroundImage)}
+              {StringProperty("ToolTipBackgroundImage", toolTipBackgroundImage, setToolTipBackgroundImage)}
               {ColorProperty("ToolTipColor", toolTipColor, setToolTipColor)}
               {FontSizeProperty("ToolTipFontSize", toolTipFontSize, setToolTipFontSize)}
               {FontFamilyProperty("ToolTipFontWeight", toolTipFontFamily, setToolTipFontFamily)}
               {FontWeightProperty("ToolTipFontWeight", toolTipFontWeight, setToolTipFontWeight)}
               {FontStyleProperty("ToolTipFontStyle", toolTipFontStyle, setToolTipFontStyle)}
-              {stringProperty("ToolTipBorder", toolTipBorder, setToolTipBorder)}
+              {StringProperty("ToolTipBorder", toolTipBorder, setToolTipBorder)}
               {ColorProperty("ToolTipBorderColor", toolTipBorderColor, setToolTipBorderColor)}
-              {stringProperty("ToolTopBorderRadius", toolTopBorderRadius, setToolTopBorderRadius)}
+              {StringProperty("ToolTopBorderRadius", toolTopBorderRadius, setToolTopBorderRadius)}
               {BorderStyleProperty("ToolTipBorderStyle", toolTipBorderStyle, setToolTipBorderStyle)}
-              {listProperty("ToolTipPosition", toolTipPosition, setToolTipPosition, ["above", "below", "left", "right"])}
+              {ListProperty("ToolTipPosition", toolTipPosition, setToolTipPosition, ["above", "below", "left", "right"])}
             </div>
           </TabPanel>
         </Tabs>

@@ -689,33 +689,39 @@ const CompactSelect = <T extends object | string>(
         backgroundImage: props.backgroundImage
      };
 
-  const compactSelectStyle = (): CSS.Properties => {
-    return {
+  const compactSelectStyle = (): CSS.Properties => 
+    props.disabled && props.selectDisabledStyle
+    ? props.selectDisabledStyle 
+    : props.selectStyle ?? {
       height: props.height,
       width: props.width,
       minWidth: props.maxWidth ?? "80px",
       maxWidth: props.maxWidth,
       borderColor: props.borderColor,
       borderRadius: props.borderRadius ?? "5px",
-      borderStyle: props.borderStyle,
       border: props.border ?? "2px solid darkgray",
-      ...background(),
+      ...background()
     };
-  };
 
-  const clearSelectedStyle = (hovered: boolean): CSS.Properties => {
-    return {
+  const clearSelectedStyle = (hovered: boolean): CSS.Properties => 
+    props.disabled && props.clearSelectionDisabledStyle
+    ? props.clearSelectionDisabledStyle 
+    : hovered && props.clearSelectionHoverStyle
+    ? props.clearSelectionHoverStyle
+    : props.clearSelectionStyle ?? {
       color: props.disabled
         ? props.clearSelectionDisabledColor ?? "darkgray"
         : hovered
         ? props.clearSelectionHoverColor ?? "darkgray"
         : props.clearSelectionColor ?? "black",
-      fontSize: props.clearSelectionSize ?? "large",
+      fontSize: props.clearSelectionSize ?? "large"
     };
-  };
+  
 
-  const inputStyle = (): CSS.Properties => {
-    return {
+  const inputStyle = (): CSS.Properties => 
+    props.disabled && props.inputDisabledStyle 
+    ? props.inputDisabledStyle
+    : props.inputStyle ?? {
       color: props.disabled
         ? props.disabledColor ?? "darkgray"
         : props.color ?? "black",
@@ -726,10 +732,11 @@ const CompactSelect = <T extends object | string>(
         : props.fontWeight ?? 'bold',
       fontStyle: props.fontStyle,
     };
-  };
 
-  const textDisplay = (): CSS.Properties => {
-    return {
+  const textDisplay = (): CSS.Properties => 
+    props.disabled && props.titleDisabledStyle 
+    ? props.titleDisabledStyle
+    : props. titleStyle ?? {
       color: props.disabled
         ? props.disabledTitleColor ?? "lightgray"
         : props.titleColor ?? props.color ?? "darkgray",
@@ -738,19 +745,17 @@ const CompactSelect = <T extends object | string>(
       fontWeight: props.titleFontWeight,
       fontStyle: props.titleFontStyle,
     };
-  };
 
-  const listContainer = (): CSS.Properties => {
-    return {
+  const listContainer = (): CSS.Properties => 
+    props.listStyle ?? {
       maxHeight: props.choiceListMaxHeight ?? "300px",
       borderColor: props.choiceListBorderColor ?? props.borderColor,
       borderRadius: props.choiceListBorderRadius ?? props.borderColor ?? "5px",
-      borderStyle: props.choiceListBorderStyle ?? props.borderStyle,
       border: props.choiceListBorder ?? props.border ?? "2px solid darkgray",
       backgroundColor: props.choiceListBackgroundColor ?? props.backgroundColor ?? "white",
-      backgroundImage: props.choiceListBackgroundImage ?? props.backgroundImage
+      backgroundImage: props.choiceListBackgroundImage ?? props.backgroundImage,
     };
-  };
+
   
   const choiceAttributes = {
     choiceFontFamily: props.choiceFontFamily ?? props.fontFamily,

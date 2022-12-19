@@ -1,11 +1,11 @@
 {
   "name": "compact-select-example",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "@types/node": "^18.11.17",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
+    "compact-select": "^0.1.2",
     "node-sass": "^8.0.0",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
