@@ -1,3 +1,7 @@
+.csWrapper {
+  display: inline-block;
+}
+
 .csCompactSelect {
   display: flex;
   flex-direction: row;
@@ -6,22 +10,33 @@
   padding: 4px;
 }
 
+.csDropDownIcon {
+  width: 30px;
+  
+}
+
 .csClearSelection {
   width: 30px;
-  display: flex;
-  align-items: center;
+}
+
+.csTextWrapper {
+  flex: 1;
+  flex-basis: 100%;
 }
 
 .csTextDisplay {
-  flex: 1;
   margin-block-start: 0px;
   margin-block-end: 0px;
+  -moz-user-select:none; 
+  -webkit-user-select: none;
+  -ms-user-select: none;
+   user-select: none; 
 }
 
 .csInput {
   background-color: transparent;
   border: none;
-  flex: 1;
+  width: 100%;
 }
 
 .csInput:focus,
@@ -37,7 +52,7 @@ input:focus {
 .csChoiceContainer {
   position: absolute;
   top: 40px;
-  width: 100%;
+  width: -webkit-fill-available;
   overflow: auto;
   border-radius: 5px;
   z-index: 1;
@@ -48,3 +63,4 @@ input:focus {
   margin-block-start: 2px;
   margin-block-end: 2px;
 }
+

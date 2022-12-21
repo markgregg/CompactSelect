@@ -11,6 +11,7 @@ import { Cache, createCache } from "../cache/cache";
 import { errorMessage } from "../utils/domUtils";
 import { generateGuid } from "../utils/guidGenerator";
 import { TiDeleteOutline } from "react-icons/ti";
+import { RiArrowDropDownFill } from "react-icons/ri";
 import CompactSelectChoice from "../CompactSelectChoice";
 import ToolTip from "../ToolTip";
 import { scrollIntoView } from "../utils/domUtils";
@@ -154,7 +155,9 @@ const CompactSelect = <T extends object | string>(
   const getCaption = (selection: T[]): string => {
     try {
       return selection.length > 1 
-        ? selection.slice(0,toolTipLimit()).map((item) => getItemText(item)).join(", ") + (selection.length > toolTipLimit() ? "..." : "")
+        ? selection.slice(0,toolTipLimit()).map((item) => getItemText(item)).join(", ") 
+          + (selection.length > toolTipLimit() 
+          ? ` + ${selection.length - toolTipLimit()} more items` : "")
         : "";
     } catch (error) {
       console.log(
@@ -471,6 +474,7 @@ const CompactSelect = <T extends object | string>(
     if (props.disabled) {
       return;
     }
+    setClearSelectedHover(false);
     state.selected = [];
     updateSelected();
     event.stopPropagation();
@@ -678,6 +682,16 @@ const CompactSelect = <T extends object | string>(
     }
   };
 
+  const checkToolTip = () => {
+    if(!showChoices) {
+      setShowToolTip(true);
+    }
+  }
+
+  const hideToolTip = () => {
+    setShowToolTip(false);
+  }
+
   const background = (): CSS.Properties =>
     props.disabled
       ? {
@@ -699,7 +713,7 @@ const CompactSelect = <T extends object | string>(
       maxWidth: props.maxWidth,
       borderColor: props.borderColor,
       borderRadius: props.borderRadius ?? "5px",
-      border: props.border ?? "2px solid darkgray",
+      border: props.border ?? "2px solid WhiteSmoke",
       ...background()
     };
 
@@ -710,10 +724,10 @@ const CompactSelect = <T extends object | string>(
     ? props.clearSelectionHoverStyle
     : props.clearSelectionStyle ?? {
       color: props.disabled
-        ? props.clearSelectionDisabledColor ?? "darkgray"
+        ? props.clearSelectionDisabledColor ?? props.disabledColor ?? "darkgray"
         : hovered
         ? props.clearSelectionHoverColor ?? "darkgray"
-        : props.clearSelectionColor ?? "black",
+        : props.clearSelectionColor ?? props.color ?? "black",
       fontSize: props.clearSelectionSize ?? "large"
     };
   
@@ -725,25 +739,25 @@ const CompactSelect = <T extends object | string>(
       color: props.disabled
         ? props.disabledColor ?? "darkgray"
         : props.color ?? "black",
-      fontSize: props.fontSize ?? "small",
-      fontFamily: props.fontFamily,
+      fontSize: props.fontSize,
+      fontFamily: props.fontFamily ?? "unset",
       fontWeight: state.selected.length === 0 && (!showChoices || (!props.selectType || props.selectType !== 'standard')) 
         ? props.titleFontWeight ?? 100
         : props.fontWeight ?? 'bold',
       fontStyle: props.fontStyle,
     };
 
-  const textDisplay = (): CSS.Properties => 
+  const titleDisplay = (): CSS.Properties => 
     props.disabled && props.titleDisabledStyle 
     ? props.titleDisabledStyle
     : props. titleStyle ?? {
       color: props.disabled
         ? props.disabledTitleColor ?? "lightgray"
         : props.titleColor ?? props.color ?? "darkgray",
-      fontSize: props.titleFontSize ?? "small",
+      fontSize: props.titleFontSize ?? props.fontSize ?? "small",
       fontFamily: props.titleFontFamily ?? props.fontFamily,
-      fontWeight: props.titleFontWeight,
-      fontStyle: props.titleFontStyle,
+      fontWeight: props.titleFontWeight ?? props.fontWeight,
+      fontStyle: props.titleFontStyle ?? props.fontStyle,
     };
 
   const listContainer = (): CSS.Properties => 
@@ -751,168 +765,193 @@ const CompactSelect = <T extends object | string>(
       maxHeight: props.choiceListMaxHeight ?? "300px",
       borderColor: props.choiceListBorderColor ?? props.borderColor,
       borderRadius: props.choiceListBorderRadius ?? props.borderColor ?? "5px",
-      border: props.choiceListBorder ?? props.border ?? "2px solid darkgray",
+      border: props.choiceListBorder ?? props.border ?? "2px solid WhiteSmoke",
       backgroundColor: props.choiceListBackgroundColor ?? props.backgroundColor ?? "white",
       backgroundImage: props.choiceListBackgroundImage ?? props.backgroundImage,
     };
 
-  
-  const choiceAttributes = {
+    const dropdownIcon = () : CSS.Properties => 
+      props.disabled ?
+        props.dropdownIcondisabledStyle ?? {
+          color: props.dropdownIconDisabledColor
+        } :
+        props.dropdownIconStyle ?? {
+          color: props.dropdownIconColor
+        }
+    
+
+  const choiceAttributes: ChoiceStyle = {
     choiceFontFamily: props.choiceFontFamily ?? props.fontFamily,
+    choiceFontStyle:  props.choiceFontStyle ?? props.fontStyle,
+    choiceFontWeight: props.choiceFontWeight ?? props.fontWeight,
+    choiceFontSize: props.choiceFontSize ?? props.fontSize,
     choiceColor: props.choiceColor ?? props.color,
+    choiceHoverBackgroundColor: props.choiceHoverBackgroundColor ?? "#AFB1B6",
+    choiceDisabledBackgroundColor: props.choiceDisabledBackgroundColor ?? props.disableBackgroundColor,
     choiceDisabledColor: props.choiceDisabledColor ?? props.disabledColor,
     ...(props as ChoiceStyle)
   }
 
-  const tooltipAttibutes = {
+  const tooltipAttibutes: ToolTipStyle = {
     toolTipFontFamily: props.toolTipFontFamily ?? props.fontFamily,
+    toolTipFontStyle:  props.toolTipFontStyle ?? props.fontStyle,
+    toolTipFontWeight: props.toolTipFontWeight ?? props.fontWeight,
+    toolTipFontSize: props.toolTipFontSize ?? props.fontSize,
     toolTipColor: props.toolTipColor ?? props.color,
     ...(props as ToolTipStyle)
   }
-
-  const checkToolTip = () => {
-    if(!showChoices) {
-      setShowToolTip(true);
-    }
-  }
-
-  const hideToolTip = () => {
-    setShowToolTip(false);
-  }
-
+  
   return (
-    <ToolTip
+    
+    <div className={scssClasses.csWrapper}>
+      <ToolTip
         tip={state.caption ?? ""}
         show={showToolTip}
         {...tooltipAttibutes}
-    >
-      <div
-        className={scssClasses.csCompactSelect}
-        style={compactSelectStyle()}
-        onKeyDownCapture={inputKeyPressed}
-        onClick={textInputClicked}
-        onMouseEnter={checkToolTip}
-        onMouseLeave={hideToolTip}
       >
-        {state.selected.length > 0 && props.selectType !== "switch" && (
-          <div className={scssClasses.csClearSelection}>
-            {props.clearSelectionIcon ? (
-              <props.clearSelectionIcon
-                style={clearSelectedStyle(clearSelectedHover)}
-                onMouseEnter={() => setClearSelectedHover(true)}
-                onMouseLeave={() => setClearSelectedHover(false)}
-                onClick={clearSelection}
+        <div
+          className={scssClasses.csCompactSelect}
+          style={compactSelectStyle()}
+          onKeyDownCapture={inputKeyPressed}
+          onClick={textInputClicked}
+          onMouseEnter={checkToolTip}
+          onMouseLeave={hideToolTip}
+        >
+          {(!props.maximumSelections || props.maximumSelections < 1) && state.selected.length > 0 && props.selectType !== "switch" && (
+            <div className={scssClasses.csClearSelection}>
+              {props.clearSelectionIcon ? (
+                <props.clearSelectionIcon
+                  style={clearSelectedStyle(clearSelectedHover)}
+                  onMouseEnter={() => setClearSelectedHover(true)}
+                  onMouseLeave={() => setClearSelectedHover(false)}
+                  onClick={clearSelection}
+                />
+              ) : (
+                <TiDeleteOutline
+                  style={clearSelectedStyle(clearSelectedHover)}
+                  onMouseEnter={() => setClearSelectedHover(true)}
+                  onMouseLeave={() => setClearSelectedHover(false)}
+                  onClick={clearSelection}
+                />
+              )}
+            </div>
+          )}
+          <div className={scssClasses.csTextWrapper}>
+            {!props.selectType || props.selectType === "standard" ? 
+              <input
+                id={"csInput" + state.selectId}
+                className={scssClasses.csInput}
+                style={inputStyle()}
+                value={showChoices ? inputText : state.displayText === "" ? props.title :  state.displayText}
+                disabled={props.disabled}
+                spellCheck="false"
+                autoCapitalize="off"
+                autoComplete="off"
+                autoCorrect="off"
+                onChange={textChanged}
+                onPaste={pasteText}
               />
-            ) : (
-              <TiDeleteOutline
-                style={clearSelectedStyle(clearSelectedHover)}
-                onMouseEnter={() => setClearSelectedHover(true)}
-                onMouseLeave={() => setClearSelectedHover(false)}
-                onClick={clearSelection}
-              />
-            )}
-          </div>
-        )}
-        {!props.selectType || props.selectType === "standard" ? (
-          <input
-            id={"csInput" + state.selectId}
-            className={scssClasses.csInput}
-            style={inputStyle()}
-            value={showChoices ? inputText : state.displayText === "" ? props.title :  state.displayText}
-            disabled={props.disabled}
-            spellCheck="false"
-            autoCapitalize="off"
-            autoComplete="off"
-            autoCorrect="off"
-            onChange={textChanged}
-            onPaste={pasteText}
-          />
-        ) : (
-          <p
-            className={scssClasses.csTextDisplay}
-            style={inputStyle()}
-            onPaste={pasteText}
-            onClick={textInputClicked}
-          >
-            { 
-              state.displayText === ""
-                ? props.title
-                : state.displayText
+             : 
+              !showChoices && <p
+                className={scssClasses.csTextDisplay}
+                style={inputStyle()}
+                onPaste={pasteText}
+                onClick={textInputClicked}
+              >
+                { 
+                  state.displayText === ""
+                    ? props.title
+                    : state.displayText
+                }
+              </p>
             }
-          </p>
-        )}
-        {(showChoices || state.displayText !== "") && (
-          <p className={scssClasses.csSelectTitle} style={textDisplay()}>
-            {props.title}
-          </p>
-        )}
-        {!props.disabled && showChoices && (
-          <div
-            id={"csList" + state.selectId}
-            className={scssClasses.csChoiceContainer}
-            style={listContainer()}
-          >
-            <ul className={scssClasses.csChoiceList}>
-              {visibleChoices.length > 0 &&
-                visibleChoices.map((item, index) => (
-                  <li
-                    id={`item_${index}`}
-                    key={`item_${index}`}
-                    onMouseOverCapture={() => adjustHighlightedIndex(index)}
-                  >
-                    {state.selected.indexOf(item) !== -1 ? (
-                      <CompactSelectChoice
-                        key={
-                          (highlightedIndex === index ? "high-" : "") +
-                          "selected-" +
-                          getItemValue(item)
-                        }
-                        itemText={props.itemText}
-                        item={item}
-                        choiceSelected={true}
-                        onSelected={deselectItem}
-                        choiceHighlighted={highlightedIndex === index}
-                        choiceDisabled={isDisabled(item)}
-                        {...choiceAttributes}
-                      />
-                    ) : (
-                      <CompactSelectChoice
-                        key={
-                          (highlightedIndex === index ? "high-" : "") +
-                          getItemValue(item)
-                        }
-                        itemText={props.itemText}
-                        item={item}
-                        choiceSelected={false}
-                        onSelected={selectItem}
-                        choiceHighlighted={highlightedIndex === index}
-                        choiceDisabled={isDisabled(item)}
-                        {...choiceAttributes}
-                      />
-                    )}
-                  </li>
-                ))}
-              {visibleChoices.length === 0 && !props.choices && (
-                <p 
-                  className={scssClasses.csLoading}
-                  style={{color: props.choiceColor}}
-                >
-                  {props.loadingText ?? "Loading..."}
-                </p>
-              )}
-              {props.choices?.length === 0 && (
-                <p 
-                  className={scssClasses.csLoading}
-                  style={{color: props.choiceColor}}
-                >
-                  {props.noItemText ?? "No items."}
-                </p>
-              )}
-            </ul>
           </div>
-        )}
-      </div>
-    </ToolTip>
+          {!showChoices && !props.hideDropdownIcon && props.selectType !== "switch" && (
+            <div className={scssClasses.csDropDownIcon}>
+              {props.dropdownIcon ? (
+                <props.dropdownIcon
+                  style={dropdownIcon()}
+                />
+              ) : (
+                <RiArrowDropDownFill
+                  style={dropdownIcon()}
+                />
+              )}
+            </div>
+          )}
+          {(showChoices || state.displayText !== "") && !props.hideTitle && (
+            <p className={scssClasses.csSelectTitle} style={titleDisplay()}>
+              {props.title}
+            </p>
+          )}
+          {!props.disabled && showChoices && (
+            <div
+              id={"csList" + state.selectId}
+              className={scssClasses.csChoiceContainer}
+              style={listContainer()}
+            >
+              <ul className={scssClasses.csChoiceList}>
+                {visibleChoices.length > 0 &&
+                  visibleChoices.map((item, index) => (
+                    <li
+                      id={`item_${index}`}
+                      key={`item_${index}`}
+                      onMouseOverCapture={() => adjustHighlightedIndex(index)}
+                    >
+                      {state.selected.indexOf(item) !== -1 ? (
+                        <CompactSelectChoice
+                          key={
+                            (highlightedIndex === index ? "high-" : "") +
+                            "selected-" +
+                            getItemValue(item)
+                          }
+                          itemText={props.itemText}
+                          item={item}
+                          choiceSelected={true}
+                          onSelected={deselectItem}
+                          choiceHighlighted={highlightedIndex === index}
+                          choiceDisabled={isDisabled(item)}
+                          {...choiceAttributes}
+                        />
+                      ) : (
+                        <CompactSelectChoice
+                          key={
+                            (highlightedIndex === index ? "high-" : "") +
+                            getItemValue(item)
+                          }
+                          itemText={props.itemText}
+                          item={item}
+                          choiceSelected={false}
+                          onSelected={selectItem}
+                          choiceHighlighted={highlightedIndex === index}
+                          choiceDisabled={isDisabled(item)}
+                          {...choiceAttributes}
+                        />
+                      )}
+                    </li>
+                  ))}
+                {visibleChoices.length === 0 && !props.choices && !state.lookedUpChoices && (
+                  <p 
+                    className={scssClasses.csLoading}
+                    style={{color: props.choiceColor}}
+                  >
+                    {props.loadingText ?? "Loading..."}
+                  </p>
+                )}
+                {props.choices?.length === 0 && state.lookedUpChoices && (
+                  <p 
+                    className={scssClasses.csLoading}
+                    style={{color: props.choiceColor}}
+                  >
+                    {props.noItemText ?? "No items."}
+                  </p>
+                )}
+              </ul>
+            </div>
+          )}
+        </div>
+      </ToolTip>
+    </div>
   );
 };
 

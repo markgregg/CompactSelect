@@ -2,7 +2,69 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { MdClear, MdDeleteForever, MdRemove, MdStarRate, MdOutlineCheckBox, MdRadioButtonChecked } from "react-icons/md";
 import { GiCheckMark } from "react-icons/gi";
 import { IconType } from "react-icons/lib";
+import { Theme } from "../interfaces/theme";
 
+export enum Themes {
+  None = "None",
+  Dark = "Dark",
+  Light = "Light",
+  Blue = "Blue"
+};
+
+export const themes = Object.keys(Themes).filter((item) => {
+  return isNaN(Number(item));
+});
+
+export const themeMap = new Map<string,Theme>();
+themeMap.set(Themes.None,{
+  page1: "White",
+  page2: "#CEE538",
+  page3: "#849513",
+  color1: "White",
+  color2: "WhiteSmoke",
+  color3: "White",
+  color4: "Gainsboro",
+  color5: "#849513",
+  font: "Black",
+  selectFont: "Black"
+});
+themeMap.set(Themes.Dark,{
+  page1: "#14061F",
+  page2: "#430770",
+  page3: "#9C2BF1",
+  color1: "#14061F",
+  color2: "#09010E",
+  color3: "#430770",
+  color4: "#512E6B",
+  color5: "#9C2BF1",
+  font: "Gainsboro",
+  selectFont: "Gainsboro"
+});
+themeMap.set(Themes.Light,{
+  page1: "#FEF4B9",
+  page2: "#E7C504",
+  page3: "#FCE355",
+  color1: "#FEF4B9",
+  color2: "#FEF4B9",
+  color3: "#E7C504",
+  color4: "#FCE355",
+  color5: "#FCE355",
+  font: "#3D350B",
+  selectFont: "#3D350B"
+});
+themeMap.set(Themes.Blue,{
+  page1: "White",
+  page2: "#2828DB",
+  page3: "#C8C8F6",
+  color1: "#14061F",
+  color2: "#2828DB",
+  color3: "#2828DB",
+  color4: "#8181EA",
+  color5: "#C8C8F6",
+  font: "Black",
+  selectFont: "whitesmoke"
+});
+ 
 export const clearIconMap = new Map<string,IconType>();
 clearIconMap.set( "Circle Cross", TiDeleteOutline);
 clearIconMap.set( "Cross", MdClear);
@@ -1264,11 +1326,13 @@ export const typedObjectChoices = [
   { text: "Adam", value: "100001", disabled: false },
   { text: "Sharon", value: "100001", disabled: false },
 ];
+
 export interface Choice {
   text: string;
   value: any;
   disabled?: boolean;
 }
+
 export const bigTypedObjectChoices = [
   { text: "SMITH", value: 10001, disabled: false },
  { text: "JOHNSON", value: 10002, disabled: false },
@@ -2260,7 +2324,7 @@ export const bigTypedObjectChoices = [
  { text: "DAVIES", value: 10988, disabled: false },
  { text: "BARAJAS", value: 10989, disabled: false },
  { text: "SHEA", value: 10990, disabled: false },
- { text: "OSBORN", value: 10991, disabled: false },
+ { text: "OSBORN", value: 10991, disabled: false }, 
  { text: "BRIGHT", value: 10992, disabled: false },
  { text: "CUEVAS", value: 10993, disabled: false },
  { text: "BOLTON", value: 10994, disabled: false },

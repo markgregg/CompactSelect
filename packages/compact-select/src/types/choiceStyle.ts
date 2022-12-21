@@ -2,11 +2,11 @@ import CSS from "csstype";
 import { IconType } from "react-icons/lib";
 
 export interface ChoiceStyle {
-  choiceStyle: CSS.Properties;
-  choiceSelectedStyle: CSS.Properties;
-  choiceHoverStyle: CSS.Properties;
-  choiceDisabledStyle: CSS.Properties;
-  choiceSelectedIconStyle: CSS.Properties;
+  choiceStyle?: CSS.Properties;
+  choiceSelectedStyle?: CSS.Properties;
+  choiceHoverStyle?: CSS.Properties;
+  choiceDisabledStyle?: CSS.Properties;
+  choiceSelectedIconStyle?: CSS.Properties;
   choiceSelectedIcon?: IconType;
   choiceHeight?: CSS.Property.Height;
   choiceFontWeight?: CSS.Property.FontWeight;

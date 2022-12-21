@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import CSS from "csstype";
 import CompactSelect from "compact-select";
-import { borderStyles, fontFamiles, fontSizes, fontWeights } from "./data";
+import { borderStyles, fontFamiles, fontSizes, fontWeights } from "./data/data";
 import { SketchPicker } from "react-color";
 import Popup from "reactjs-popup";
 import "./App.css";

@@ -1,5 +1,5 @@
 import { Choice } from "compact-select";
-import { bigChoices, bigObjectChoices, bigTypedObjectChoices } from "./data";
+import { bigChoices, bigObjectChoices, bigTypedObjectChoices } from "./data/data";
 
 export interface Complex {
   name: string;
@@ -17,7 +17,7 @@ export const slowFetchItems = (text: string): Promise<string[]> => {
   return new Promise<string[]>((resolve, reject) => {
     setTimeout(() => {
       resolve(bigChoices.filter((item) => item.startsWith(text.toUpperCase())));
-    }, 4000);
+    }, 2000);
   });
 };
 
@@ -53,7 +53,7 @@ export const slowFetchObjects = (text: string): Promise<Complex[]> => {
           item.name.startsWith(text.toUpperCase())
         )
       );
-    }, 4000);
+    }, 2000);
   });
 };
 

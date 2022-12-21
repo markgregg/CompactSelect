@@ -1,7 +1,7 @@
 import CSS from "csstype";
 
 export interface ToolTipStyle {
-  toolTipStyle: CSS.Properties;
+  toolTipStyle?: CSS.Properties;
   toolTipBackgroundColor?: CSS.Property.BackgroundColor;
   toolTipBackgroundImage?: CSS.Property.BackgroundImage;
   toolTipFontFamily?: CSS.Property.FontFamily;

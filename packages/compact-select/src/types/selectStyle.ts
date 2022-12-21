@@ -2,8 +2,8 @@ import CSS from "csstype";
 import { IconType } from "react-icons/lib";
 
 export interface SelectStyle {
-  selectStyle: CSS.Properties;
-  selectDisabledStyle: CSS.Properties;
+  selectStyle?: CSS.Properties;
+  selectDisabledStyle?: CSS.Properties;
   inputStyle?: CSS.Properties;
   inputDisabledStyle?: CSS.Properties;
   clearSelectionStyle?: CSS.Properties;
@@ -11,6 +11,13 @@ export interface SelectStyle {
   clearSelectionHoverStyle?: CSS.Properties;
   titleStyle?: CSS.Properties;
   titleDisabledStyle?: CSS.Properties;
+  dropdownIconStyle?: CSS.Properties;
+  dropdownIcondisabledStyle?: CSS.Properties;
+  hideDropdownIcon?: boolean;
+  dropdownIcon?: IconType;
+  dropdownIconColor?: CSS.Property.Color;
+  dropdownIconDisabledColor?: CSS.Property.Color;
+  hideTitle?: boolean;
   listStyle?: CSS.Properties;
   height?: CSS.Property.Height;
   width?: CSS.Property.Width;
