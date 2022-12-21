@@ -25,23 +25,17 @@ const Examples : FC<ExamplesProps> = ({theme}) => {
         color: theme.font
       }}
     >
-      <div className="categories">
-        <h3 
-          className="catagory-heading"
-          style={{
-            backgroundColor: theme.page2,
-            color: theme.selectFont
-          }}
-        >
+      <div 
+        className="categories"
+        style={{
+          backgroundColor: theme.page2,
+          color: theme.selectFont
+        }}
+      >
+        <h3 className="catagory-heading">
           Categories
         </h3>
-        <ul 
-          className="catagory-list"
-          style={{
-            backgroundColor: theme.page2,
-            color: theme.selectFont
-          }}
-        >
+        <ul className="catagory-list" >
           {
             categories.map( category =>
               <li 

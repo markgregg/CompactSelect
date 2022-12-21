@@ -6,7 +6,7 @@ import Examples from "./Examples/Examples";
 import { Theme } from "./interfaces/theme";
 
 
-const pages = ["Examples", "Sandbox"]
+const pages = ["About", "Examples", "How-To"]
 
 const App = () => {
   const [theme,setTheme] = useState<Theme>(themeMap.get(Themes.None.toString())!);

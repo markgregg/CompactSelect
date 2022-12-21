@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  height: 100%;
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .categories {
@@ -10,7 +12,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  overflow: hidden;
+  border-radius: 5px;
+  color: rgb(195, 212, 233);
 }
 
 .catagory-heading {
@@ -28,6 +31,8 @@
 .controls {
   flex: 1;
   padding: 25px;
+  height: 100%;
+  min-height: 700px;
 }
 
 .catagory-list {

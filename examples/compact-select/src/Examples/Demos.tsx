@@ -5,7 +5,7 @@ import { ClipboardCopy } from "../components";
 import { AiOutlineEdit, AiOutlineCopy, AiOutlineCode } from "react-icons/ai";
 import { bigString, bigTypesObjectString, choices, objectChoices, typedObjectChoices } from "../data/data";
 import { Theme } from "../interfaces/theme";
-import { fetchItems, fetchObjects, fetchTyped, searchItems, searchObjects, searchTyped, slowFetchItems, slowFetchObjects } from "../utils";
+import { fetchItems, fetchTyped, searchItems, searchTyped, slowFetchItems, slowFetchObjects } from "../utils";
 import "./Examples.css";
 
 
@@ -18,11 +18,14 @@ interface DemoItemProperties<T extends object | string> {
   sandbox?: string,
 }
 const DemoItem = <T extends object | string>(props: DemoItemProperties<T>) => {
-  const [showCode,setShowCode] = useState<boolean>(false);
+  const [showCode,setShowCode] = useState<string>("");
   const [showCopied,setShowCopied] = useState<boolean>(false);
 
   return(
-    <div className="demo">
+    <div 
+      className="demo"
+      key={"demo" + props.title}
+    >
       <h4 className="demo-title">{props.title}</h4>
       <div className="demo-description">
           <p>{props.description}</p>
@@ -40,7 +43,9 @@ const DemoItem = <T extends object | string>(props: DemoItemProperties<T>) => {
         />
         <div className="icons">
           <AiOutlineCode
-            onClick={() => setShowCode(!showCode)}
+            onClick={() => {
+              setShowCode(showCode === props.title ? "" : props.title)
+            }}
           />
           <div className="copy-wrapper">
             <AiOutlineCopy
@@ -60,8 +65,10 @@ const DemoItem = <T extends object | string>(props: DemoItemProperties<T>) => {
         </div>
       </div>
       {
-        showCode &&  
-        <div className="code">
+        showCode === props.title &&  
+        <div className="code"
+          key={"code" + props.title}
+        >
           <CodeBlock
             width="100%"
             text={props.code}

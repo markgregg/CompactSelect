@@ -933,7 +933,7 @@ const CompactSelect = <T extends object | string>(
                 {visibleChoices.length === 0 && !props.choices && !state.lookedUpChoices && (
                   <p 
                     className={scssClasses.csLoading}
-                    style={{color: props.choiceColor}}
+                    style={{color: props.choiceColor ?? props.color}}
                   >
                     {props.loadingText ?? "Loading..."}
                   </p>
@@ -941,7 +941,7 @@ const CompactSelect = <T extends object | string>(
                 {props.choices?.length === 0 && state.lookedUpChoices && (
                   <p 
                     className={scssClasses.csLoading}
-                    style={{color: props.choiceColor}}
+                    style={{color: props.choiceColor ?? props.color}}
                   >
                     {props.noItemText ?? "No items."}
                   </p>

@@ -29,10 +29,10 @@ themeMap.set(Themes.None,{
   selectFont: "Black"
 });
 themeMap.set(Themes.Dark,{
-  page1: "#14061F",
+  page1: "Black",
   page2: "#430770",
   page3: "#9C2BF1",
-  color1: "#14061F",
+  color1: "Black",
   color2: "#09010E",
   color3: "#430770",
   color4: "#512E6B",
@@ -53,16 +53,16 @@ themeMap.set(Themes.Light,{
   selectFont: "#3D350B"
 });
 themeMap.set(Themes.Blue,{
-  page1: "White",
-  page2: "#2828DB",
-  page3: "#C8C8F6",
+  page1: "rgb(195, 212, 233)",
+  page2: "#353576",
+  page3: "#9c9ccb",
   color1: "#14061F",
-  color2: "#2828DB",
-  color3: "#2828DB",
-  color4: "#8181EA",
-  color5: "#C8C8F6",
+  color2: "#353576",
+  color3: "#353576",
+  color4: "#5555ad",
+  color5: "#9c9ccb",
   font: "Black",
-  selectFont: "whitesmoke"
+  selectFont: "White"
 });
  
 export const clearIconMap = new Map<string,IconType>();

@@ -21,18 +21,6 @@ export const slowFetchItems = (text: string): Promise<string[]> => {
   });
 };
 
-export const fetchObjects = (text: string): Promise<Complex[]> => {
-  return new Promise<Complex[]>((resolve) => {
-    setTimeout(() => {
-      resolve(
-        bigObjectChoices.filter((item ) =>
-        item.name.startsWith(text.toUpperCase())
-        )
-      );
-    }, Math.floor(Math.random() * 1000));
-  });
-};
-
 export const fetchTyped = (text: string): Promise<Choice[]> => {
   return new Promise<Choice[]>((resolve, reject) => {
     setTimeout(() => {
@@ -62,18 +50,6 @@ export const searchItems = (items: string[]): Promise<string[]> => {
     setTimeout(() => {
       resolve(
         bigChoices.filter((item) => items.find((s) => s.toUpperCase() === item))
-      );
-    }, Math.floor(Math.random() * 300));
-  });
-};
-
-export const searchObjects = (items: string[]): Promise<Complex[]> => {
-  return new Promise<Complex[]>((resolve, reject) => {
-    setTimeout(() => {
-      resolve(
-        bigObjectChoices.filter((item) =>
-          items.find((s) => s.toUpperCase() === item.name)
-        )
       );
     }, Math.floor(Math.random() * 300));
   });
