@@ -6,6 +6,7 @@ import scssClasses from "./styles.module.scss";
 const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
   tip,
   show,
+  toolTipClassName,
   toolTipStyle,
   toolTipBackgroundColor,
   toolTipBackgroundImage,
@@ -67,7 +68,7 @@ const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
   };
 
   return (
-    <div className={scssClasses.toolTip}>
+    <div className={scssClasses.toolTip + (toolTipClassName ? ` ${toolTipClassName}` : "")}>
       {children}
       {show && tip !== "" && (
         <span className={scssClasses.toolTipText} style={toolTip()}>

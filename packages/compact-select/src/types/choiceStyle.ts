@@ -6,7 +6,12 @@ export interface ChoiceStyle {
   choiceSelectedStyle?: CSS.Properties;
   choiceHoverStyle?: CSS.Properties;
   choiceDisabledStyle?: CSS.Properties;
+  choiceClassName?: string;
+  choiceSelectedClassName?: string;
+  choiceDisabledClassName?: string;
+  choiceHoverClassName?: string;
   choiceSelectedIconStyle?: CSS.Properties;
+  choiceSelectedIconClassName?: string;
   choiceSelectedIcon?: IconType;
   choiceHeight?: CSS.Property.Height;
   choiceFontWeight?: CSS.Property.FontWeight;

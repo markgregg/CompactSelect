@@ -88,6 +88,98 @@ export interface Category {
 }
 
 export const categories: Category[] = [
+  { name: "Binding", 
+    demo: (theme: Theme) =>
+    <div className="demo">
+      <DemoItem
+          title="String binding"
+          description="The simpliest way to use a compact select - set the choices property to an array of strings"
+          props={{
+            width: "200px",
+            title: "Bind String", 
+            choices:choices
+          }} 
+          theme={theme}
+          code={
+`import CompactSelect from "compact-select";
+import { choices } from "./data";
+import "./styles.css";
+
+export default function App() {
+  return (
+    <div className="Space">
+      <CompactSelect
+        title="test"
+        choices={choices}
+      />
+    </div>
+  );
+}`
+        }
+        sandbox="https://codesandbox.io/s/string-binding-9jlrb0"
+      />
+      <DemoItem
+          title="Object binding"
+          description="You can bind to an array of objects by passing them to the choices property, and set the item, text and disbaled (if required) getters."
+          props={{
+            width: "200px",
+            title: "One/Zero value",
+            choices:objectChoices, 
+            itemValue: (item) => item.name, 
+            itemText: (item) => item.name,
+            itemDisabled: (item) => item.disabled
+          }} 
+          theme={theme}
+          code={
+`import CompactSelect from "compact-select";
+import { objectChoices } from "./data";
+import "./styles.css";
+
+export default function App() {
+  return (
+    <div className="Space">
+      <CompactSelect
+        title="test"
+        choices={objectChoices}
+        itemValue={(item) => item.name} 
+        itemText={(item) => item.name}
+        itemDisabled={(item) => item.disabled}
+      />
+    </div>
+  );
+}`
+        }
+        sandbox="https://codesandbox.io/s/object-binding-forked-d54u70"
+      />
+    <DemoItem
+      title="Typed object binding"
+      description="Typed object binding is much like using an array of JSON objects, except the objects must implement the choice interface."
+      props={{
+        width: "200px",
+        title: "One/Zero value",
+        choices:objectChoices
+      }} 
+      theme={theme}
+      code={
+`import CompactSelect from "compact-select";
+import { objectChoices } from "./data";
+import "./styles.css";
+
+export default function App() {
+return (
+<div className="Space">
+  <CompactSelect
+    title="test"
+    choices={typedObjectChoices}
+  />
+</div>
+);
+}`
+    }
+    sandbox="https://codesandbox.io/s/typed-binding-cdhsme"
+  />
+    </div>
+  },
   { name: "Single select", 
     demo: (theme: Theme) =>
     <div className="demo">
@@ -336,7 +428,7 @@ export default function App() {
     <div className="demo">
       <DemoItem
           title="String look-up"
-          description="A string type ahead look-up select control. Performs a look-up as the user types."
+          description="Look-ups can be use to get data from an external source, or to limit the number of items in the list. Performs a look-up as the user types."
           props={{
             width: "200px",
             title: "String look-up", 
@@ -565,4 +657,59 @@ export default function App() {
       />
     </div>
   },
+  { 
+    name: "Custom styling",
+    demo: (theme: Theme) =>
+    <div className="demo">
+      <div className="copy-text">
+        <p>Copy for string and object paste</p>
+        <ClipboardCopy text={bigString}/>
+      </div>
+      <DemoItem
+          title="Custom Styles"
+          description="An example how to customise the compact select using classes and inline sytles."
+          props={{
+            width: "200px",
+            title: "Object paste", 
+            choices:choices,
+            selected: ["Nuala", "Andrew"],
+            selectStyle: {
+              boxShadow: "5px 5px 10px 2px rgba(0,0,0,.8)"
+            },
+            clearSelectionClassName: "icon-spin",
+            choiceStyle: {
+              textShadow: `2px 2px ${theme.selectFont}`
+            },
+            choiceSelectedIconClassName: "icon-blink"
+          }} 
+          theme={theme}
+          code={
+`import CompactSelect from "compact-select";
+import { choices } from "./data";
+import "./styles.css";
+
+export default function App() {
+  return (
+    <div className="Space">
+      <CompactSelect
+        title="test"
+        choices={choices}
+        selected={["Nuala", "Andrew"]}
+        selectStyle={{
+          boxShadow: "5px 5px 10px 2px rgba(0,0,0,.8)"
+        }}
+        clearSelectionClassName="icon-spin"
+        choiceStyle={{
+          textShadow: "2px 2px black"
+        }}
+        choiceSelectedIconClassName="icon-blink"
+      />
+    </div>
+  );
+}`
+        }
+        sandbox="https://codesandbox.io/s/custom-styles-dwlc5y"
+      />
+    </div>
+  }
 ]

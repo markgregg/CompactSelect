@@ -87,9 +87,20 @@ const CompactSelectChoice = <T extends object | string>(
     };
   };
 
+  const choiceClassName = (): string => 
+    props.choiceDisabled && props.choiceDisabledClassName
+      ? ` ${props.choiceDisabledClassName}`
+      : props.choiceSelected && props.choiceSelectedClassName
+      ? ` ${props.choiceSelectedClassName}`
+      : props.choiceHighlighted && props.choiceHoverClassName
+      ? ` ${props.choiceHoverClassName}`
+      : props.choiceClassName
+      ? ` ${props.choiceClassName}`
+      : "";
+
   return (
     <div
-      className={scssClasses.csChoice}
+      className={scssClasses.csChoice + choiceClassName()}
       style={choiceStyle()}
       onClick={selectItem}
     >
@@ -98,12 +109,12 @@ const CompactSelectChoice = <T extends object | string>(
           <div>
             {props.choiceSelectedIcon ? (
               <props.choiceSelectedIcon
-                className={scssClasses.csSelectedSelected}
+                className={scssClasses.csSelectedSelected + (props.choiceSelectedIconClassName ? ` ${props.choiceSelectedIconClassName}` : "")}
                 style={selectSelected()}
               />
             ) : (
               <GiCheckMark
-                className={scssClasses.csSelectedSelected}
+                className={scssClasses.csSelectedSelected + (props.choiceSelectedIconClassName ? ` ${props.choiceSelectedIconClassName}` : "")}
                 style={selectSelected()}
               />
             )}

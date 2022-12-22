@@ -722,17 +722,17 @@ export const bigChoices = [
 ];
 
 export const objectChoices = [
-  { name: "mark", id: 10001 },
-  { name: "andrew", id: 10002 },
-  { name: "Nuala", id: 10003 },
-  { name: "Sarah", id: 10004 },
-  { name: "Jane", id: 10005 },
-  { name: "Peter", id: 10006 },
-  { name: "Dianna", id: 10007 },
-  { name: "Carol", id: 10008 },
-  { name: "George", id: 10009 },
-  { name: "Adam", id: 100010 },
-  { name: "Sharon", id: 100011 },
+  { name: "mark", id: 10001, disabled: false },
+  { name: "andrew", id: 10002, disabled: false },
+  { name: "Nuala", id: 10003, disabled: false },
+  { name: "Sarah", id: 10004, disabled: false },
+  { name: "Jane", id: 10005, disabled: false },
+  { name: "Peter", id: 10006, disabled: false },
+  { name: "Dianna", id: 10007, disabled: false },
+  { name: "Carol", id: 10008, disabled: false },
+  { name: "George", id: 10009, disabled: false },
+  { name: "Adam", id: 100010, disabled: false },
+  { name: "Sharon", id: 100011, disabled: false },
 ];
 
 export const bigObjectChoices = [
@@ -1327,14 +1327,8 @@ export const typedObjectChoices = [
   { text: "Sharon", value: "100001", disabled: false },
 ];
 
-export interface Choice {
-  text: string;
-  value: any;
-  disabled?: boolean;
-}
-
 export const bigTypedObjectChoices = [
-  { text: "SMITH", value: 10001, disabled: false },
+ { text: "SMITH", value: 10001, disabled: false },
  { text: "JOHNSON", value: 10002, disabled: false },
  { text: "WILLIAMS", value: 10003, disabled: false },
  { text: "BROWN", value: 10004, disabled: false },

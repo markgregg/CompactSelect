@@ -34,7 +34,7 @@ const App = () => {
         >
           <div className="header">
             <h1 className="title">Compact Select</h1>
-            <p className="statement">A simple flexible select control that's economical in terms of realestate</p>
+            <p className="statement">A simple, flexible select control that's economical in terms of realestate</p>
           </div>
           <div 
             className="menu-bar"

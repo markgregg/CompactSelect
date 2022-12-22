@@ -26,9 +26,7 @@ import scssClasses from "./styles.module.scss";
 
 interface State<T extends object | string> {
   token: string;
-  displayText: string;
   inputText: string;
-  caption?: string;
   showChoices: boolean;
   lookedUpChoices?: T[];
   selected: T[];
@@ -172,8 +170,6 @@ const CompactSelect = <T extends object | string>(
   const [state] = useState<State<T>>({
     token: "",
     selected: getSelection(),
-    displayText: getDisplayText(getSelection()),
-    caption: getCaption(getSelection()),
     inputText: "",
     showChoices: false,
     visibleChoices: [],
@@ -195,7 +191,14 @@ const CompactSelect = <T extends object | string>(
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const [clearSelectedHover, setClearSelectedHover] = useState<boolean>(false);
   const [showToolTip, setShowToolTip] = useState<boolean>(false);
-
+  const [displayText, setDisplayText] = useState<string>("");
+  const [caption, setCaption] = useState<string>("");
+ 
+  useEffect(() => {
+    state.selected = getSelection();
+    updateVisibleChoices();
+  },[props.selected])
+  
   useEffect(() => {
     //detected when to close item list
     document.addEventListener("click", clickedAway, true);
@@ -296,8 +299,8 @@ const CompactSelect = <T extends object | string>(
   const updateDisplayText = () => {
     try {
       //show the currently selected item or number of selected items
-      state.displayText = getDisplayText(state.selected);
-      state.caption = getCaption(state.selected);
+      setDisplayText(getDisplayText(state.selected));
+      setCaption(getCaption(state.selected));
     } catch (error) {
       console.log(
         `Failed to fetch update display text, reason: ${errorMessage(error)}`
@@ -800,17 +803,61 @@ const CompactSelect = <T extends object | string>(
     toolTipColor: props.toolTipColor ?? props.color,
     ...(props as ToolTipStyle)
   }
-  
+
+  const className = (): string => 
+    props.disabled && props.disabledClassName
+      ? ` ${props.disabledClassName}`
+      : props.className
+      ? ` ${props.className}`
+      : "";
+
+  const inputClassName = (): string => 
+    props.disabled && props.inputDisabledClassName
+      ? ` ${props.inputDisabledClassName}`
+      : props.inputClassName
+      ? ` ${props.inputClassName}`
+      : "";    
+
+  const textDsiplayClassName = (): string => 
+    props.disabled && props.textDisplayDisabledClassName
+      ? ` ${props.textDisplayDisabledClassName}`
+      : props.textDisplayClassName
+      ? ` ${props.textDisplayClassName}`
+      : "";    
+
+
+  const clearSelectionClassName = (): string => 
+    props.disabled && props.clearSelectionDisabledClassName
+      ? ` ${props.clearSelectionDisabledClassName}`
+      : clearSelectedHover && props.clearSelectionHoverClassName
+      ? ` ${props.clearSelectionHoverClassName}`
+      : props.clearSelectionClassName
+      ? ` ${props.clearSelectionClassName}`
+      : ""; 
+      
+  const titleClassName = (): string => 
+    props.disabled && props.titleDisabledClassName
+      ? ` ${props.titleDisabledClassName}`
+      : props.titleClassName
+      ? ` ${props.titleClassName}`
+      : ""; 
+
+  const dropIconClassName = (): string => 
+    props.disabled && props.dropIconDisabledClassName
+      ? ` ${props.dropIconDisabledClassName}`
+      : props.dropIconClassName
+      ? ` ${props.dropIconClassName}`
+      : ""; 
   return (
     
     <div className={scssClasses.csWrapper}>
       <ToolTip
-        tip={state.caption ?? ""}
+        tip={caption}
         show={showToolTip}
         {...tooltipAttibutes}
       >
         <div
-          className={scssClasses.csCompactSelect}
+          className={scssClasses.csCompactSelect + className()}
           style={compactSelectStyle()}
           onKeyDownCapture={inputKeyPressed}
           onClick={textInputClicked}
@@ -821,6 +868,7 @@ const CompactSelect = <T extends object | string>(
             <div className={scssClasses.csClearSelection}>
               {props.clearSelectionIcon ? (
                 <props.clearSelectionIcon
+                  className={clearSelectionClassName()}
                   style={clearSelectedStyle(clearSelectedHover)}
                   onMouseEnter={() => setClearSelectedHover(true)}
                   onMouseLeave={() => setClearSelectedHover(false)}
@@ -828,6 +876,7 @@ const CompactSelect = <T extends object | string>(
                 />
               ) : (
                 <TiDeleteOutline
+                  className={clearSelectionClassName()}
                   style={clearSelectedStyle(clearSelectedHover)}
                   onMouseEnter={() => setClearSelectedHover(true)}
                   onMouseLeave={() => setClearSelectedHover(false)}
@@ -840,9 +889,9 @@ const CompactSelect = <T extends object | string>(
             {!props.selectType || props.selectType === "standard" ? 
               <input
                 id={"csInput" + state.selectId}
-                className={scssClasses.csInput}
+                className={scssClasses.csInput + inputClassName()}
                 style={inputStyle()}
-                value={showChoices ? inputText : state.displayText === "" ? props.title :  state.displayText}
+                value={showChoices ? inputText : displayText === "" ? props.title :  displayText}
                 disabled={props.disabled}
                 spellCheck="false"
                 autoCapitalize="off"
@@ -853,41 +902,46 @@ const CompactSelect = <T extends object | string>(
               />
              : 
               !showChoices && <p
-                className={scssClasses.csTextDisplay}
+                className={scssClasses.csTextDisplay + textDsiplayClassName()}
                 style={inputStyle()}
                 onPaste={pasteText}
                 onClick={textInputClicked}
               >
                 { 
-                  state.displayText === ""
+                  displayText === ""
                     ? props.title
-                    : state.displayText
+                    : displayText
                 }
               </p>
             }
           </div>
           {!showChoices && !props.hideDropdownIcon && props.selectType !== "switch" && (
-            <div className={scssClasses.csDropDownIcon}>
+            <div className={scssClasses.csDropDownIcon + dropIconClassName()}>
               {props.dropdownIcon ? (
                 <props.dropdownIcon
                   style={dropdownIcon()}
+                  className={dropIconClassName()}
                 />
               ) : (
                 <RiArrowDropDownFill
                   style={dropdownIcon()}
+                  className={dropIconClassName()}
                 />
               )}
             </div>
           )}
-          {(showChoices || state.displayText !== "") && !props.hideTitle && (
-            <p className={scssClasses.csSelectTitle} style={titleDisplay()}>
+          {(showChoices || displayText !== "") && !props.hideTitle && (
+            <p 
+              className={scssClasses.csSelectTitle + titleClassName()} 
+              style={titleDisplay()}
+            >
               {props.title}
             </p>
           )}
           {!props.disabled && showChoices && (
             <div
               id={"csList" + state.selectId}
-              className={scssClasses.csChoiceContainer}
+              className={scssClasses.csChoiceContainer  + (props.choiceListClassName ? ` ${props.choiceListClassName}` : "")}
               style={listContainer()}
             >
               <ul className={scssClasses.csChoiceList}>
@@ -932,7 +986,7 @@ const CompactSelect = <T extends object | string>(
                   ))}
                 {visibleChoices.length === 0 && !props.choices && !state.lookedUpChoices && (
                   <p 
-                    className={scssClasses.csLoading}
+                    className={scssClasses.csLoading + (props.loadingTextClassName ? ` ${props.loadingTextClassName}` : "")}
                     style={{color: props.choiceColor ?? props.color}}
                   >
                     {props.loadingText ?? "Loading..."}
@@ -940,7 +994,7 @@ const CompactSelect = <T extends object | string>(
                 )}
                 {props.choices?.length === 0 && state.lookedUpChoices && (
                   <p 
-                    className={scssClasses.csLoading}
+                    className={scssClasses.csLoading + (props.loadingTextClassName ? ` ${props.loadingTextClassName}` : "")}
                     style={{color: props.choiceColor ?? props.color}}
                   >
                     {props.noItemText ?? "No items."}
