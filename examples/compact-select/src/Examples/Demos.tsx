@@ -157,12 +157,12 @@ export default function App() {
       props={{
         width: "200px",
         title: "One/Zero value",
-        choices:objectChoices
+        choices:typedObjectChoices
       }} 
       theme={theme}
       code={
 `import CompactSelect from "compact-select";
-import { objectChoices } from "./data";
+import { typedObjectChoices } from "./data";
 import "./styles.css";
 
 export default function App() {
