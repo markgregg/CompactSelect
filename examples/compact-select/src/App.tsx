@@ -1,8 +1,10 @@
 import CompactSelect from "compact-select";
 import React, { useState } from "react";
+import About from "./about/About";
+import Examples from "./examples/Examples";
 import "./App.css";
 import { Themes, themeMap, themes } from "./data/data";
-import Examples from "./Examples/Examples";
+
 import { Theme } from "./interfaces/theme";
 
 
@@ -78,6 +80,10 @@ const App = () => {
             {
               page==="Examples" &&
                 <Examples 
+                  theme={theme}
+                /> ||
+              page==="About" &&
+               <About
                   theme={theme}
                 />
             }
