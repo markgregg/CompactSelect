@@ -1,6 +1,6 @@
 {
   "name": "compact-select",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Rich function compact selecvt",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",

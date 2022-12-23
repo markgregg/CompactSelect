@@ -17,7 +17,7 @@
   position: absolute;
   max-width: 800px;
   width: 100%;
-  font-family: 'Merriweather';
+  font-family: 'Cabin';
   font-size: medium;
 }
 
@@ -42,7 +42,7 @@
   width: 100%;
   padding-top: 15px;
   padding-bottom: 15px;
-  border-radius: 5px;
+  border-radius: 8px;
 }
 
 .menu {
@@ -67,7 +67,7 @@
 }
 
 .context {
-  font-weight: 100;
+  font-weight: 400;
   width: 100%;
   height: 100%;
 }
@@ -85,5 +85,5 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 5px;
+  border-radius: 8px;
 }

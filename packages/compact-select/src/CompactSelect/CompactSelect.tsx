@@ -185,7 +185,7 @@ const CompactSelect = <T extends object | string>(
   });
 
   //state use to trigger visual updates
-  const [inputText, setInputText] = useState<string>();
+  const [inputText, setInputText] = useState<string>("");
   const [showChoices, setShowChoices] = useState<boolean>(false);
   const [visibleChoices, setVisibleChoices] = useState<T[]>([]);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
@@ -901,7 +901,7 @@ const CompactSelect = <T extends object | string>(
                 onPaste={pasteText}
               />
              : 
-              !showChoices && <p
+              <p
                 className={scssClasses.csTextDisplay + textDsiplayClassName()}
                 style={inputStyle()}
                 onPaste={pasteText}

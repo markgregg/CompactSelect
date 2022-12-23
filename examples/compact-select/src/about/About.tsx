@@ -1,9 +1,9 @@
-import React, { useState, FC } from "react";
+import React, { FC } from "react";
 import { Theme } from "../interfaces/theme";
 import "./About.css";
 
 interface AboutProps {
-  theme: Theme
+  theme: Theme;
 }
 
 const About : FC<AboutProps> = ({theme}) => {

@@ -26,7 +26,7 @@ const DemoItem = <T extends object | string>(props: DemoItemProperties<T>) => {
       className="demo"
       key={"demo" + props.title}
     >
-      <h4 className="demo-title">{props.title}</h4>
+      <h2 className="demo-title">{props.title}</h2>
       <div className="demo-description">
           <p>{props.description}</p>
         </div>
@@ -66,9 +66,7 @@ const DemoItem = <T extends object | string>(props: DemoItemProperties<T>) => {
       </div>
       {
         showCode === props.title &&  
-        <div className="code"
-          key={"code" + props.title}
-        >
+        <div className="code">
           <CodeBlock
             width="100%"
             text={props.code}

@@ -1,11 +1,12 @@
 import CompactSelect from "compact-select";
 import React, { useState } from "react";
-import About from "./about/About";
-import Examples from "./examples/Examples";
+import About from "./About/About";
+import Examples from "./Examples/Examples";
 import "./App.css";
 import { Themes, themeMap, themes } from "./data/data";
 
 import { Theme } from "./interfaces/theme";
+import HowTo from "./howTo/HowTo";
 
 
 const pages = ["About", "Examples", "How-To"]
@@ -78,14 +79,18 @@ const App = () => {
           </div>
           <div className="context">
             {
-              page==="Examples" &&
+              (page==="Examples" &&
                 <Examples 
                   theme={theme}
-                /> ||
-              page==="About" &&
+                />) ||
+              (page==="About" &&
                <About
                   theme={theme}
-                />
+                />) ||
+                (page==="How-To" &&
+                 <HowTo
+                    theme={theme}
+                  />)
             }
           </div>
           <div 
