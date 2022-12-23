@@ -12,7 +12,7 @@ import HowTo from "./howTo/HowTo";
 const pages = ["About", "Examples", "How-To"]
 
 const App = () => {
-  const [theme,setTheme] = useState<Theme>(themeMap.get(Themes.None.toString())!);
+  const [theme,setTheme] = useState<Theme>(themeMap.get(Themes.Blue.toString())!);
   const [page,setPage] = useState<string>("Examples");
   const [pageHighlight,setPageHighlight] = useState<string>();
 
