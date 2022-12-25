@@ -1,6 +1,5 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { CodeBlock, googlecode } from "react-code-blocks";
-import { ClipboardCopy } from "../components";
 import { Theme } from "../interfaces/theme";
 import "./HowTo.css";
 
@@ -18,8 +17,6 @@ interface GuideProperties {
 
 
 const Guide: FC<GuideProperties> = ({title, entries, theme}) => {
-  const [showCode,setShowCode] = useState<string>("");
-
   return (
     <div 
       className="guide"
@@ -79,7 +76,7 @@ export const guides: GuideItem[] = [
           },
           {
             type: "p", 
-            text: "Binding should be straight forward, and it should be possible for the type being bound to a control to be intferred. If an array of strings, or an array of objects that supports the Choice interface are supplied, then there will be nothing to do (see below)."
+            text: "The CompactSelect control is generic, but binding should be straight forward, and it should be possible for the type of the objects being bound to a control to be intferred. If the bound array is of strings, or an array of objects that supports the Choice interface, then there will be nothing to do (see below)."
           },
           {
             type: "code", 

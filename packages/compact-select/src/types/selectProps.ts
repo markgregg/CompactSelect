@@ -11,6 +11,7 @@ export interface SelectProps<T extends Choice | object | string> {
   itemText?: (item: T) => string; //if using a complex class the display value
   itemDisabled?: (item: T) => boolean; //If using a complex class the disabled value
   typeAheadLookUp?: (text: string, selected: T[]) => Promise<T[]>; //type ahead lookup call
+  noEmptyStringLookUp?: boolean; //don't loook up if input is blank
   itemSearch?: (items: string[]) => Promise<T[]>; //item search for clipboard paste
   cacheLookUp?: boolean; //should cache items
   cacheTimeToLive?: number; //how long should items exist for in seconds

@@ -1,12 +1,14 @@
 import CompactSelect from './CompactSelect';
 export type { 
   Choice,
-  ChoiceStyle,
   ChoiceProps,
+  ChoiceStyle,
   SelectProps,
-  ToolTipStyle,
   SelectStyle,
-  ToolTipProps
+  ToolTipProps,
+  ToolTipStyle,
+  DisplayProps,
+  DisplayStyle
 } from './types';
 export type { CompactSelectProps } from './CompactSelect';
 export type { Cache, createCache } from "./cache/cache";

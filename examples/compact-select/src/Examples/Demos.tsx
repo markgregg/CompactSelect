@@ -1,13 +1,76 @@
 import { useState } from "react";
-import CompactSelect, { CompactSelectProps } from "compact-select";
+import CSS from "csstype";
+import CompactSelect, { ChoiceProps, ChoiceStyle, CompactSelectProps, DisplayProps, DisplayStyle } from "compact-select";
 import { CodeBlock, googlecode } from "react-code-blocks";
 import { ClipboardCopy } from "../components";
 import { AiOutlineEdit, AiOutlineCopy, AiOutlineCode } from "react-icons/ai";
-import { bigString, bigTypesObjectString, choices, objectChoices, typedObjectChoices } from "../data/data";
+import { bigString, bigTypesObjectString, choices, colorChoices, ColorItem, objectChoices, typedObjectChoices } from "../data/data";
 import { Theme } from "../interfaces/theme";
 import { fetchItems, fetchTyped, searchItems, searchTyped, slowFetchItems, slowFetchObjects } from "../utils";
 import "./Examples.css";
 
+const itemDisplay = (
+  text: string,
+  color: CSS.Property.Color,
+  fontColor: CSS.Property.Color,
+  highlight: boolean
+): JSX.Element => (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      columnGap: "10px"
+    }}
+  >
+    {text !== "" && (
+      <div
+        style={{
+          backgroundColor: color,
+          height: "10px",
+          width: "10px",
+          borderRadius: "15px"
+        }}
+      />
+    )}
+    <p style={{
+        marginBlockStart: "0px",
+        marginBlockEnd: "0px",
+        color: highlight ? "lightgreen" : fontColor,
+        fontWeight: highlight ? "bold" : "normal"
+      }}
+    >
+      {text}
+    </p>
+  </div>
+);
+
+const choice = <T extends object | string>(props: ChoiceProps<T> & ChoiceStyle) => {
+  return (
+    <div 
+      key={(props.item as ColorItem).value}
+      onClick={() => props.onSelected(props.item)}
+    >
+      { itemDisplay((props.item as ColorItem).text, (props.item as ColorItem).color, props.choiceColor ?? 'black', props.choiceSelected) }
+    </div>
+  )
+};
+
+const itemText = <T extends object | string>(selected: T[]): string =>
+  selected.length === 0
+    ? ""
+    : (selected[0] as ColorItem).text;
+
+const itemColor = <T extends object | string>(selected: T[]): string =>
+  selected.length === 0 
+    ? "black" 
+    : (selected[0] as ColorItem).color;
+
+const display = <T extends object | string>(props: DisplayStyle & DisplayProps<T>) => (
+  <div>
+    {itemDisplay(itemText(props.selected), itemColor(props.selected), props.color  ?? 'black', false)}
+  </div>
+);
 
 interface DemoItemProperties<T extends object | string> {
   title: string, 
@@ -659,16 +722,12 @@ export default function App() {
     name: "Custom styling",
     demo: (theme: Theme) =>
     <div className="demo">
-      <div className="copy-text">
-        <p>Copy for string and object paste</p>
-        <ClipboardCopy text={bigString}/>
-      </div>
       <DemoItem
-          title="Custom Styles"
-          description="An example how to customise the compact select using classes and inline sytles."
+          title="Custom styles"
+          description="An example of how to customise the compact select using classes and inline sytles."
           props={{
             width: "200px",
-            title: "Object paste", 
+            title: "Style", 
             choices:choices,
             selected: ["Nuala", "Andrew"],
             selectStyle: {
@@ -708,6 +767,127 @@ export default function App() {
         }
         sandbox="https://codesandbox.io/s/custom-styles-dwlc5y"
       />
+      
+    </div>
+  },
+  { 
+    name: "Custom components",
+    demo: (theme: Theme) =>
+    <div className="demo">
+      <DemoItem
+          title="Custom component"
+          description="An example of how to use a component to change the look of the control."
+          props={{
+            width: "200px",
+            title: "Component", 
+            choices:colorChoices,
+            choiceComponent: choice,
+            displayComponent: display,
+            maximumSelections: 1
+          }} 
+          theme={theme}
+          code={
+`import CSS from "csstype";
+import CompactSelect, {
+  ChoiceStyle,
+  ChoiceProps,
+  DisplayProps,
+  DisplayStyle
+} from "compact-select";
+import { choices, ColorItem } from "./data";
+import "./styles.css";
+
+export default function App() {
+  const itemDisplay = (
+    text: string,
+    color: CSS.Property.Color,
+    fontColor: CSS.Property.Color,
+    highlight: boolean
+  ): JSX.Element => (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        columnGap: "10px"
+      }}
+    >
+      {text !== "" && (
+        <div
+          style={{
+            backgroundColor: color,
+            height: "10px",
+            width: "10px",
+            borderRadius: "15px"
+          }}
+        />
+      )}
+      <p
+        style={{
+          marginBlockStart: "0px",
+          marginBlockEnd: "0px",
+          color: highlight ? "lightgreen" : fontColor,
+          fontWeight: highlight ? "bold" : "normal"
+        }}
+      >
+        {text}
+      </p>
+    </div>
+  );
+
+  const choice = <T extends object | string>(
+    props: ChoiceProps<T> & ChoiceStyle
+  ) => {
+    return (
+      <div
+        key={(props.item as ColorItem).value}
+        onClick={() => props.onSelected(props.item)}
+      >
+        {itemDisplay(
+          (props.item as ColorItem).text,
+          (props.item as ColorItem).color,
+          props.choiceColor ?? "black",
+          props.choiceSelected
+        )}
+      </div>
+    );
+  };
+
+  const itemText = <T extends object | string>(selected: T[]): string =>
+    selected.length === 0 ? "" : (selected[0] as ColorItem).text;
+
+  const itemColor = <T extends object | string>(selected: T[]): string =>
+    selected.length === 0 ? "black" : (selected[0] as ColorItem).color;
+
+  const display = <T extends object | string>(
+    props: DisplayStyle & DisplayProps<T>
+  ) => (
+    <div>
+      {itemDisplay(
+        itemText(props.selected),
+        itemColor(props.selected),
+        props.color ?? "black",
+        false
+      )}
+    </div>
+  );
+
+  return (
+    <div className="Space">
+      <CompactSelect
+        title="test1"
+        choices={choices}
+        choiceComponent={choice}
+        displayComponent={display}
+        maximumSelections={1}
+      />
+    </div>
+  );
+}`
+        }
+        sandbox="https://codesandbox.io/s/custom-components-olehel?file=/src/App.tsx"
+      />
+      
     </div>
   }
 ]
