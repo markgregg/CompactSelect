@@ -6,16 +6,16 @@ import {
   KeyboardEvent,
   MouseEvent as ReactMouseEvent,
   ClipboardEvent,
-} from "react";
-import CSS from "csstype";
-import { Cache, createCache } from "../cache/cache";
-import { errorMessage } from "../utils/domUtils";
-import { generateGuid } from "../utils/guidGenerator";
-import { TiDeleteOutline } from "react-icons/ti";
-import { RiArrowDropDownFill } from "react-icons/ri";
-import CompactSelectChoice from "../CompactSelectChoice";
-import ToolTip from "../ToolTip";
-import { scrollIntoView } from "../utils/domUtils";
+} from 'react';
+import CSS from 'csstype';
+import { Cache, createCache } from '../cache/cache';
+import { errorMessage } from '../utils/domUtils';
+import { generateGuid } from '../utils/guidGenerator';
+import { TiDeleteOutline } from 'react-icons/ti';
+import { RiArrowDropDownFill } from 'react-icons/ri';
+import CompactSelectChoice from '../CompactSelectChoice';
+import ToolTip from '../ToolTip';
+import { scrollIntoView } from '../utils/domUtils';
 import {
   Choice,
   ChoiceStyle,
@@ -25,9 +25,9 @@ import {
   DisplayStyle,
   DisplayProps,
   ChoiceProps,
-} from "../types";
-import scssClasses from "./styles.module.scss";
-import CompactSelectDisplay from "../CompactSelectDisplay";
+} from '../types';
+import scssClasses from './styles.module.scss';
+import CompactSelectDisplay from '../CompactSelectDisplay';
 
 interface State<T extends object | string> {
   token: string;
@@ -42,7 +42,11 @@ interface State<T extends object | string> {
 }
 const defaultToolTipLimit = 20;
 
-export interface CompactSelectProps<T extends object | string> extends SelectProps<T>, SelectStyle, ChoiceStyle, ToolTipStyle {}
+export interface CompactSelectProps<T extends object | string>
+  extends SelectProps<T>,
+    SelectStyle,
+    ChoiceStyle,
+    ToolTipStyle {}
 
 const CompactSelect = <T extends object | string>(
   props: CompactSelectProps<T>
@@ -57,10 +61,12 @@ const CompactSelect = <T extends object | string>(
       );
     } catch (error) {
       console.log(
-        `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage(error)}`
+        `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage(
+          error
+        )}`
       );
     }
-    return "";
+    return '';
   };
 
   //returns value of an item
@@ -72,26 +78,29 @@ const CompactSelect = <T extends object | string>(
       );
     } catch (error) {
       console.log(
-        `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage(error)}`
+        `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage(
+          error
+        )}`
       );
     }
-    return "";
+    return '';
   };
 
   //returns value of an item
   const getItemValueString = (item: T): string => {
     try {
-      const value = (
-        (item as Choice).value  ??
-        (props.itemValue ? props.itemValue(item) : item)
-      );
+      const value =
+        (item as Choice).value ??
+        (props.itemValue ? props.itemValue(item) : item);
       return typeof value === 'string' ? value : value.toString();
     } catch (error) {
       console.log(
-        `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage(error)}`
+        `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage(
+          error
+        )}`
       );
     }
-    return "";
+    return '';
   };
 
   //returns disabled property of an item
@@ -103,7 +112,9 @@ const CompactSelect = <T extends object | string>(
       );
     } catch (error) {
       console.log(
-        `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage(error)}`
+        `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage(
+          error
+        )}`
       );
     }
     return false;
@@ -112,13 +123,17 @@ const CompactSelect = <T extends object | string>(
   const getSelection = (): T[] => {
     try {
       if (
-        props.selectType === "switch" ||
+        props.selectType === 'switch' ||
         (props.maximumSelections === 1 && props.minimumSelections === 1)
       ) {
-        if( props.selected && Array.isArray(props.selected) && props.selected.length > 0 ) {
+        if (
+          props.selected &&
+          Array.isArray(props.selected) &&
+          props.selected.length > 0
+        ) {
           return [props.selected[0]];
         }
-        if (props.selected && !Array.isArray(props.selected) ) {
+        if (props.selected && !Array.isArray(props.selected)) {
           return [props.selected];
         }
         if (props.choices && props.choices.length > 0) {
@@ -126,57 +141,59 @@ const CompactSelect = <T extends object | string>(
         }
         return [];
       }
-      return props.selected && Array.isArray(props.selected) 
-        ? props.selected 
-        :  props.selected && !Array.isArray(props.selected) 
-          ? [props.selected as T]
-          : [];
+      return props.selected && Array.isArray(props.selected)
+        ? props.selected
+        : props.selected && !Array.isArray(props.selected)
+        ? [props.selected as T]
+        : [];
     } catch (error) {
-      console.log(
-        `Failed to fetch selection, reason: ${errorMessage(error)}`
-      );
+      console.log(`Failed to fetch selection, reason: ${errorMessage(error)}`);
     }
     return [];
   };
 
   const getDisplayText = (selection: T[]): string => {
     try {
-      return selection.length > 1 
+      return selection.length > 1
         ? `${selection.length} items`
         : selection.length === 1
-          ? getItemText(selection[0])
-          : "";
+        ? getItemText(selection[0])
+        : '';
     } catch (error) {
       console.log(
         `Failed to fetch display text, reason: ${errorMessage(error)}`
       );
-      return "";
+      return '';
     }
-  }
+  };
 
-  const toolTipLimit = (): number => props.toolTipValueLimit ?? defaultToolTipLimit;
+  const toolTipLimit = (): number =>
+    props.toolTipValueLimit ?? defaultToolTipLimit;
 
   const getCaption = (selection: T[]): string => {
     try {
-      return selection.length > 1 
-        ? selection.slice(0,toolTipLimit()).map((item) => getItemText(item)).join(", ") 
-          + (selection.length > toolTipLimit() 
-          ? ` + ${selection.length - toolTipLimit()} more items` : "")
-        : "";
+      return selection.length > 1
+        ? selection
+            .slice(0, toolTipLimit())
+            .map((item) => getItemText(item))
+            .join(', ') +
+            (selection.length > toolTipLimit()
+              ? ` + ${selection.length - toolTipLimit()} more items`
+              : '')
+        : '';
     } catch (error) {
       console.log(
         `Failed to fetch caption text, reason: ${errorMessage(error)}`
       );
-      return "";
+      return '';
     }
-    
-  }
-  
+  };
+
   //state not required for visual updates
   const [state] = useState<State<T>>({
-    token: "",
+    token: '',
     selected: getSelection(),
-    inputText: "",
+    inputText: '',
     showChoices: false,
     visibleChoices: [],
     cache: props.cacheLookUp
@@ -187,32 +204,31 @@ const CompactSelect = <T extends object | string>(
         )
       : undefined,
     highlightedIndex: -1,
-    selectId: generateGuid()
+    selectId: generateGuid(),
   });
 
   //state use to trigger visual updates
-  const [inputText, setInputText] = useState<string>("");
+  const [inputText, setInputText] = useState<string>('');
   const [showChoices, setShowChoices] = useState<boolean>(false);
   const [visibleChoices, setVisibleChoices] = useState<T[]>([]);
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const [clearSelectedHover, setClearSelectedHover] = useState<boolean>(false);
   const [showToolTip, setShowToolTip] = useState<boolean>(false);
-  const [displayText, setDisplayText] = useState<string>("");
-  const [caption, setCaption] = useState<string>("");
- 
+  const [displayText, setDisplayText] = useState<string>('');
+  const [caption, setCaption] = useState<string>('');
+
   useEffect(() => {
     state.selected = getSelection();
     updateVisibleChoices();
-  },[props.selected])
-  
+  }, [props.selected]);
+
   useEffect(() => {
     //detected when to close item list
-    document.addEventListener("click", clickedAway, true);
+    document.addEventListener('click', clickedAway, true);
     return () => {
-      document.removeEventListener("click", clickedAway, true);
+      document.removeEventListener('click', clickedAway, true);
     };
   }, []);
-
 
   const getMatchItem = (item: T): string =>
     !props.caseSensitive ? getItemText(item).toLowerCase() : getItemText(item);
@@ -232,7 +248,7 @@ const CompactSelect = <T extends object | string>(
 
   //Uses text input to fetche avialble choices from a cache or supplied lookup
   const fetchChoices = (text: string) => {
-    if (props.typeAheadLookUp && (text !== "" || !props.noEmptyStringLookUp)) {
+    if (props.typeAheadLookUp && (text !== '' || !props.noEmptyStringLookUp)) {
       state.lookedUpChoices = undefined;
       //if use cache then check if we have items
       if (state.cache) {
@@ -259,10 +275,12 @@ const CompactSelect = <T extends object | string>(
           //if call is current call set items
           if (guid === state.token) {
             updateChoices(items);
-          } 
+          }
         } catch (error) {
           console.log(
-            `Failed to fetch items from item source, reason: ${errorMessage(error)}`
+            `Failed to fetch items from item source, reason: ${errorMessage(
+              error
+            )}`
           );
         }
       });
@@ -272,11 +290,9 @@ const CompactSelect = <T extends object | string>(
   //check if item should be filtered
   const shouldFilter = (item: T): boolean => {
     return getMatchItem(item).includes(
-      !props.caseSensitive
-        ? state.inputText.toLowerCase()
-        : state.inputText
+      !props.caseSensitive ? state.inputText.toLowerCase() : state.inputText
     );
-  }
+  };
   //determine visible choices based on available choices and what is selected
   const getVisibleChoices = (): T[] => {
     try {
@@ -284,15 +300,17 @@ const CompactSelect = <T extends object | string>(
       if (!state.lookedUpChoices && !props.choices) {
         return state.selected;
       }
-      
+
       //filter out selected items and items that do not contain text input
-      return state.selected.filter( item => !state.inputText || shouldFilter(item) ).concat(
-        (state.lookedUpChoices ?? props.choices ?? []).filter(
-          (item) =>
-            state.selected.indexOf(item) === -1 &&
-            (!state.inputText || shouldFilter(item))
-        )
-      );
+      return state.selected
+        .filter((item) => !state.inputText || shouldFilter(item))
+        .concat(
+          (state.lookedUpChoices ?? props.choices ?? []).filter(
+            (item) =>
+              state.selected.indexOf(item) === -1 &&
+              (!state.inputText || shouldFilter(item))
+          )
+        );
     } catch (error) {
       console.log(
         `Failed to get visible choices, reason: ${errorMessage(error)}`
@@ -332,8 +350,10 @@ const CompactSelect = <T extends object | string>(
 
   //calls parent notifier and visible choice update
   const updateSelected = () => {
-    if( props.maximumSelections === 1) {
-      onChangeSelection(state.selected.length > 0 ? state.selected[0] : undefined);
+    if (props.maximumSelections === 1) {
+      onChangeSelection(
+        state.selected.length > 0 ? state.selected[0] : undefined
+      );
     } else {
       onChange(state.selected);
     }
@@ -344,7 +364,7 @@ const CompactSelect = <T extends object | string>(
   const hideList = () => {
     state.showChoices = false;
     setShowChoices(false);
-    updateInputText("");
+    updateInputText('');
   };
 
   //shows the list and sets the highlighted index to -1
@@ -362,8 +382,8 @@ const CompactSelect = <T extends object | string>(
     }
     try {
       //get the control
-      const input = document.getElementById("csInput" + state.selectId);
-      const list = document.getElementById("csList" + state.selectId);
+      const input = document.getElementById('csInput' + state.selectId);
+      const list = document.getElementById('csList' + state.selectId);
       //check if the click was outside the controls area
       if (
         mouseEvent.target !== null &&
@@ -391,8 +411,8 @@ const CompactSelect = <T extends object | string>(
       return;
     }
     setTimeout(() => {
-      console.log("setting focus")
-      if( inputRefence.current ) {
+      console.log('setting focus');
+      if (inputRefence.current) {
         inputRefence.current.focus();
       }
     }, 100);
@@ -401,7 +421,7 @@ const CompactSelect = <T extends object | string>(
       return;
     }
     //if behaving as a switch move to the next item in the list
-    if (props.selectType === "switch") {
+    if (props.selectType === 'switch') {
       try {
         if (props.choices) {
           var index =
@@ -422,10 +442,10 @@ const CompactSelect = <T extends object | string>(
       return;
     }
     //clear the input text
-    updateInputText("");
+    updateInputText('');
     //if items lookup provided then call it for default otherwise update visible choices.
     if (props.typeAheadLookUp) {
-      fetchChoices("");
+      fetchChoices('');
     } else {
       updateVisibleChoices();
     }
@@ -462,7 +482,7 @@ const CompactSelect = <T extends object | string>(
     //if only 1 item allow and list a dropdown, close it
     if (
       props.maximumSelections === 1 &&
-      (props.minimumSelections === 1 || props.selectType === "dropdown")
+      (props.minimumSelections === 1 || props.selectType === 'dropdown')
     ) {
       hideList();
     }
@@ -478,9 +498,7 @@ const CompactSelect = <T extends object | string>(
         updateSelected();
       }
     } catch (error) {
-      console.log(
-        `Failed to de selecte item, reason: ${errorMessage(error)}`
-      );
+      console.log(`Failed to de selecte item, reason: ${errorMessage(error)}`);
     }
   };
 
@@ -489,7 +507,7 @@ const CompactSelect = <T extends object | string>(
     if (props.disabled) {
       return;
     }
-    
+
     setClearSelectedHover(false);
     state.selected = [];
     updateSelected();
@@ -500,27 +518,32 @@ const CompactSelect = <T extends object | string>(
   const makeItemVisible = (index: number) => {
     try {
       const input = document.getElementById(`item_${index}`);
-      const list = document.getElementById("csList"  + state.selectId);
+      const list = document.getElementById('csList' + state.selectId);
       if (input && list) {
         scrollIntoView(list, input);
       }
     } catch (error) {
       console.log(
-        `Failed to make highlighted item visible, reason: ${errorMessage(error)}`
+        `Failed to make highlighted item visible, reason: ${errorMessage(
+          error
+        )}`
       );
     }
   };
 
-
   const findNextEnabled = (index: number): number => {
-    while(index < state.visibleChoices.length && isDisabled(state.visibleChoices[index])) index++;
+    while (
+      index < state.visibleChoices.length &&
+      isDisabled(state.visibleChoices[index])
+    )
+      index++;
     return index;
-  }
+  };
 
   const findPrevEnabled = (index: number): number => {
-    while(index > 0 && isDisabled(state.visibleChoices[index])) index--;
+    while (index > 0 && isDisabled(state.visibleChoices[index])) index--;
     return index;
-  }
+  };
 
   //updates the highlighted item index
   const adjustHighlightedIndex = (index: number) => {
@@ -535,7 +558,7 @@ const CompactSelect = <T extends object | string>(
   const inputKeyPressed = (event: KeyboardEvent<HTMLDivElement>) => {
     try {
       switch (event.code) {
-        case "ArrowDown":
+        case 'ArrowDown':
           //if the highlited item less than max move down
           if (
             showChoices &&
@@ -550,7 +573,7 @@ const CompactSelect = <T extends object | string>(
             }
           }
           break;
-        case "ArrowUp":
+        case 'ArrowUp':
           //if the highlited item greater than 0 move up
           if (
             showChoices &&
@@ -565,7 +588,7 @@ const CompactSelect = <T extends object | string>(
             }
           }
           break;
-        case "Home":
+        case 'Home':
           //move to start
           if (showChoices && visibleChoices.length > 0) {
             if (state.highlightedIndex === -1) {
@@ -576,19 +599,19 @@ const CompactSelect = <T extends object | string>(
             }
           }
           break;
-        case "End":
+        case 'End':
           //move to end
           if (showChoices && visibleChoices.length > 0) {
             if (state.highlightedIndex === -1) {
               initialiseHighlightedIndex();
             } else {
-              const index = findPrevEnabled(state.highlightedIndex-1);
+              const index = findPrevEnabled(state.highlightedIndex - 1);
               adjustHighlightedIndex(index);
             }
           }
           break;
-        case "NumpadEnter":
-        case "Enter":
+        case 'NumpadEnter':
+        case 'Enter':
           //select item
           if (
             highlightedIndex > -1 &&
@@ -606,9 +629,7 @@ const CompactSelect = <T extends object | string>(
           break;
       }
     } catch (error) {
-      console.log(
-        `Failed to hanle key press, reason: ${errorMessage(error)}`
-      );
+      console.log(`Failed to hanle key press, reason: ${errorMessage(error)}`);
     }
   };
 
@@ -621,7 +642,7 @@ const CompactSelect = <T extends object | string>(
         ? props.choices
         : []
     );
-    if( choice ) {
+    if (choice) {
       const index = findNextEnabled(visibleChoices.indexOf(choice));
       adjustHighlightedIndex(index);
     } else {
@@ -641,14 +662,14 @@ const CompactSelect = <T extends object | string>(
 
   const pasteText = (event: ClipboardEvent) => {
     try {
-      const text = event.clipboardData.getData("text");
-      if (!text || text.indexOf(",") === -1) {
+      const text = event.clipboardData.getData('text');
+      if (!text || text.indexOf(',') === -1) {
         return;
       }
       event.preventDefault();
 
       //get items from text, if not checking case convert to lower case
-      const items = text.split(",").map((s) => s.trim());
+      const items = text.split(',').map((s) => s.trim());
       if (props.choices) {
         //if we have choices then search choices
         const searchItems = !props.caseSensitive
@@ -658,7 +679,7 @@ const CompactSelect = <T extends object | string>(
           props.choices.filter(
             (item) =>
               searchItems.indexOf(
-                !props.caseSensitive 
+                !props.caseSensitive
                   ? getItemValueString(item).toLowerCase()
                   : getItemValueString(item)
               ) !== -1 && state.selected.indexOf(item) === -1
@@ -692,77 +713,81 @@ const CompactSelect = <T extends object | string>(
         });
       }
     } catch (error) {
-      console.log(
-        `Failed to paste items, reason: ${errorMessage(error)}`
-      );
+      console.log(`Failed to paste items, reason: ${errorMessage(error)}`);
     }
   };
 
   const checkToolTip = () => {
-    if(!showChoices) {
+    if (!showChoices) {
       setShowToolTip(true);
     }
-  }
+  };
 
   const hideToolTip = () => {
     setShowToolTip(false);
-  }
+  };
 
   const background = (): CSS.Properties =>
     props.disabled
       ? {
-        backgroundColor: props.disableBackgroundColor ?? "Gainsboro",
-        backgroundImage: props.disableBackgroundImage
-      }
+          backgroundColor: props.disableBackgroundColor ?? 'Gainsboro',
+          backgroundImage: props.disableBackgroundImage,
+        }
       : {
-        backgroundColor: props.backgroundColor ?? "white",
-        backgroundImage: props.backgroundImage
-     };
+          backgroundColor: props.backgroundColor ?? 'white',
+          backgroundImage: props.backgroundImage,
+        };
 
-  const compactSelectStyle = (): CSS.Properties => 
+  const compactSelectStyle = (): CSS.Properties =>
     props.disabled && props.selectDisabledStyle
-    ? props.selectDisabledStyle 
-    : props.selectStyle ?? {
-      height: props.height,
-      width: props.width,
-      minWidth: props.maxWidth ?? "80px",
-      maxWidth: props.maxWidth,
-      borderColor: props.borderColor,
-      borderRadius: props.borderRadius ?? "5px",
-      border: props.border ?? "2px solid WhiteSmoke",
-      ...background()
-    };
+      ? props.selectDisabledStyle
+      : props.selectStyle ?? {
+          height: props.height,
+          width: props.width,
+          minWidth: props.maxWidth ?? '80px',
+          maxWidth: props.maxWidth,
+          borderColor: props.borderColor,
+          borderRadius: props.borderRadius ?? '5px',
+          border: props.border ?? '2px solid WhiteSmoke',
+          ...background(),
+        };
 
-  const clearSelectedStyle = (hovered: boolean): CSS.Properties => 
+  const clearSelectedStyle = (hovered: boolean): CSS.Properties =>
     props.disabled && props.clearSelectionDisabledStyle
-    ? props.clearSelectionDisabledStyle 
-    : hovered && props.clearSelectionHoverStyle
-    ? props.clearSelectionHoverStyle
-    : props.clearSelectionStyle ?? {
-      color: props.disabled
-        ? props.clearSelectionDisabledColor ?? props.disabledColor ?? "darkgray"
-        : hovered
-        ? props.clearSelectionHoverColor ?? "darkgray"
-        : props.clearSelectionColor ?? props.color ?? "white",
-      fontSize: props.clearSelectionSize ?? "large"
-    };
-  
-  const inputStyle = (): CSS.Properties => 
-    props.disabled && props.inputDisabledStyle 
-    ? props.inputDisabledStyle
-    : props.inputStyle ?? {
-      color: props.disabled
-        ? props.disabledColor ?? "darkgray"
-        : props.color ?? "black",
-      fontSize: props.fontSize,
-      fontFamily: props.fontFamily ?? "unset",
-      fontWeight: state.selected.length === 0 && (!showChoices || (!props.selectType || props.selectType !== 'standard')) 
-        ? props.titleFontWeight ?? 100
-        : props.fontWeight ?? 'bold',
-      fontStyle: props.fontStyle,
-    };
+      ? props.clearSelectionDisabledStyle
+      : hovered && props.clearSelectionHoverStyle
+      ? props.clearSelectionHoverStyle
+      : props.clearSelectionStyle ?? {
+          color: props.disabled
+            ? props.clearSelectionDisabledColor ??
+              props.disabledColor ??
+              'darkgray'
+            : hovered
+            ? props.clearSelectionHoverColor ?? 'darkgray'
+            : props.clearSelectionColor ?? props.color ?? 'white',
+          fontSize: props.clearSelectionSize ?? 'large',
+        };
 
-  const displayTextProps = () : DisplayProps<T> & DisplayStyle => {
+  const inputStyle = (): CSS.Properties =>
+    props.disabled && props.inputDisabledStyle
+      ? props.inputDisabledStyle
+      : props.inputStyle ?? {
+          color: props.disabled
+            ? props.disabledColor ?? 'darkgray'
+            : props.color ?? 'black',
+          fontSize: props.fontSize,
+          fontFamily: props.fontFamily ?? 'unset',
+          fontWeight:
+            state.selected.length === 0 &&
+            (!showChoices ||
+              !props.selectType ||
+              props.selectType !== 'standard')
+              ? props.titleFontWeight ?? 100
+              : props.fontWeight ?? 'bold',
+          fontStyle: props.fontStyle,
+        };
+
+  const displayTextProps = (): DisplayProps<T> & DisplayStyle => {
     return {
       title: props.title,
       text: displayText,
@@ -770,102 +795,107 @@ const CompactSelect = <T extends object | string>(
       selected: state.selected,
       selectType: props.selectType,
       disabled: props.disabled,
-      ...(props as DisplayStyle)
-    }
-  }
-  
-  const titleDisplayStyle = (): CSS.Properties => 
-    props.disabled && props.titleDisabledStyle 
-    ? props.titleDisabledStyle
-    : props. titleStyle ?? {
-      color: props.disabled
-        ? props.disabledTitleColor ?? "lightgray"
-        : props.titleColor ?? props.color ?? "darkgray",
-      fontSize: props.titleFontSize ?? props.fontSize ?? "small",
-      fontFamily: props.titleFontFamily ?? props.fontFamily,
-      fontWeight: props.titleFontWeight ?? props.fontWeight,
-      fontStyle: props.titleFontStyle ?? props.fontStyle,
+      ...(props as DisplayStyle),
     };
+  };
 
-  const listContainerStyle = (): CSS.Properties => 
+  const titleDisplayStyle = (): CSS.Properties =>
+    props.disabled && props.titleDisabledStyle
+      ? props.titleDisabledStyle
+      : props.titleStyle ?? {
+          color: props.disabled
+            ? props.disabledTitleColor ?? 'lightgray'
+            : props.titleColor ?? props.color ?? 'darkgray',
+          fontSize: props.titleFontSize ?? props.fontSize ?? 'small',
+          fontFamily: props.titleFontFamily ?? props.fontFamily,
+          fontWeight: props.titleFontWeight ?? props.fontWeight,
+          fontStyle: props.titleFontStyle ?? props.fontStyle,
+        };
+
+  const listContainerStyle = (): CSS.Properties =>
     props.listStyle ?? {
-      maxHeight: props.choiceListMaxHeight ?? "300px",
+      maxHeight: props.choiceListMaxHeight ?? '300px',
       borderColor: props.choiceListBorderColor ?? props.borderColor,
-      borderRadius: props.choiceListBorderRadius ?? props.borderColor ?? "5px",
-      border: props.choiceListBorder ?? props.border ?? "2px solid WhiteSmoke",
-      backgroundColor: props.choiceListBackgroundColor ?? props.backgroundColor ?? "white",
+      borderRadius: props.choiceListBorderRadius ?? props.borderColor ?? '5px',
+      border: props.choiceListBorder ?? props.border ?? '2px solid WhiteSmoke',
+      backgroundColor:
+        props.choiceListBackgroundColor ?? props.backgroundColor ?? 'white',
       backgroundImage: props.choiceListBackgroundImage ?? props.backgroundImage,
     };
 
-  const dropdownIconStyle = () : CSS.Properties => 
-    props.disabled ?
-      props.dropdownIcondisabledStyle ?? {
-        color: props.dropdownIconDisabledColor ?? props.disabledColor
-      } :
-      props.dropdownIconStyle ?? {
-        color: props.dropdownIconColor ?? props.color
-      }
-  
+  const dropdownIconStyle = (): CSS.Properties =>
+    props.disabled
+      ? props.dropdownIcondisabledStyle ?? {
+          color: props.dropdownIconDisabledColor ?? props.disabledColor,
+        }
+      : props.dropdownIconStyle ?? {
+          color: props.dropdownIconColor ?? props.color,
+        };
 
   const choiceAttributes: ChoiceStyle = {
     choiceFontFamily: props.choiceFontFamily ?? props.fontFamily,
-    choiceFontStyle:  props.choiceFontStyle ?? props.fontStyle,
+    choiceFontStyle: props.choiceFontStyle ?? props.fontStyle,
     choiceFontWeight: props.choiceFontWeight ?? props.fontWeight,
     choiceFontSize: props.choiceFontSize ?? props.fontSize,
     choiceColor: props.choiceColor ?? props.color,
-    choiceHoverBackgroundColor: props.choiceHoverBackgroundColor ?? "#AFB1B6",
-    choiceDisabledBackgroundColor: props.choiceDisabledBackgroundColor ?? props.disableBackgroundColor,
+    choiceHoverBackgroundColor: props.choiceHoverBackgroundColor ?? '#AFB1B6',
+    choiceDisabledBackgroundColor:
+      props.choiceDisabledBackgroundColor ?? props.disableBackgroundColor,
     choiceDisabledColor: props.choiceDisabledColor ?? props.disabledColor,
-    ...(props as ChoiceStyle)
-  }
+    ...(props as ChoiceStyle),
+  };
 
   const tooltipAttibutes: ToolTipStyle = {
     toolTipFontFamily: props.toolTipFontFamily ?? props.fontFamily,
-    toolTipFontStyle:  props.toolTipFontStyle ?? props.fontStyle,
+    toolTipFontStyle: props.toolTipFontStyle ?? props.fontStyle,
     toolTipFontWeight: props.toolTipFontWeight ?? props.fontWeight,
     toolTipFontSize: props.toolTipFontSize ?? props.fontSize,
     toolTipColor: props.toolTipColor ?? props.color,
-    ...(props as ToolTipStyle)
-  }
+    ...(props as ToolTipStyle),
+  };
 
-  const className = (): string => 
+  const className = (): string =>
     props.disabled && props.disabledClassName
       ? ` ${props.disabledClassName}`
       : props.className
       ? ` ${props.className}`
-      : "";
+      : '';
 
-  const inputClassName = (): string => 
+  const inputClassName = (): string =>
     props.disabled && props.inputDisabledClassName
       ? ` ${props.inputDisabledClassName}`
       : props.inputClassName
       ? ` ${props.inputClassName}`
-      : "";    
-  
-  const clearSelectionClassName = (): string => 
+      : '';
+
+  const clearSelectionClassName = (): string =>
     props.disabled && props.clearSelectionDisabledClassName
       ? ` ${props.clearSelectionDisabledClassName}`
       : clearSelectedHover && props.clearSelectionHoverClassName
       ? ` ${props.clearSelectionHoverClassName}`
       : props.clearSelectionClassName
       ? ` ${props.clearSelectionClassName}`
-      : ""; 
-      
-  const titleClassName = (): string => 
+      : '';
+
+  const titleClassName = (): string =>
     props.disabled && props.titleDisabledClassName
       ? ` ${props.titleDisabledClassName}`
       : props.titleClassName
       ? ` ${props.titleClassName}`
-      : ""; 
+      : '';
 
-  const dropIconClassName = (): string => 
+  const dropIconClassName = (): string =>
     props.disabled && props.dropIconDisabledClassName
       ? ` ${props.dropIconDisabledClassName}`
       : props.dropIconClassName
       ? ` ${props.dropIconClassName}`
-      : ""; 
+      : '';
 
-  const choiceProps = (highlighted: boolean, selected: boolean, item: T): ChoiceProps<T> & ChoiceStyle => {
+  const choiceProps = (
+    highlighted: boolean,
+    selected: boolean,
+    item: T
+  ): ChoiceProps<T> & ChoiceStyle => {
     return {
       itemText: props.itemText,
       item: item,
@@ -873,41 +903,54 @@ const CompactSelect = <T extends object | string>(
       onSelected: selected ? deselectItem : selectItem,
       choiceHighlighted: highlighted,
       choiceDisabled: isDisabled(item),
-      ...choiceAttributes
-    }
-  }
+      ...choiceAttributes,
+    };
+  };
 
-  const constructChoice = (highlighted: boolean, selected: boolean, item: T): JSX.Element => 
-    props.choiceComponent 
-    ? <div
-        key={(highlighted ? "high-" : "") + ( selected ? "selected-" : "" ) + getItemValue(item)}
+  const constructChoice = (
+    highlighted: boolean,
+    selected: boolean,
+    item: T
+  ): JSX.Element =>
+    props.choiceComponent ? (
+      <div
+        key={
+          (highlighted ? 'high-' : '') +
+          (selected ? 'selected-' : '') +
+          getItemValue(item)
+        }
       >
-      {
-        props.choiceComponent({...choiceProps(highlighted, selected, item)})
-      }
+        {props.choiceComponent({ ...choiceProps(highlighted, selected, item) })}
       </div>
-    : <CompactSelectChoice
-        key={ (highlighted ? "high-" : "") + ( selected ? "selected-" : "" ) + getItemValue(item) }
+    ) : (
+      <CompactSelectChoice
+        key={
+          (highlighted ? 'high-' : '') +
+          (selected ? 'selected-' : '') +
+          getItemValue(item)
+        }
         {...choiceProps(highlighted, selected, item)}
       />
+    );
 
-  const toolTip = (child: JSX.Element): JSX.Element => 
-    props.toolTipComponent
-    ? props.toolTipComponent({
-      children: child,
-      tip: caption,
-      show: showToolTip,
-      ...tooltipAttibutes
-    })
-    : <ToolTip
+  const toolTip = (child: JSX.Element): JSX.Element =>
+    props.toolTipComponent ? (
+      props.toolTipComponent({
+        children: child,
+        tip: caption,
+        show: showToolTip,
+        ...tooltipAttibutes,
+      })
+    ) : (
+      <ToolTip
         children={child}
         tip={caption}
         show={showToolTip}
         {...tooltipAttibutes}
       />
+    );
 
   return (
-    
     <div className={scssClasses.csWrapper}>
       {toolTip(
         <div
@@ -918,36 +961,41 @@ const CompactSelect = <T extends object | string>(
           onMouseLeave={hideToolTip}
           onPaste={pasteText}
         >
-          {(!props.maximumSelections || props.maximumSelections < 1) && state.selected.length > 0 && props.selectType !== "switch" && (
-            <div
-            className={scssClasses.csClearSelection} 
-              style={clearSelectedStyle(clearSelectedHover)}
-              onMouseEnter={() => setClearSelectedHover(true)}
-              onMouseLeave={() => setClearSelectedHover(false)}
-              onClick={clearSelection}
-            >
-              {props.clearSelectionIcon ? (
-                <props.clearSelectionIcon
-                  className={clearSelectionClassName()}
-                />
-              ) : (
-                <TiDeleteOutline
-                  className={clearSelectionClassName()}
-                />
-              )}
-            </div>
-          )}
-          <div 
-            className={scssClasses.csMainDisplay} 
-            onClick={textInputClicked}>
+          {(!props.maximumSelections || props.maximumSelections < 1) &&
+            state.selected.length > 0 &&
+            props.selectType !== 'switch' && (
+              <div
+                className={scssClasses.csClearSelection}
+                style={clearSelectedStyle(clearSelectedHover)}
+                onMouseEnter={() => setClearSelectedHover(true)}
+                onMouseLeave={() => setClearSelectedHover(false)}
+                onClick={clearSelection}
+              >
+                {props.clearSelectionIcon ? (
+                  <props.clearSelectionIcon
+                    className={clearSelectionClassName()}
+                  />
+                ) : (
+                  <TiDeleteOutline className={clearSelectionClassName()} />
+                )}
+              </div>
+            )}
+          <div className={scssClasses.csMainDisplay} onClick={textInputClicked}>
             <div className={scssClasses.csTextWrapper}>
-              {showChoices && (!props.selectType || props.selectType === "standard") ? 
+              {showChoices &&
+              (!props.selectType || props.selectType === 'standard') ? (
                 <input
                   ref={inputRefence}
-                  id={"csInput" + state.selectId}
+                  id={'csInput' + state.selectId}
                   className={scssClasses.csInput + inputClassName()}
                   style={inputStyle()}
-                  value={showChoices ? inputText : displayText === "" ? props.title :  displayText}
+                  value={
+                    showChoices
+                      ? inputText
+                      : displayText === ''
+                      ? props.title
+                      : displayText
+                  }
                   disabled={props.disabled}
                   spellCheck="false"
                   autoCapitalize="off"
@@ -955,33 +1003,30 @@ const CompactSelect = <T extends object | string>(
                   autoCorrect="off"
                   onChange={textChanged}
                 />
-              : props.displayComponent 
-                ? props.displayComponent(displayTextProps()) 
-                : <CompactSelectDisplay 
-                    {...displayTextProps()}
-                  />
-              }
+              ) : props.displayComponent ? (
+                props.displayComponent(displayTextProps())
+              ) : (
+                <CompactSelectDisplay {...displayTextProps()} />
+              )}
             </div>
-            {!showChoices && !props.hideDropdownIcon && props.selectType !== "switch" && (
-              <div 
-                className={scssClasses.csDropDownIcon}
-                style={dropdownIconStyle()}
-              >
-                {props.dropdownIcon ? (
-                  <props.dropdownIcon
-                    className={dropIconClassName()}
-                  />
-                ) : (
-                  <RiArrowDropDownFill
-                  className={dropIconClassName()}
-                  />
-                )}
-              </div>
-            )}
+            {!showChoices &&
+              !props.hideDropdownIcon &&
+              props.selectType !== 'switch' && (
+                <div
+                  className={scssClasses.csDropDownIcon}
+                  style={dropdownIconStyle()}
+                >
+                  {props.dropdownIcon ? (
+                    <props.dropdownIcon className={dropIconClassName()} />
+                  ) : (
+                    <RiArrowDropDownFill className={dropIconClassName()} />
+                  )}
+                </div>
+              )}
           </div>
-          {(showChoices || displayText !== "") && !props.hideTitle && (
-            <p 
-              className={scssClasses.csSelectTitle + titleClassName()} 
+          {(showChoices || displayText !== '') && !props.hideTitle && (
+            <p
+              className={scssClasses.csSelectTitle + titleClassName()}
               style={titleDisplayStyle()}
             >
               {props.title}
@@ -989,8 +1034,13 @@ const CompactSelect = <T extends object | string>(
           )}
           {!props.disabled && showChoices && (
             <div
-              id={"csList" + state.selectId}
-              className={scssClasses.csChoiceContainer  + (props.choiceListClassName ? ` ${props.choiceListClassName}` : "")}
+              id={'csList' + state.selectId}
+              className={
+                scssClasses.csChoiceContainer +
+                (props.choiceListClassName
+                  ? ` ${props.choiceListClassName}`
+                  : '')
+              }
               style={listContainerStyle()}
             >
               <ul className={scssClasses.csChoiceList}>
@@ -1001,25 +1051,39 @@ const CompactSelect = <T extends object | string>(
                       key={`item_${index}`}
                       onMouseOverCapture={() => adjustHighlightedIndex(index)}
                     >
-                      {
-                        constructChoice(highlightedIndex === index, state.selected.indexOf(item) !== -1, item)
-                      }
+                      {constructChoice(
+                        highlightedIndex === index,
+                        state.selected.indexOf(item) !== -1,
+                        item
+                      )}
                     </li>
                   ))}
-                {visibleChoices.length === 0 && !props.choices && !state.lookedUpChoices && (
-                  <p 
-                    className={scssClasses.csLoading + (props.loadingTextClassName ? ` ${props.loadingTextClassName}` : "")}
-                    style={{color: props.choiceColor ?? props.color}}
-                  >
-                    {props.loadingText ?? "Loading..."}
-                  </p>
-                )}
+                {visibleChoices.length === 0 &&
+                  !props.choices &&
+                  !state.lookedUpChoices && (
+                    <p
+                      className={
+                        scssClasses.csLoading +
+                        (props.loadingTextClassName
+                          ? ` ${props.loadingTextClassName}`
+                          : '')
+                      }
+                      style={{ color: props.choiceColor ?? props.color }}
+                    >
+                      {props.loadingText ?? 'Loading...'}
+                    </p>
+                  )}
                 {props.choices?.length === 0 && state.lookedUpChoices && (
-                  <p 
-                    className={scssClasses.csLoading + (props.loadingTextClassName ? ` ${props.loadingTextClassName}` : "")}
-                    style={{color: props.choiceColor ?? props.color}}
+                  <p
+                    className={
+                      scssClasses.csLoading +
+                      (props.loadingTextClassName
+                        ? ` ${props.loadingTextClassName}`
+                        : '')
+                    }
+                    style={{ color: props.choiceColor ?? props.color }}
                   >
-                    {props.noItemText ?? "No items."}
+                    {props.noItemText ?? 'No items.'}
                   </p>
                 )}
               </ul>

@@ -12,7 +12,6 @@
   min-height: 700px;
 }
 
-
 .demo {
   display: flex;
   flex-direction: column;
@@ -74,7 +73,7 @@
 }
 
 .code {
-  box-shadow: 5px 5px 10px 2px rgba(0,0,0,.8)
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.8);
 }
 
 .icon-spin {

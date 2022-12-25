@@ -1,4 +1,4 @@
-import CSS from "csstype";
+import CSS from 'csstype';
 
 export interface DisplayStyle {
   displayStyle?: CSS.Properties;

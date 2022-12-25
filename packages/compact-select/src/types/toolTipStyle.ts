@@ -1,4 +1,4 @@
-import CSS from "csstype";
+import CSS from 'csstype';
 
 export interface ToolTipStyle {
   toolTipClassName?: string;
@@ -14,5 +14,5 @@ export interface ToolTipStyle {
   toolTipBorderColor?: CSS.Property.Color;
   toolTipBorder?: CSS.Property.Border;
   toolTopBorderRadius?: CSS.Property.BorderRadius;
-  toolTipPosition?: "above" | "below" | "left" | "right";
+  toolTipPosition?: 'above' | 'below' | 'left' | 'right';
 }

@@ -8,37 +8,32 @@ interface HowToProps {
   theme: Theme;
 }
 
-const HowTo : FC<HowToProps> = ({theme}) => {
-  const [guide,setGuide] = useState<string>();
+const HowTo: FC<HowToProps> = ({ theme }) => {
+  const [guide, setGuide] = useState<string>();
 
   const constructGuide = (demoName: string, theme: Theme): JSX.Element => {
-    const guideItem: GuideItem | undefined = guides.find( cat => cat.name === demoName);
-    return guideItem 
-      ? guideItem?.guide(theme)
-      : <div></div>
-  }
+    const guideItem: GuideItem | undefined = guides.find(
+      (cat) => cat.name === demoName
+    );
+    return guideItem ? guideItem?.guide(theme) : <div></div>;
+  };
 
   return (
-    <div 
+    <div
       className="how-to"
       style={{
-        color: theme.font
+        color: theme.font,
       }}
     >
       <VerticalMenu
         theme={theme}
         title="Guides"
-        options={guides.map( g => g.name )}
+        options={guides.map((g) => g.name)}
         onSelect={setGuide}
       />
-      <div className="guides">
-        {
-          guide &&constructGuide(guide, theme)
-        }
-      </div>
+      <div className="guides">{guide && constructGuide(guide, theme)}</div>
     </div>
   );
 };
 
 export default HowTo;
-

@@ -6,5 +6,3 @@ export const generateGuid = (): string => {
   };
   return `${ch4()}${ch4()}-${ch4()}-${ch4()}-${ch4()}-${ch4()}${ch4()}${ch4()}`;
 };
-
-

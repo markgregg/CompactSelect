@@ -1,5 +1,9 @@
 import { Choice } from "compact-select";
-import { bigChoices, bigObjectChoices, bigTypedObjectChoices } from "./data/data";
+import {
+  bigChoices,
+  bigObjectChoices,
+  bigTypedObjectChoices,
+} from "./data/data";
 
 export interface Complex {
   name: string;
@@ -25,8 +29,8 @@ export const fetchTyped = (text: string): Promise<Choice[]> => {
   return new Promise<Choice[]>((resolve, reject) => {
     setTimeout(() => {
       resolve(
-        bigTypedObjectChoices.filter((item: Choice) => 
-        item.text.startsWith(text.toUpperCase())
+        bigTypedObjectChoices.filter((item: Choice) =>
+          item.text.startsWith(text.toUpperCase())
         )
       );
     }, Math.floor(Math.random() * 1000));

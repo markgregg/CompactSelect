@@ -1,2 +1,2 @@
-import CompactSelectChoice from "./CompactSelectChoice";
+import CompactSelectChoice from './CompactSelectChoice';
 export default CompactSelectChoice;

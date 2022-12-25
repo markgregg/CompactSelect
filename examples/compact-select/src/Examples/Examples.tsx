@@ -8,34 +8,28 @@ interface ExamplesProps {
   theme: Theme;
 }
 
-const Examples : FC<ExamplesProps> = ({theme}) => {
-  const [demo,setDemo] = useState<string>();
+const Examples: FC<ExamplesProps> = ({ theme }) => {
+  const [demo, setDemo] = useState<string>();
 
   const constructDemo = (demoName: string, theme: Theme): JSX.Element => {
-    const category = categories.find( cat => cat.name === demoName);
-    return category 
-      ? category?.demo(theme)
-      : <div></div>
-  }
+    const category = categories.find((cat) => cat.name === demoName);
+    return category ? category?.demo(theme) : <div></div>;
+  };
 
   return (
-    <div 
+    <div
       className="examples"
       style={{
-        color: theme.font
+        color: theme.font,
       }}
     >
       <VerticalMenu
         theme={theme}
         title="Catagories"
-        options={categories.map( c => c.name)}
+        options={categories.map((c) => c.name)}
         onSelect={setDemo}
       />
-      <div className="controls">
-        {
-          demo &&constructDemo(demo, theme)
-        }
-      </div>
+      <div className="controls">{demo && constructDemo(demo, theme)}</div>
     </div>
   );
 };

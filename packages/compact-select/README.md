@@ -1,9 +1,11 @@
 # compact-Select
+
 A compact select that is light of screen realestate and highly functional
 
 For examples and help [compact-select](https://markgregg.github.io/CompactSelect/)
 
 ## Properties
+
 - title - select control title and use as a key for caching items
 - maximumSelections - min items that can be selected
 - minimumSelections - max items that can be selected

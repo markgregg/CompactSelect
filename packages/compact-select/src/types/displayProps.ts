@@ -3,6 +3,6 @@ export interface DisplayProps<T extends object | string> {
   text: string;
   selected: T[];
   choicesShown: boolean;
-  selectType?: "standard" | "dropdown" | "switch";
+  selectType?: 'standard' | 'dropdown' | 'switch';
   disabled?: boolean;
 }

@@ -1,2 +1,2 @@
-import CompactSelectDisplay from "./CompactSelectDisplay";
+import CompactSelectDisplay from './CompactSelectDisplay';
 export default CompactSelectDisplay;

@@ -11,4 +11,4 @@ export type Theme = {
   color5: CSS.Property.BackgroundColor;
   font: CSS.Property.Color;
   selectFont: CSS.Property.Color;
-}
+};

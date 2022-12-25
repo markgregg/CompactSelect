@@ -4,7 +4,6 @@
   flex-direction: column;
   align-items: flex-start;
   border-radius: 8px;
-
 }
 
 .vmenu-heading {
@@ -30,5 +29,5 @@
 .option {
   padding-top: 1px;
   padding-bottom: 1px;
-  padding-inline-start: 20px; 
+  padding-inline-start: 20px;
 }

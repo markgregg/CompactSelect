@@ -1,5 +1,5 @@
-import CSS from "csstype";
-import { IconType } from "react-icons/lib";
+import CSS from 'csstype';
+import { IconType } from 'react-icons/lib';
 
 export interface ChoiceStyle {
   choiceStyle?: CSS.Properties;
@@ -26,7 +26,7 @@ export interface ChoiceStyle {
   choiceDisabledBackgroundColor?: CSS.Property.BackgroundColor;
   choiceDisabledBackgroundImage?: CSS.Property.BackgroundImage;
   choiceSelectedWidth?: CSS.Property.Width;
-  choiceSelectIndiacatorType?: "icon" | "color" | "border";
+  choiceSelectIndiacatorType?: 'icon' | 'color' | 'border';
   choiceSelectedIconSize?: CSS.Property.FontSize;
   choiceSelectedColor?: CSS.Property.Color;
   choiceSelectedBackgroundColor?: CSS.Property.BackgroundColor;

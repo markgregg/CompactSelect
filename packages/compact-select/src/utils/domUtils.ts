@@ -6,7 +6,7 @@ export function isDocumentElement(
 
 export const errorMessage = (error: any): string =>
   `${error instanceof Error ? error.message : error}`;
-  
+
 export function scrollTo(el: HTMLElement | typeof window, top: number): void {
   if (isDocumentElement(el)) {
     window.scrollTo(0, top);
