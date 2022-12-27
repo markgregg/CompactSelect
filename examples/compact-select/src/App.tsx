@@ -11,8 +11,9 @@ import HowTo from "./howTo/HowTo";
 const pages = ["About", "Examples", "How-To"];
 
 const App = () => {
+  const [themeName, setThemeName] = useState<string>(Themes.Soft.toString());
   const [theme, setTheme] = useState<Theme>(
-    themeMap.get(Themes.Blue.toString())!
+    themeMap.get(Themes.Soft.toString())!
   );
   const [page, setPage] = useState<string>("Examples");
   const [pageHighlight, setPageHighlight] = useState<string>();
@@ -21,6 +22,7 @@ const App = () => {
     if (theme) {
       const newTheme = themeMap.get(theme as string);
       if (newTheme) {
+        setThemeName(theme as string);
         setTheme(newTheme);
       }
     }
@@ -77,6 +79,7 @@ const App = () => {
                 border="none"
                 title="themes"
                 choices={themes}
+                selected={themeName}
                 onChange={setNewTheme}
               />
             </div>

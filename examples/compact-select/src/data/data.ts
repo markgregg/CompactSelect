@@ -13,7 +13,7 @@ import { Theme } from "../interfaces/theme";
 import { Choice } from "compact-select";
 
 export enum Themes {
-  None = "None",
+  Soft = "Soft",
   Dark = "Dark",
   Light = "Light",
   Blue = "Blue",
@@ -24,7 +24,7 @@ export const themes = Object.keys(Themes).filter((item) => {
 });
 
 export const themeMap = new Map<string, Theme>();
-themeMap.set(Themes.None, {
+themeMap.set(Themes.Soft, {
   page1: "White",
   page2: "#CEE538",
   page3: "#849513",
