@@ -2,11 +2,11 @@ import CSS from 'csstype';
 import { MouseEvent } from 'react';
 import { GiCheckMark } from 'react-icons/gi';
 import { Choice, ChoiceStyle } from '../types';
-import { ChoiceProps } from '../types/';
+import { ChoiceProps } from '../types';
 import { errorMessage } from '../utils/domUtils';
 import scssClasses from './styles.module.scss';
 
-const CompactSelectChoice = <T extends object | string>(
+const CompactChoice = <T extends object | string>(
   props: ChoiceProps<T> & ChoiceStyle
 ) => {
   const selectItem = (event: MouseEvent<HTMLDivElement>) => {
@@ -58,15 +58,14 @@ const CompactSelectChoice = <T extends object | string>(
         }
       : {};
 
-  const choiceStyle = (): CSS.Properties => {
-    return props.choiceDisabled && props.choiceDisabledStyle
+  const choiceStyle = (): CSS.Properties =>
+    props.choiceDisabled && props.choiceDisabledStyle
       ? props.choiceDisabledStyle
       : props.choiceSelected && props.choiceSelectedStyle
       ? props.choiceSelectedStyle
       : props.choiceHighlighted && props.choiceHoverStyle
       ? props.choiceHoverStyle
       : props.choiceStyle ?? {
-          height: '35px',
           color: props.choiceDisabled
             ? props.choiceDisabledColor ?? 'darkgray'
             : props.choiceColor ?? 'black',
@@ -76,7 +75,6 @@ const CompactSelectChoice = <T extends object | string>(
           fontStyle: props.choiceFontStyle,
           ...border(),
           ...background(),
-        };
   };
 
   const selectSelected = (): CSS.Properties => {
@@ -139,4 +137,4 @@ const CompactSelectChoice = <T extends object | string>(
   );
 };
 
-export default CompactSelectChoice;
+export default CompactChoice;

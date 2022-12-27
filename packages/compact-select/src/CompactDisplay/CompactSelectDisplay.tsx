@@ -2,7 +2,7 @@ import CSS from 'csstype';
 import { DisplayProps, DisplayStyle } from '../types';
 import scssClasses from './styles.module.scss';
 
-const CompactSelectDisplay = <T extends object | string>(
+const CompactDisplay = <T extends object | string>(
   props: DisplayProps<T> & DisplayStyle
 ) => {
   const textDisplayClassName = (): string =>
@@ -47,4 +47,4 @@ const CompactSelectDisplay = <T extends object | string>(
   );
 };
 
-export default CompactSelectDisplay;
+export default CompactDisplay;

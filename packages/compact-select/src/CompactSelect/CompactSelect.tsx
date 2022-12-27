@@ -13,7 +13,7 @@ import { errorMessage } from '../utils/domUtils';
 import { generateGuid } from '../utils/guidGenerator';
 import { TiDeleteOutline } from 'react-icons/ti';
 import { RiArrowDropDownFill } from 'react-icons/ri';
-import CompactSelectChoice from '../CompactSelectChoice';
+import CompactChoice from '../CompactChoice';
 import ToolTip from '../ToolTip';
 import { scrollIntoView } from '../utils/domUtils';
 import {
@@ -27,7 +27,7 @@ import {
   ChoiceProps,
 } from '../types';
 import scssClasses from './styles.module.scss';
-import CompactSelectDisplay from '../CompactSelectDisplay';
+import CompactDisplay from '../CompactDisplay';
 
 interface State<T extends object | string> {
   token: string;
@@ -46,6 +46,7 @@ export interface CompactSelectProps<T extends object | string>
   extends SelectProps<T>,
     SelectStyle,
     ChoiceStyle,
+    DisplayStyle,
     ToolTipStyle {}
 
 const CompactSelect = <T extends object | string>(
@@ -234,15 +235,9 @@ const CompactSelect = <T extends object | string>(
     !props.caseSensitive ? getItemText(item).toLowerCase() : getItemText(item);
 
   //flag on change to parent
-  const onChange = (items: T[]) => {
+  const onChange = (items?: T[] | T) => {
     if (props.onChange) {
       props.onChange(items);
-    }
-  };
-
-  const onChangeSelection = (item?: T) => {
-    if (props.onChange) {
-      props.onChange(item);
     }
   };
 
@@ -351,7 +346,7 @@ const CompactSelect = <T extends object | string>(
   //calls parent notifier and visible choice update
   const updateSelected = () => {
     if (props.maximumSelections === 1) {
-      onChangeSelection(
+      onChange(
         state.selected.length > 0 ? state.selected[0] : undefined
       );
     } else {
@@ -481,8 +476,9 @@ const CompactSelect = <T extends object | string>(
     }
     //if only 1 item allow and list a dropdown, close it
     if (
-      props.maximumSelections === 1 &&
-      (props.minimumSelections === 1 || props.selectType === 'dropdown')
+      (props.maximumSelections === 1 &&
+      (props.minimumSelections === 1 || props.selectType === 'dropdown')) || 
+      props.hideListOnSelect
     ) {
       hideList();
     }
@@ -496,6 +492,9 @@ const CompactSelect = <T extends object | string>(
         const idx = state.selected.indexOf(item);
         state.selected.splice(idx, 1);
         updateSelected();
+        if( props.hideListOnSelect ) {
+          hideList();
+        }
       }
     } catch (error) {
       console.log(`Failed to de selecte item, reason: ${errorMessage(error)}`);
@@ -923,7 +922,7 @@ const CompactSelect = <T extends object | string>(
         {props.choiceComponent({ ...choiceProps(highlighted, selected, item) })}
       </div>
     ) : (
-      <CompactSelectChoice
+      <CompactChoice
         key={
           (highlighted ? 'high-' : '') +
           (selected ? 'selected-' : '') +
@@ -1006,7 +1005,7 @@ const CompactSelect = <T extends object | string>(
               ) : props.displayComponent ? (
                 props.displayComponent(displayTextProps())
               ) : (
-                <CompactSelectDisplay {...displayTextProps()} />
+                <CompactDisplay {...displayTextProps()} />
               )}
             </div>
             {!showChoices &&

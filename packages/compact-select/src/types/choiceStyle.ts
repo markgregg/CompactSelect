@@ -13,7 +13,6 @@ export interface ChoiceStyle {
   choiceSelectedIconStyle?: CSS.Properties;
   choiceSelectedIconClassName?: string;
   choiceSelectedIcon?: IconType;
-  choiceHeight?: CSS.Property.Height;
   choiceFontWeight?: CSS.Property.FontWeight;
   choiceFontFamily?: CSS.Property.FontFamily;
   choiceFontSize?: CSS.Property.FontSize;
@@ -25,7 +24,6 @@ export interface ChoiceStyle {
   choiceDisabledColor?: CSS.Property.Color;
   choiceDisabledBackgroundColor?: CSS.Property.BackgroundColor;
   choiceDisabledBackgroundImage?: CSS.Property.BackgroundImage;
-  choiceSelectedWidth?: CSS.Property.Width;
   choiceSelectIndiacatorType?: 'icon' | 'color' | 'border';
   choiceSelectedIconSize?: CSS.Property.FontSize;
   choiceSelectedColor?: CSS.Property.Color;

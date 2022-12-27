@@ -22,4 +22,5 @@ export interface SelectProps<T extends Choice | object | string> {
   noItemText?: string; //custom no item text
   caseSensitive?: boolean; //perform case sensitive matching
   toolTipValueLimit?: number; //Maxium number of items to display
+  hideListOnSelect?: boolean; //automatically hide the option list when an Item is selected/deselected
 }
