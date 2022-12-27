@@ -831,19 +831,6 @@ const CompactSelect = <T extends object | string>(
           color: props.dropdownIconColor ?? props.color,
         };
 
-  const choiceAttributes: ChoiceStyle = {
-    choiceFontFamily: props.choiceFontFamily ?? props.fontFamily,
-    choiceFontStyle: props.choiceFontStyle ?? props.fontStyle,
-    choiceFontWeight: props.choiceFontWeight ?? props.fontWeight,
-    choiceFontSize: props.choiceFontSize ?? props.fontSize,
-    choiceColor: props.choiceColor ?? props.color,
-    choiceHoverBackgroundColor: props.choiceHoverBackgroundColor ?? '#AFB1B6',
-    choiceDisabledBackgroundColor:
-      props.choiceDisabledBackgroundColor ?? props.disableBackgroundColor,
-    choiceDisabledColor: props.choiceDisabledColor ?? props.disabledColor,
-    ...(props as ChoiceStyle),
-  };
-
   const tooltipAttibutes: ToolTipStyle = {
     toolTipFontFamily: props.toolTipFontFamily ?? props.fontFamily,
     toolTipFontStyle: props.toolTipFontStyle ?? props.fontStyle,
@@ -897,12 +884,21 @@ const CompactSelect = <T extends object | string>(
   ): ChoiceProps<T> & ChoiceStyle => {
     return {
       itemText: props.itemText,
-      item: item,
+      item,
       choiceSelected: selected,
       onSelected: selected ? deselectItem : selectItem,
       choiceHighlighted: highlighted,
       choiceDisabled: isDisabled(item),
-      ...choiceAttributes,
+      choiceFontFamily: props.choiceFontFamily ?? props.fontFamily,
+      choiceFontStyle: props.choiceFontStyle ?? props.fontStyle,
+      choiceFontWeight: props.choiceFontWeight ?? props.fontWeight,
+      choiceFontSize: props.choiceFontSize ?? props.fontSize,
+      choiceColor: props.choiceColor ?? props.color,
+      choiceHoverBackgroundColor: props.choiceHoverBackgroundColor ?? '#AFB1B6',
+      choiceDisabledBackgroundColor:
+        props.choiceDisabledBackgroundColor ?? props.disableBackgroundColor,
+      choiceDisabledColor: props.choiceDisabledColor ?? props.disabledColor,
+      ...(props as ChoiceStyle),
     };
   };
 
@@ -959,6 +955,7 @@ const CompactSelect = <T extends object | string>(
           onMouseEnter={checkToolTip}
           onMouseLeave={hideToolTip}
           onPaste={pasteText}
+          onClick={textInputClicked}
         >
           {(!props.maximumSelections || props.maximumSelections < 1) &&
             state.selected.length > 0 &&
@@ -979,7 +976,7 @@ const CompactSelect = <T extends object | string>(
                 )}
               </div>
             )}
-          <div className={scssClasses.csMainDisplay} onClick={textInputClicked}>
+          <div className={scssClasses.csMainDisplay}>
             <div className={scssClasses.csTextWrapper}>
               {showChoices &&
               (!props.selectType || props.selectType === 'standard') ? (
@@ -1008,8 +1005,7 @@ const CompactSelect = <T extends object | string>(
                 <CompactDisplay {...displayTextProps()} />
               )}
             </div>
-            {!showChoices &&
-              !props.hideDropdownIcon &&
+            {!props.hideDropdownIcon &&
               props.selectType !== 'switch' && (
                 <div
                   className={scssClasses.csDropDownIcon}
