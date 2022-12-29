@@ -79,7 +79,7 @@ const CompactSelect = <T extends object | string>(
       );
     } catch (error) {
       console.log(
-        `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage(
+        `Object type either does not implement Choice, the property getter (itemText) or is not a string, error: ${errorMessage(
           error
         )}`
       );
@@ -96,7 +96,7 @@ const CompactSelect = <T extends object | string>(
       return typeof value === 'string' ? value : value.toString();
     } catch (error) {
       console.log(
-        `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage(
+        `Object type either does not implement Choice, the property getter (itemValue) or is not a string, error: ${errorMessage(
           error
         )}`
       );
@@ -107,13 +107,14 @@ const CompactSelect = <T extends object | string>(
   //returns disabled property of an item
   const isDisabled = (item: T): boolean => {
     try {
+      console.log
       return (
         (item as Choice).disabled ??
         (props.itemDisabled ? props.itemDisabled(item) : false)
       );
     } catch (error) {
       console.log(
-        `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage(
+        `Object type either does not implement Choice, the property getter (disabled) or is not a string, error: ${errorMessage(
           error
         )}`
       );
@@ -406,7 +407,6 @@ const CompactSelect = <T extends object | string>(
       return;
     }
     setTimeout(() => {
-      console.log('setting focus');
       if (inputRefence.current) {
         inputRefence.current.focus();
       }
@@ -564,13 +564,12 @@ const CompactSelect = <T extends object | string>(
             visibleChoices.length > 0 &&
             state.highlightedIndex < visibleChoices.length - 1
           ) {
-            if (state.highlightedIndex === -1) {
-              initialiseHighlightedIndex();
-            } else {
-              const index = findNextEnabled(state.highlightedIndex + 1);
+            const index = (state.highlightedIndex === -1)
+              ? findNextEnabled(0)
+              : findNextEnabled(state.highlightedIndex + 1);
               adjustHighlightedIndex(index);
-            }
           }
+          event.preventDefault();
           break;
         case 'ArrowUp':
           //if the highlited item greater than 0 move up
@@ -579,35 +578,28 @@ const CompactSelect = <T extends object | string>(
             visibleChoices.length > 0 &&
             state.highlightedIndex > 0
           ) {
-            if (state.highlightedIndex === -1) {
-              initialiseHighlightedIndex();
-            } else {
-              const index = findPrevEnabled(state.highlightedIndex - 1);
-              adjustHighlightedIndex(index);
-            }
+            const index = (state.highlightedIndex === -1)
+              ? findNextEnabled(0)
+              : findPrevEnabled(state.highlightedIndex - 1);
+            adjustHighlightedIndex(index);
           }
+          event.preventDefault();
           break;
         case 'Home':
           //move to start
           if (showChoices && visibleChoices.length > 0) {
-            if (state.highlightedIndex === -1) {
-              initialiseHighlightedIndex();
-            } else {
-              const index = findPrevEnabled(0);
-              adjustHighlightedIndex(index);
-            }
+            const index = findNextEnabled(0);
+            adjustHighlightedIndex(index);
           }
+          event.preventDefault();
           break;
         case 'End':
           //move to end
           if (showChoices && visibleChoices.length > 0) {
-            if (state.highlightedIndex === -1) {
-              initialiseHighlightedIndex();
-            } else {
-              const index = findPrevEnabled(state.highlightedIndex - 1);
-              adjustHighlightedIndex(index);
-            }
+            const index = findPrevEnabled(state.visibleChoices.length - 1);
+            adjustHighlightedIndex(index);
           }
+          event.preventDefault();
           break;
         case 'NumpadEnter':
         case 'Enter':
@@ -621,44 +613,22 @@ const CompactSelect = <T extends object | string>(
               -1
             ) {
               selectItem(visibleChoices[state.highlightedIndex]);
+              
             } else {
               deselectItem(visibleChoices[state.highlightedIndex]);
             }
+            if( props.clearInputOnSelect ) {
+              updateInputText("");
+            }
           }
+          event.preventDefault();
           break;
       }
     } catch (error) {
       console.log(`Failed to hanle key press, reason: ${errorMessage(error)}`);
     }
   };
-
-  //set the highlighted index to first unselected or if none the first selected
-  const initialiseHighlightedIndex = () => {
-    const choice = getFirstNonSelectedItem(
-      state.lookedUpChoices && state.lookedUpChoices.length > 0
-        ? state.lookedUpChoices
-        : props.choices && props.choices.length > 0
-        ? props.choices
-        : []
-    );
-    if (choice) {
-      const index = findNextEnabled(visibleChoices.indexOf(choice));
-      adjustHighlightedIndex(index);
-    } else {
-      adjustHighlightedIndex(0);
-    }
-  };
-
-  //get the first non selected item
-  const getFirstNonSelectedItem = (items: T[]): T | undefined => {
-    for (let index = 0; index < items.length; index++) {
-      if (state.selected.indexOf(items[index]) === -1) {
-        return items[index];
-      }
-    }
-    return undefined;
-  };
-
+  
   const pasteText = (event: ClipboardEvent) => {
     try {
       const text = event.clipboardData.getData('text');
@@ -951,7 +921,6 @@ const CompactSelect = <T extends object | string>(
         <div
           className={scssClasses.csCompactSelect + className()}
           style={compactSelectStyle()}
-          onKeyDownCapture={inputKeyPressed}
           onMouseEnter={checkToolTip}
           onMouseLeave={hideToolTip}
           onPaste={pasteText}
@@ -998,6 +967,7 @@ const CompactSelect = <T extends object | string>(
                   autoComplete="off"
                   autoCorrect="off"
                   onChange={textChanged}
+                  onKeyDownCapture={inputKeyPressed}
                 />
               ) : props.displayComponent ? (
                 props.displayComponent(displayTextProps())
