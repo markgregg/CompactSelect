@@ -561,10 +561,9 @@ const CompactSelect = <T extends object | string>(
           //if the highlited item less than max move down
           if (
             showChoices &&
-            visibleChoices.length > 0 &&
-            state.highlightedIndex < visibleChoices.length - 1
+            visibleChoices.length > 0
           ) {
-            const index = (state.highlightedIndex === -1)
+            const index = (state.highlightedIndex === -1 || state.highlightedIndex >= visibleChoices.length - 1)
               ? findNextEnabled(0)
               : findNextEnabled(state.highlightedIndex + 1);
               adjustHighlightedIndex(index);
@@ -575,11 +574,10 @@ const CompactSelect = <T extends object | string>(
           //if the highlited item greater than 0 move up
           if (
             showChoices &&
-            visibleChoices.length > 0 &&
-            state.highlightedIndex > 0
+            visibleChoices.length > 0
           ) {
-            const index = (state.highlightedIndex === -1)
-              ? findNextEnabled(0)
+            const index = (state.highlightedIndex <= -1)
+              ? findPrevEnabled(state.visibleChoices.length - 1)
               : findPrevEnabled(state.highlightedIndex - 1);
             adjustHighlightedIndex(index);
           }
