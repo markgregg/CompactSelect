@@ -26,22 +26,22 @@ const About: FC<AboutProps> = ({ theme }) => {
       <p className="indent">
         <b className="bullet">&#x2022;</b>
         <em>
-          To support differing numbers of selections. Some of the fields on our
-          page could have one value, while others could have multiple.
-          Additionally, some had to have a value, while others didn’t
+          To support differing numbers of selections. In the project I was working 
+          on, some fields could have one value, while others could have multiple.
+          Additionally, some fields had to have a value, while others didn’t
         </em>
       </p>
       <p className="indent">
         <b className="bullet">&#x2022;</b>
         <em>
-          Type ahead look-up. We up to sixty thousand values in some fields, a
-          type ahead option was vital.
+          Type ahead look-up. Some fields in the project had up to sixty thousand 
+          options, so the ability to reduce the numbers via a type ahead look-up was vital.
         </em>
       </p>
       <p className="indent">
         <b className="bullet">&#x2022;</b>
         <em>
-          The ability to paste in 200 comma delimited customer codes and to have
+          The ability to paste in up to 200 comma delimited customer codes and to have
           the records selected.
         </em>
       </p>

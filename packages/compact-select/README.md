@@ -1,8 +1,22 @@
-# compact-Select
+# CompactSelect
 
-A compact select that is light of screen realestate and highly functional
+CompactSelect is a select control that is light in terms of screen realestate but at the same time highly functional
 
 For examples and help [compact-select](https://markgregg.github.io/CompactSelect/)
+
+## To install
+
+yarn add compact-select
+
+npm i --save compact-select
+
+## Quick start
+
+A simple string list
+<CompactSelect
+  title="test"
+  choices={choices}
+/>
 
 ## Properties
 
