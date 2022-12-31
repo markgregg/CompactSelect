@@ -8,7 +8,7 @@ import { Themes, themeMap, themes } from "./data/data";
 import { Theme } from "./interfaces/theme";
 import HowTo from "./howTo/HowTo";
 
-const pages = ["About", "Examples", "How-To"];
+const pages = ["About", "Examples"];
 
 const App = () => {
   const [themeName, setThemeName] = useState<string>(Themes.Soft.toString());
