@@ -2,11 +2,11 @@ import CompactSelect from "compact-select";
 import React, { useState } from "react";
 import About from "./About/About";
 import Examples from "./Examples/Examples";
+import HowTo from "./HowTo/HowTo";
 import "./App.css";
 import { Themes, themeMap, themes } from "./data/data";
-
 import { Theme } from "./interfaces/theme";
-import HowTo from "./howTo/HowTo";
+
 
 const pages = ["About", "Examples"];
 
