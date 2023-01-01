@@ -17,7 +17,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
-  "keywords": [],
+  "keywords": ["react", "select", "compact", "UI", "paste", "lookup", "typeahead" ],
   "author": "Mark Gregg <gregg.mark@gmail.com> (https://github.com/markgregg)",
   "license": "MIT",
   "peerDependencies": {

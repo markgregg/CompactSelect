@@ -13,11 +13,12 @@ npm i --save compact-select
 ## Quick start
 
 A simple string list
+```js
 <CompactSelect
   title="test"
   choices={choices}
 />
-
+```
 ## Properties
 
 - title - select control title and use as a key for caching items
