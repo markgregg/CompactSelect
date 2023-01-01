@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import CSS from 'csstype';
-import { ToolTipProps, ToolTipStyle } from '../types';
-import scssClasses from './styles.module.scss';
+import { FC } from "react";
+import CSS from "csstype";
+import { ToolTipProps, ToolTipStyle } from "../types";
+import "./Tooltip.css"
 
 const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
   tip,
@@ -24,27 +24,27 @@ const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
 }) => {
   const position = (): CSS.Properties => {
     switch (toolTipPosition) {
-      case 'above':
+      case "above":
         return {
-          top: '-100%',
-          left: '0px',
+          top: "-100%",
+          left: "0px",
         };
-      case 'left':
+      case "left":
         return {
-          top: '-25%',
-          left: '100%',
-          width: '80px',
+          top: "-25%",
+          left: "100%",
+          width: "80px",
         };
-      case 'right':
+      case "right":
         return {
-          top: '-25%',
-          left: '-80px',
-          width: '80px',
+          top: "-25%",
+          left: "-80px",
+          width: "80px",
         };
       default:
         return {
-          top: '100%',
-          left: '0%',
+          top: "100%",
+          left: "0%",
         };
     }
   };
@@ -53,14 +53,14 @@ const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
     return toolTipStyle
       ? toolTipStyle
       : {
-          color: toolTipColor ?? 'black',
+          color: toolTipColor ?? "black",
           font: toolTipFontFamily,
           fontWeight: toolTipFontWeight,
-          fontSize: toolTipFontSize ?? 'small',
+          fontSize: toolTipFontSize ?? "small",
           fontStyle: toolTipFontStyle,
-          textAlign: toolTipTextAlign ?? 'center',
+          textAlign: toolTipTextAlign ?? "center",
           borderColor: toolTipBorderColor,
-          borderRadius: toolTopBorderRadius ?? '5px',
+          borderRadius: toolTopBorderRadius ?? "5px",
           border: toolTipBorder,
           backgroundColor: toolTipBackgroundColor,
           backgroundImage: toolTipBackgroundImage,
@@ -70,13 +70,11 @@ const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
 
   return (
     <div
-      className={
-        scssClasses.toolTip + (toolTipClassName ? ` ${toolTipClassName}` : '')
-      }
+      className={"toolTip" + (toolTipClassName ? ` ${toolTipClassName}` : "")}
     >
       {children}
-      {show && tip !== '' && (
-        <span className={scssClasses.toolTipText} style={toolTip()}>
+      {show && tip !== "" && (
+        <span className="toolTipText" style={toolTip()}>
           {tip}
         </span>
       )}

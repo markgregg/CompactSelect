@@ -181,7 +181,7 @@ export const categories: Category[] = [
           title="String binding"
           description="The simpliest way to use a compact select - set the choices property to an array of strings"
           props={{
-            width: "200px",
+            width: "300px",
             title: "Bind String",
             choices: choices,
           }}
@@ -206,8 +206,8 @@ export default function App() {
           title="Object binding"
           description="You can bind to an array of objects by passing them to the choices property, and set the item, text and disbaled (if required) getters."
           props={{
-            width: "200px",
-            title: "One/Zero value",
+            width: "300px",
+            title: "Object binding",
             choices: objectChoices,
             itemValue: (item) => item.name,
             itemText: (item) => item.name,
@@ -237,8 +237,8 @@ export default function App() {
           title="Typed object binding"
           description="Typed object binding is much like using an array of JSON objects, except the objects must implement the choice interface."
           props={{
-            width: "200px",
-            title: "One/Zero value",
+            width: "300px",
+            title: "Typed binding",
             choices: typedObjectChoices,
           }}
           theme={theme}
@@ -269,7 +269,7 @@ return (
           title="Single string"
           description="Demos a compact select where the user can select one string."
           props={{
-            width: "200px",
+            width: "300px",
             title: "One String",
             choices: choices,
             maximumSelections: 1,
@@ -298,7 +298,7 @@ export default function App() {
           title="Single or no value"
           description="Demos a compact select where the user can select one or no values."
           props={{
-            width: "200px",
+            width: "300px",
             title: "One/Zero value",
             choices: objectChoices,
             maximumSelections: 1,
@@ -336,7 +336,7 @@ export default function App() {
           title="Multi string"
           description="A multi string selection control. No or many strings can be selected."
           props={{
-            width: "200px",
+            width: "300px",
             title: "Multi string",
             choices: choices,
           }}
@@ -361,7 +361,7 @@ export default function App() {
           title="Fixed multi value"
           description="A three value selection control. Up to three values can be selected"
           props={{
-            width: "200px",
+            width: "300px",
             title: "Three objects",
             choices: objectChoices,
             maximumSelections: 3,
@@ -399,7 +399,7 @@ export default function App() {
           title="Single string dropdown"
           description="A single string dropdown selection control. A single string can be selected."
           props={{
-            width: "150px",
+             width: "200px",
             title: "String dropdown",
             choices: choices,
             maximumSelections: 1,
@@ -428,7 +428,7 @@ export default function App() {
           title="Multi value dropdown"
           description="A multi value dropdown selection control. Multiple values can be selected."
           props={{
-            width: "150px",
+             width: "200px",
             title: "Values dropdown",
             choices: objectChoices,
             selectType: "dropdown",
@@ -502,7 +502,7 @@ export default function App() {
           title="String look-up"
           description="Look-ups can be use to get data from an external source, or to limit the number of items in the list. Performs a look-up as the user types."
           props={{
-            width: "200px",
+            width: "300px",
             title: "String look-up",
             typeAheadLookUp: fetchItems,
           }}
@@ -527,7 +527,7 @@ export default function App() {
           title="Cached value look-up"
           description="A cached string type ahead look-up select control. Performs a look-up as the user types and caches the values so later searches are instnace."
           props={{
-            width: "200px",
+            width: "300px",
             title: "Value cache",
             typeAheadLookUp: slowFetchObjects,
             itemValue: (item) => item.name,
@@ -558,7 +558,7 @@ export default function App() {
           title="Expiring Cached string look-up"
           description="A cached and expire string type ahead look-up select control. Performs a look-up as the user types and cahces for a limited time."
           props={{
-            width: "200px",
+            width: "300px",
             title: "String expire",
             typeAheadLookUp: slowFetchItems,
             cacheLookUp: true,
@@ -596,7 +596,7 @@ export default function App() {
           title="Disbaled string"
           description="A disbaled string select control."
           props={{
-            width: "200px",
+            width: "300px",
             title: "String disabled",
             choices: choices,
             selected: ["Sarah", "Dianna"],
@@ -625,7 +625,7 @@ export default function App() {
           title="Disbaled items in typed value"
           description="A typed value select control with disabled items."
           props={{
-            width: "200px",
+            width: "300px",
             title: "Typed look-up",
             choices: typedObjectChoices,
           }}
@@ -661,7 +661,7 @@ export default function App() {
           title="Paste strings"
           description="An example of pasting strings to select strings."
           props={{
-            width: "200px",
+            width: "300px",
             title: "String paste",
             typeAheadLookUp: fetchItems,
             itemSearch: searchItems,
@@ -692,7 +692,7 @@ export default function App() {
           title="Paste values for typed"
           description="An example of pasting strings to select typed objects."
           props={{
-            width: "200px",
+            width: "300px",
             title: "Object paste",
             typeAheadLookUp: fetchTyped,
             itemSearch: searchTyped,
@@ -726,7 +726,7 @@ export default function App() {
           title="Custom styles"
           description="An example of how to customise the compact select using classes and inline sytles."
           props={{
-            width: "200px",
+            width: "300px",
             title: "Style",
             choices: choices,
             selected: ["Nuala", "Andrew"],
@@ -776,7 +776,7 @@ export default function App() {
           title="Custom component"
           description="An example of how to use a component to change the look of the control."
           props={{
-            width: "200px",
+            width: "300px",
             title: "Component",
             choices: colorChoices,
             choiceComponent: choice,

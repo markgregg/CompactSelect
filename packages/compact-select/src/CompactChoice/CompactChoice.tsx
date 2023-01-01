@@ -1,10 +1,10 @@
-import CSS from 'csstype';
-import { MouseEvent } from 'react';
-import { GiCheckMark } from 'react-icons/gi';
-import { Choice, ChoiceStyle } from '../types';
-import { ChoiceProps } from '../types';
-import { errorMessage } from '../utils/domUtils';
-import scssClasses from './styles.module.scss';
+import CSS from "csstype";
+import { MouseEvent } from "react";
+import { GiCheckMark } from "react-icons/gi";
+import { Choice, ChoiceStyle } from "../types";
+import { ChoiceProps } from "../types";
+import { errorMessage } from "../utils/domUtils";
+import "./CompactChoice.css"
 
 const CompactChoice = <T extends object | string>(
   props: ChoiceProps<T> & ChoiceStyle
@@ -27,23 +27,23 @@ const CompactChoice = <T extends object | string>(
         `Object type either does not implement Choice, the property getters (itemText | itemValue) or is not a string, error: ${errorMessage}`
       );
     }
-    return '';
+    return "";
   };
 
   const background = (): CSS.Properties =>
     props.choiceDisabled
       ? {
-          backgroundColor: props.choiceDisabledBackgroundColor ?? 'Gainsboro',
+          backgroundColor: props.choiceDisabledBackgroundColor ?? "Gainsboro",
           backgroundImage: props.choiceDisabledBackgroundImage,
         }
       : props.choiceHighlighted
       ? {
-          backgroundColor: props.choiceHoverBackgroundColor ?? 'lightgray',
+          backgroundColor: props.choiceHoverBackgroundColor ?? "lightgray",
           backgroundImage: props.choiceHoverBackgroundImage,
         }
-      : props.choiceSelected && props.choiceSelectIndiacatorType === 'color'
+      : props.choiceSelected && props.choiceSelectIndiacatorType === "color"
       ? {
-          backgroundColor: props.choiceSelectedBackgroundColor ?? 'green',
+          backgroundColor: props.choiceSelectedBackgroundColor ?? "green",
           backgroundImage: props.choiceSelectedBackgroundImage,
         }
       : {
@@ -52,9 +52,9 @@ const CompactChoice = <T extends object | string>(
         };
 
   const border = (): CSS.Properties =>
-    props.choiceSelectIndiacatorType === 'border' && props.choiceSelected
+    props.choiceSelectIndiacatorType === "border" && props.choiceSelected
       ? {
-          border: props.choiceSelectedBorder ?? '2px solid lightgreen',
+          border: props.choiceSelectedBorder ?? "2px solid lightgreen",
         }
       : {};
 
@@ -67,8 +67,8 @@ const CompactChoice = <T extends object | string>(
       ? props.choiceHoverStyle
       : props.choiceStyle ?? {
           color: props.choiceDisabled
-            ? props.choiceDisabledColor ?? 'darkgray'
-            : props.choiceColor ?? 'black',
+            ? props.choiceDisabledColor ?? "darkgray"
+            : props.choiceColor ?? "black",
           fontWeight: props.choiceFontWeight,
           fontFamily: props.choiceFontFamily,
           fontSize: props.choiceFontSize,
@@ -80,8 +80,8 @@ const CompactChoice = <T extends object | string>(
   const selectSelected = (): CSS.Properties => {
     return (
       props.choiceSelectedIconStyle ?? {
-        fontSize: props.choiceSelectedIconSize ?? 'large',
-        color: props.choiceSelectedColor ?? 'green',
+        fontSize: props.choiceSelectedIconSize ?? "large",
+        color: props.choiceSelectedColor ?? "green",
       }
     );
   };
@@ -95,36 +95,36 @@ const CompactChoice = <T extends object | string>(
       ? ` ${props.choiceHoverClassName}`
       : props.choiceClassName
       ? ` ${props.choiceClassName}`
-      : '';
+      : "";
 
   return (
     <div
-      className={scssClasses.csChoice + choiceClassName()}
+      className={"csChoice" + choiceClassName()}
       style={choiceStyle()}
       onClick={selectItem}
     >
-      <div className={scssClasses.csSelectedSelectedDiv}>
+      <div className="csSelectedSelectedDiv">
         {props.choiceSelected &&
           (!props.choiceSelectIndiacatorType ||
-            props.choiceSelectIndiacatorType === 'icon') && (
+            props.choiceSelectIndiacatorType === "icon") && (
             <div>
               {props.choiceSelectedIcon ? (
                 <props.choiceSelectedIcon
                   className={
-                    scssClasses.csSelectedSelected +
+                    "csSelectedSelected" +
                     (props.choiceSelectedIconClassName
                       ? ` ${props.choiceSelectedIconClassName}`
-                      : '')
+                      : "")
                   }
                   style={selectSelected()}
                 />
               ) : (
                 <GiCheckMark
                   className={
-                    scssClasses.csSelectedSelected +
+                    "csSelectedSelected" +
                     (props.choiceSelectedIconClassName
                       ? ` ${props.choiceSelectedIconClassName}`
-                      : '')
+                      : "")
                   }
                   style={selectSelected()}
                 />
@@ -132,7 +132,7 @@ const CompactChoice = <T extends object | string>(
             </div>
           )}
       </div>
-      <p className={scssClasses.csChoiceText}>{getItemText(props.item)}</p>
+      <p className="csChoiceText">{getItemText(props.item)}</p>
     </div>
   );
 };
