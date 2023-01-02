@@ -331,8 +331,12 @@ const CompactSelect = <T extends object | string>(
   //updates the visible item state
   const updateVisibleChoices = () => {
     state.visibleChoices = getVisibleChoices();
-    if (state.highlightedIndex >= state.visibleChoices.length) {
+    if( state.visibleChoices.length === 0 ) {
+      adjustHighlightedIndex(-1);
+    } else if (state.highlightedIndex >= state.visibleChoices.length) {
       adjustHighlightedIndex(state.visibleChoices.length - 1);
+    } else if( state.highlightedIndex === -1 ) {
+      adjustHighlightedIndex(0);
     }
     setVisibleChoices(state.visibleChoices);
     updateDisplayText();
@@ -366,7 +370,7 @@ const CompactSelect = <T extends object | string>(
   //shows the list and sets the highlighted index to -1
   const showList = () => {
     state.showChoices = true;
-    adjustHighlightedIndex(-1);
+    adjustHighlightedIndex(state.visibleChoices.length > 0 ? 0 : -1);
     setShowChoices(true);
     hideToolTip();
   };

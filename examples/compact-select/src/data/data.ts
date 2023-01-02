@@ -55,7 +55,7 @@ themeMap.set(Themes.Light, {
   color1: "#FEF4B9",
   color2: "#FEF4B9",
   color3: "#E7C504",
-  color4: "#FCE355",
+  color4: "#d5b70e",
   color5: "#FCE355",
   font: "#3D350B",
   selectFont: "#3D350B",
