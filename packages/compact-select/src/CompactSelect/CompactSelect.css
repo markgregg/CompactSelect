@@ -1,4 +1,4 @@
-.csWrapper {
+.csCompactWrapper {
   display: inline-block;
 }
 
@@ -10,27 +10,27 @@
   padding: 4px;
 }
 
-.csDropDownIcon {
+.csCompactDropDownIcon {
   width: 30px;
 }
 
-.csClearSelection {
+.csCompactClearSelection {
   width: 30px;
 }
 
-.csMainDisplay {
+.csCompactMainDisplay {
   display: flex;
   flex-direction: row;
   align-items: center;
   flex: 1;
 }
 
-.csTextWrapper {
+.csCompactTextWrapper {
   flex: 1;
   flex-basis: 100%;
 }
 
-.csTextDisplay {
+.csCompactTextDisplay {
   margin-block-start: 0px;
   margin-block-end: 0px;
   -moz-user-select: none;
@@ -39,23 +39,23 @@
   user-select: none;
 }
 
-.csInput {
+.csCompactInput {
   background-color: transparent;
   border: none;
   width: 100%;
 }
 
-.csInput:focus,
+.csCompactInput:focus,
 input:focus {
   outline: none;
 }
 
-.csSelectTitle {
+.csCompactSelectTitle {
   position: absolute;
   top: -30px;
 }
 
-.csChoiceContainer {
+.csCompactChoiceContainer {
   position: absolute;
   top: 40px;
   width: -webkit-fill-available;
@@ -64,7 +64,7 @@ input:focus {
   z-index: 1;
 }
 
-.csChoiceList {
+.csCompactChoiceList {
   padding-inline-start: 0px;
   margin-block-start: 2px;
   margin-block-end: 2px;

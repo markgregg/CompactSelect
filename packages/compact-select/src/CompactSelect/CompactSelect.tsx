@@ -924,7 +924,7 @@ const CompactSelect = <T extends object | string>(
 
   return (
     <div 
-      className="csWrapper"
+      className="csCompactWrapper"
       style={compactSelectWrapperStyle()}
     >
       {toolTip(
@@ -940,7 +940,7 @@ const CompactSelect = <T extends object | string>(
             state.selected.length > 0 &&
             props.selectType !== "switch" && (
               <div
-                className="csClearSelection"
+                className="csCompactClearSelection"
                 style={clearSelectedStyle(clearSelectedHover)}
                 onMouseEnter={() => setClearSelectedHover(true)}
                 onMouseLeave={() => setClearSelectedHover(false)}
@@ -955,14 +955,14 @@ const CompactSelect = <T extends object | string>(
                 )}
               </div>
             )}
-          <div className="csMainDisplay">
-            <div className="csTextWrapper">
+          <div className="csCompactMainDisplay">
+            <div className="csCompactTextWrapper">
               {showChoices &&
               (!props.selectType || props.selectType === "standard") ? (
                 <input
                   ref={inputRefence}
                   id={"csInput" + state.selectId}
-                  className={"csInput" + inputClassName()}
+                  className={"csCompactInput" + inputClassName()}
                   style={inputStyle()}
                   value={
                     showChoices
@@ -988,7 +988,7 @@ const CompactSelect = <T extends object | string>(
             {!props.hideDropdownIcon &&
               props.selectType !== "switch" && (
                 <div
-                  className={"csDropDownIcon"}
+                  className={"csCompactDropDownIcon"}
                   style={dropdownIconStyle()}
                 >
                   {props.dropdownIcon ? (
@@ -1001,7 +1001,7 @@ const CompactSelect = <T extends object | string>(
           </div>
           {(showChoices || displayText !== "") && !props.hideTitle && (
             <p
-              className={"csSelectTitle" + titleClassName()}
+              className={"csCompactSelectTitle" + titleClassName()}
               style={titleDisplayStyle()}
             >
               {props.title}
@@ -1011,14 +1011,14 @@ const CompactSelect = <T extends object | string>(
             <div
               id={"csList" + state.selectId}
               className={
-                "csChoiceContainer" +
+                "csCompactChoiceContainer" +
                 (props.choiceListClassName
                   ? ` ${props.choiceListClassName}`
                   : "")
               }
               style={listContainerStyle()}
             >
-              <ul className="csChoiceList">
+              <ul className="csCompactChoiceList">
                 {visibleChoices.length > 0 &&
                   visibleChoices.map((item, index) => (
                     <li
@@ -1037,12 +1037,7 @@ const CompactSelect = <T extends object | string>(
                   !props.choices &&
                   !state.lookedUpChoices && (
                     <p
-                      className={
-                        "csLoading" +
-                        (props.loadingTextClassName
-                          ? ` ${props.loadingTextClassName}`
-                          : "")
-                      }
+                      className={props.loadingTextClassName}
                       style={{ color: props.choiceColor ?? props.color }}
                     >
                       {props.loadingText ?? "Loading..."}
@@ -1050,12 +1045,7 @@ const CompactSelect = <T extends object | string>(
                   )}
                 {props.choices?.length === 0 && state.lookedUpChoices && (
                   <p
-                    className={
-                      "csLoading" +
-                      (props.loadingTextClassName
-                        ? ` ${props.loadingTextClassName}`
-                        : "")
-                    }
+                  className={props.loadingTextClassName}
                     style={{ color: props.choiceColor ?? props.color }}
                   >
                     {props.noItemText ?? "No items."}

@@ -99,40 +99,30 @@ const CompactChoice = <T extends object | string>(
 
   return (
     <div
-      className={"csChoice" + choiceClassName()}
+      className={"csCompactChoice" + choiceClassName()}
       style={choiceStyle()}
       onClick={selectItem}
     >
-      <div className="csSelectedSelectedDiv">
+      <div className="csCompactSelectedSelectedDiv">
         {props.choiceSelected &&
           (!props.choiceSelectIndiacatorType ||
             props.choiceSelectIndiacatorType === "icon") && (
             <div>
               {props.choiceSelectedIcon ? (
                 <props.choiceSelectedIcon
-                  className={
-                    "csSelectedSelected" +
-                    (props.choiceSelectedIconClassName
-                      ? ` ${props.choiceSelectedIconClassName}`
-                      : "")
-                  }
+                className={props.choiceSelectedIconClassName}
                   style={selectSelected()}
                 />
               ) : (
                 <GiCheckMark
-                  className={
-                    "csSelectedSelected" +
-                    (props.choiceSelectedIconClassName
-                      ? ` ${props.choiceSelectedIconClassName}`
-                      : "")
-                  }
+                  className={props.choiceSelectedIconClassName}
                   style={selectSelected()}
                 />
               )}
             </div>
           )}
       </div>
-      <p className="csChoiceText">{getItemText(props.item)}</p>
+      <p className="csCompactChoiceText">{getItemText(props.item)}</p>
     </div>
   );
 };

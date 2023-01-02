@@ -1,13 +1,13 @@
-.csChoice {
+.csCompactChoice {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
-.csChoiceText {
+.csCompactChoiceText {
   margin: 2px;
 }
 
-.csSelectedIndicatorDiv {
+.csCompactSelectedIndicatorDiv {
   width: 30px;
 }

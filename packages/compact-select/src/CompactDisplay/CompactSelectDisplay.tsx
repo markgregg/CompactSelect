@@ -39,7 +39,7 @@ const CompactDisplay = <T extends object | string>(
 
   return (
     <p
-      className={"csTextDisplay" + textDisplayClassName()}
+      className={"csCompactTextDisplay" + textDisplayClassName()}
       style={textDisplayStyle()}
     >
       {displayTitle ? props.title : props.text}
