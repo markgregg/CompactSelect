@@ -30,71 +30,24 @@ const CompactChoice = <T extends object | string>(
     return "";
   };
 
-  const background = (): CSS.Properties =>
-    props.choiceDisabled
-      ? {
-          backgroundColor: props.choiceDisabledBackgroundColor ?? "Gainsboro",
-          backgroundImage: props.choiceDisabledBackgroundImage,
-        }
-      : props.choiceHighlighted
-      ? {
-          backgroundColor: props.choiceHoverBackgroundColor ?? "lightgray",
-          backgroundImage: props.choiceHoverBackgroundImage,
-        }
-      : props.choiceSelected && props.choiceSelectIndiacatorType === "color"
-      ? {
-          backgroundColor: props.choiceSelectedBackgroundColor ?? "green",
-          backgroundImage: props.choiceSelectedBackgroundImage,
-        }
-      : {
-          backgroundColor: props.choiceBackgroundColor,
-          backgroundImage: props.choiceBackgroundImage,
-        };
-
-  const border = (): CSS.Properties =>
-    props.choiceSelectIndiacatorType === "border" && props.choiceSelected
-      ? {
-          border: props.choiceSelectedBorder ?? "2px solid lightgreen",
-        }
-      : {};
-
   const choiceStyle = (): CSS.Properties =>
-    props.choiceDisabled && props.choiceDisabledStyle
-      ? props.choiceDisabledStyle
-      : props.choiceSelected && props.choiceSelectedStyle
-      ? props.choiceSelectedStyle
-      : props.choiceHighlighted && props.choiceHoverStyle
-      ? props.choiceHoverStyle
-      : props.choiceStyle ?? {
-          color: props.choiceDisabled
-            ? props.choiceDisabledColor ?? "darkgray"
-            : props.choiceColor ?? "black",
-          fontWeight: props.choiceFontWeight,
-          fontFamily: props.choiceFontFamily,
-          fontSize: props.choiceFontSize,
-          fontStyle: props.choiceFontStyle,
-          ...border(),
-          ...background(),
-  };
-
-  const selectSelected = (): CSS.Properties => {
-    return (
-      props.choiceSelectedIconStyle ?? {
-        fontSize: props.choiceSelectedIconSize ?? "large",
-        color: props.choiceSelectedColor ?? "green",
-      }
-    );
-  };
+  props.choiceDisabled && props.choiceDisabledStyle
+    ? props.choiceDisabledStyle
+    : props.choiceHighlighted && props.choiceHoverStyle
+    ? props.choiceHoverStyle
+    : props.choiceSelected && props.choiceSelectedStyle
+    ? props.choiceSelectedStyle
+    : props.choiceStyle ?? {};
 
   const choiceClassName = (): string =>
-    props.choiceDisabled && props.choiceDisabledClassName
-      ? ` ${props.choiceDisabledClassName}`
-      : props.choiceSelected && props.choiceSelectedClassName
-      ? ` ${props.choiceSelectedClassName}`
-      : props.choiceHighlighted && props.choiceHoverClassName
-      ? ` ${props.choiceHoverClassName}`
+    props.choiceDisabled
+      ? ( props.choiceDisabledClassName ? ` ${props.choiceDisabledClassName}` : " csCompactSelectChoiceDisabled" )
+      : props.choiceHighlighted
+      ? ( props.choiceHoverClassName ? ` ${props.choiceHoverClassName}` : " csCompactSelectChoiceHighlighted" )
+      : props.choiceSelected 
+      ? ( props.choiceSelectedClassName ? ` ${props.choiceSelectedClassName}` : " csCompactSelectChoiceSelected" )
       : props.choiceClassName
-      ? ` ${props.choiceClassName}`
+      ? ( props.choiceClassName ? ` ${props.choiceClassName}` : " csCompactSelectChoice" )
       : "";
 
   return (
@@ -104,19 +57,17 @@ const CompactChoice = <T extends object | string>(
       onClick={selectItem}
     >
       <div className="csCompactSelectedSelectedDiv">
-        {props.choiceSelected &&
-          (!props.choiceSelectIndiacatorType ||
-            props.choiceSelectIndiacatorType === "icon") && (
+        {props.choiceSelected && ! props.hideSelectedIcon && (
             <div>
               {props.choiceSelectedIcon ? (
                 <props.choiceSelectedIcon
-                className={props.choiceSelectedIconClassName}
-                  style={selectSelected()}
+                className={props.choiceSelectedIconClassName ?? "csCompactChoiceSelectedIcon"}
+                  style={props.choiceSelectedIconStyle}
                 />
               ) : (
                 <GiCheckMark
-                  className={props.choiceSelectedIconClassName}
-                  style={selectSelected()}
+                  className={props.choiceSelectedIconClassName  ?? "csCompactChoiceSelectedIcon"}
+                  style={props.choiceSelectedIconStyle}
                 />
               )}
             </div>

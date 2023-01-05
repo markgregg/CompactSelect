@@ -1,43 +1,32 @@
 import CompactSelect from "compact-select";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import About from "./About/About";
 import Examples from "./Examples/Examples";
 import HowTo from "./HowTo/HowTo";
 import "./App.css";
-import { Themes, themeMap, themes } from "./data/data";
-import { Theme } from "./interfaces/theme";
-
+import { applyTheme, themes, Themes } from "./themes/themes";
 
 const pages = ["About", "Examples"];
 
 const App = () => {
-  const [themeName, setThemeName] = useState<string>(Themes.Soft.toString());
-  const [theme, setTheme] = useState<Theme>(
-    themeMap.get(Themes.Soft.toString())!
-  );
+  const [themeName, setThemeName] = useState<string>(Themes.Minimal.toString());
   const [page, setPage] = useState<string>("Examples");
   const [pageHighlight, setPageHighlight] = useState<string>();
+  
+  useEffect(()=> {
+    applyTheme(Themes.Minimal);
+  },[])
 
-  const setNewTheme = (theme: string | string[] | undefined) => {
-    if (theme) {
-      const newTheme = themeMap.get(theme as string);
-      if (newTheme) {
-        setThemeName(theme as string);
-        setTheme(newTheme);
-      }
-    }
-  };
+  const setTheme = (theme: string[]) => {
+    setThemeName(theme[0]);
+    applyTheme(theme[0]);
+  }
 
   return (
     <div className="frame">
       <div className="page">
         <div
-          className="body"
-          style={{
-            backgroundColor: theme.page1,
-            color: theme.font,
-          }}
-        >
+          className="body">
           <div className="header">
             <h1 className="title">Compact Select</h1>
             <p className="statement">
@@ -47,9 +36,6 @@ const App = () => {
           </div>
           <div
             className="menu-bar"
-            style={{
-              backgroundColor: theme.page2,
-            }}
           >
             <div className="menu">
               {pages.map((pg) => (
@@ -58,7 +44,7 @@ const App = () => {
                   className="menu-item"
                   style={{
                     color:
-                      pg === pageHighlight ? theme.page3 : theme.selectFont,
+                      pg === pageHighlight ? "var(--pageColor3)" : "var(--pageFont)"
                   }}
                   onClick={() => setPage(pg)}
                   onMouseEnter={() => setPageHighlight(pg)}
@@ -70,30 +56,26 @@ const App = () => {
             </div>
             <div className="theme">
               <CompactSelect
-                backgroundColor={theme.page2}
-                color={theme.selectFont}
-                choiceHoverBackgroundColor={theme.page3}
                 maximumSelections={1}
                 minimumSelections={1}
                 selectType="dropdown"
-                border="none"
                 title="themes"
                 choices={themes}
                 selected={themeName}
-                onChange={setNewTheme}
+                onChange={setTheme}
               />
             </div>
           </div>
           <div className="context">
-            {(page === "Examples" && <Examples theme={theme} />) ||
-              (page === "About" && <About theme={theme} />) ||
-              (page === "How-To" && <HowTo theme={theme} />)}
+            {(page === "Examples" && <Examples />) ||
+              (page === "About" && <About />) ||
+              (page === "How-To" && <HowTo />)}
           </div>
           <div
             className="footer"
             style={{
-              backgroundColor: theme.page2,
-              color: theme.selectFont,
+              backgroundColor: "var(--pageColor2)",
+              color: "var(--compactSelectFontColor)",
             }}
           >
             <p>Created by Mark Gregg</p>

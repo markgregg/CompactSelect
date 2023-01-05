@@ -8,14 +8,48 @@
   align-items: center;
   position: relative;
   padding: 4px;
+  font-weight: var(--compactSelectFontWeight);
+  font-family: var(--compactSelectFontFamily);
+  font-size: var(--compactSelectFontSize);
+  font-style: var(--compactSelectFontStyle);
+  color: var(--compactSelectFontColor, black);
+  border-radius: 5px;
+  border: var(--compactSelectBorder, 2px solid WhiteSmoke);
+}
+
+.compactSelectStandard {
+  background-color: var(--compactSelectBackgroundColor);
+  background-image: var(--compactSelectBackgroundImage);
+}
+
+.compactSelectDisabled {
+  background-color: var(--compactSelectDisabledBackgroundColor, Gainsboro);
+  background-image: var(--compactSelectDisabledBackgroundImage);
 }
 
 .csCompactDropDownIcon {
   width: 30px;
 }
 
+.csCompactDropDownIconDisabled {
+  background-color: var(--compactSelectDisabledBackgroundColor, Gainsboro);
+}
+
 .csCompactClearSelection {
   width: 30px;
+  font-size: var(--compactSelectClearSelectionIconSize, large);
+}
+
+.csCompactClearSelectionStandard {
+  color: var(--compactSelectFontColor, black);
+}
+
+.csCompactClearSelectionDisabled {
+  color: var(--compactSelectDisabledFontColor, darkgray);
+}
+
+.csCompactClearSelectionStandard:hover {
+  color: var(--compactSelectFontColor, darkgray);
 }
 
 .csCompactMainDisplay {
@@ -42,7 +76,12 @@
 .csCompactInput {
   background-color: transparent;
   border: none;
-  width: 100%;
+  max-width: var(--compactSelectInputTextMaxWidth,100%);
+  color: var(--compactSelectFontColor, black);
+}
+
+.csCompactInputDisabled {
+  color: var(--compactSelectDisabledFontColor, darkgray);
 }
 
 .csCompactInput:focus,
@@ -53,6 +92,11 @@ input:focus {
 .csCompactSelectTitle {
   position: absolute;
   top: -30px;
+  font-size:  var(--compactSelectTitleFontSize, small);
+}
+
+.csCompactSelectTitleDisabled {
+  color:  var(--compactSelectDisabledFontColor, darkgray);
 }
 
 .csCompactChoiceContainer {
@@ -62,7 +106,12 @@ input:focus {
   overflow: auto;
   border-radius: 5px;
   z-index: 1;
+  border: var(--compactSelectBorder, 2px solid WhiteSmoke);
+  max-height: var(--compactSelectChoiceListMaxHeight, 300px);
+  background-color: var(--compactSelectBackgroundColor);
+  background-image: var(--compactSelectBackgroundImage);
 }
+
 
 .csCompactChoiceList {
   padding-inline-start: 0px;

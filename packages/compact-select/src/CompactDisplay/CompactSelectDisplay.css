@@ -1,8 +1,20 @@
-.csCompactTextDisplay {
+.csCompactSelectTextDisplay {
   margin-block-start: 0px;
   margin-block-end: 0px;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.csCompactSelectTextDisplayTitle {
+  font-weight: var(--compactSelectFontColor, 100);
+}
+
+.csCompactSelectTextDisplaySelectedItem {
+  font-weight: var(--compactSelectFontColor, bold);
+}
+
+.csCompactSelectTextDisplayDisabled {
+  color: var(--compactSelectDisabledFontColor, darkgray);
 }

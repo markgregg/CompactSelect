@@ -4,6 +4,26 @@
   align-items: center;
 }
 
+.csCompactSelectChoice {
+  background-color: var(--compactSelectBackgroundColor);
+  border: var(--compactSelectChoiceSelectedIndicatorBorder);
+}
+
+.csCompactSelectChoiceSelected {
+  color: var(--compactSelectSelectedFontColor);
+  background-color: var(--compactSelectSelectedBackgroundColor);
+}
+
+.csCompactSelectChoiceHighlighted {
+  color: var(--compactSelectHighlightedFontColor);
+  background-color: var(--compactSelectHighlightedBackgroundColor, lightgray);
+}
+
+.csCompactSelectChoiceDisabled {
+  color: var(--compactSelectDisabledFontColor, darkgray);
+  background-color: var(--compactSelectDisabledBackgroundColor, Gainsboro);
+}
+
 .csCompactChoiceText {
   margin: 2px;
 }
@@ -11,3 +31,9 @@
 .csCompactSelectedIndicatorDiv {
   width: 30px;
 }
+
+.csCompactChoiceSelectedIcon {
+  font-size: var(--compactSelectSelectedIconSize, large);
+  color: var(--compactSelectSelectedIconColor, green);
+}
+

@@ -19,6 +19,8 @@
   width: 100%;
   font-family: "Cabin";
   font-size: medium;
+  background-color: var(--pageColor1);
+  color: var(--pageFont);
 }
 
 .header {
@@ -43,6 +45,7 @@
   padding-top: 15px;
   padding-bottom: 15px;
   border-radius: 8px;
+  background-color: var(--pageColor2);
 }
 
 .menu {

@@ -4,6 +4,8 @@
   flex-direction: column;
   align-items: flex-start;
   border-radius: 8px;
+  background-color: var(--pageColor2);
+  color: var(--compactSelectFontColor);
 }
 
 .vmenu-heading {

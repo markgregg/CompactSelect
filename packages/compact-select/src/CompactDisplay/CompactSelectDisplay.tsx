@@ -5,10 +5,6 @@ import "./CompactSelectDisplay.css";
 const CompactDisplay = <T extends object | string>(
   props: DisplayProps<T> & DisplayStyle
 ) => {
-  const textDisplayClassName = (): string =>
-    props.disabled && props.displayDisabledClassName
-      ? ` ${props.displayDisabledClassName}`
-      : "";
 
   const displayTitle =
     props.selected.length === 0 &&
@@ -16,30 +12,24 @@ const CompactDisplay = <T extends object | string>(
       !props.selectType ||
       props.selectType !== "standard");
 
+  const textDisplayClassNameForState = (): string =>
+    props.disabled
+      ? ( props.displayDisabledClassName ? ` ${props.displayDisabledClassName}` : " csCompactSelectTextDisplayDisabled" )
+      :  ( props.displayClassName ? ` ${props.displayClassName}` : "" )
+
+  const textDisplayClassNameForType = (): string =>
+    displayTitle
+      ? " csCompactSelectTextDisplayTitle"
+      : " csCompactSelectTextDisplaySelectedItem";
+
   const textDisplayStyle = (): CSS.Properties =>
     props.disabled && props.displayDisabledStyle
       ? props.displayDisabledStyle
-      : props.displayStyle ?? {
-          color: props.disabled
-            ? props.disabledTitleColor ?? props.disabledColor ?? "darkgray"
-            : displayTitle
-            ? props.titleColor ?? props.color ?? "black"
-            : props.color ?? "black",
-          fontSize: displayTitle
-            ? props.titleFontSize ?? props.fontSize
-            : props.fontSize,
-          fontFamily: displayTitle
-            ? props.titleFontFamily ?? props.fontFamily ?? "unset"
-            : props.fontFamily ?? "unset",
-          fontWeight: displayTitle
-            ? props.titleFontWeight ?? 100
-            : props.fontWeight ?? "bold",
-          fontStyle: displayTitle ? props.titleFontStyle : props.fontStyle,
-        };
+      : props.displayStyle ?? {}
 
   return (
     <p
-      className={"csCompactTextDisplay" + textDisplayClassName()}
+      className={"csCompactSelectTextDisplay" + textDisplayClassNameForState() + textDisplayClassNameForType()}
       style={textDisplayStyle()}
     >
       {displayTitle ? props.title : props.text}

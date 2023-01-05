@@ -6,4 +6,15 @@
   position: absolute;
   z-index: 1;
   padding: 3px;
+  color: var(--compactSelectToolTipFontColor, "black");
+  font-weight: var(--compactSelectToolTipFontWeight);
+  font-family: var(--compactSelectFontFamily);
+  font-size: var(--compactSelectToolTipFontSize, small);
+  font-style: var(--compactSelectToolTipFontStyle);
+  border-radius: 5px;
+  text-align: var(--compactSelectToolTipTextAlign, center);
+  border: var(--compactSelectToolTipBorder);
+  background-color: var(--compactSelectToolTipBackgroundColor);
+  background-image: var(--compactSelectToolTipBackgroundImage);
 }
+

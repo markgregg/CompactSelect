@@ -9,69 +9,7 @@ import {
 } from "react-icons/md";
 import { GiCheckMark } from "react-icons/gi";
 import { IconType } from "react-icons/lib";
-import { Theme } from "../interfaces/theme";
 import { Choice } from "compact-select";
-
-export enum Themes {
-  Soft = "Soft",
-  Dark = "Dark",
-  Light = "Light",
-  Blue = "Blue",
-}
-
-export const themes = Object.keys(Themes).filter((item) => {
-  return isNaN(Number(item));
-});
-
-export const themeMap = new Map<string, Theme>();
-themeMap.set(Themes.Soft, {
-  page1: "White",
-  page2: "#CEE538",
-  page3: "#849513",
-  color1: "White",
-  color2: "WhiteSmoke",
-  color3: "White",
-  color4: "Gainsboro",
-  color5: "#849513",
-  font: "Black",
-  selectFont: "Black",
-});
-themeMap.set(Themes.Dark, {
-  page1: "Black",
-  page2: "#430770",
-  page3: "#9C2BF1",
-  color1: "Black",
-  color2: "#09010E",
-  color3: "#430770",
-  color4: "#512E6B",
-  color5: "#9C2BF1",
-  font: "Gainsboro",
-  selectFont: "Gainsboro",
-});
-themeMap.set(Themes.Light, {
-  page1: "#FEF4B9",
-  page2: "#E7C504",
-  page3: "#FCE355",
-  color1: "#FEF4B9",
-  color2: "#FEF4B9",
-  color3: "#E7C504",
-  color4: "#d5b70e",
-  color5: "#FCE355",
-  font: "#3D350B",
-  selectFont: "#3D350B",
-});
-themeMap.set(Themes.Blue, {
-  page1: "rgb(195, 212, 233)",
-  page2: "#353576",
-  page3: "#9c9ccb",
-  color1: "#14061F",
-  color2: "#353576",
-  color3: "#353576",
-  color4: "#5555ad",
-  color5: "#9c9ccb",
-  font: "Black",
-  selectFont: "White",
-});
 
 export const clearIconMap = new Map<string, IconType>();
 clearIconMap.set("Circle Cross", TiDeleteOutline);

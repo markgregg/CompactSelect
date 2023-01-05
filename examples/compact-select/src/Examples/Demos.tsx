@@ -3,7 +3,7 @@ import CSS from "csstype";
 import CompactSelect, {
   ChoiceProps,
   ChoiceStyle,
-  CompactSelectProps,
+  CompactSelectProps, 
   DisplayProps,
   DisplayStyle,
 } from "compact-select";
@@ -19,7 +19,6 @@ import {
   objectChoices,
   typedObjectChoices,
 } from "../data/data";
-import { Theme } from "../interfaces/theme";
 import {
   fetchItems,
   fetchTyped,
@@ -33,7 +32,6 @@ import "./Examples.css";
 const itemDisplay = (
   text: string,
   color: CSS.Property.Color,
-  fontColor: CSS.Property.Color,
   highlight: boolean
 ): JSX.Element => (
   <div
@@ -58,7 +56,7 @@ const itemDisplay = (
       style={{
         marginBlockStart: "0px",
         marginBlockEnd: "0px",
-        color: highlight ? "lightgreen" : fontColor,
+        color: highlight ? "lightgreen" : undefined,
         fontWeight: highlight ? "bold" : "normal",
       }}
     >
@@ -78,7 +76,6 @@ const choice = <T extends object | string>(
       {itemDisplay(
         (props.item as ColorItem).text,
         (props.item as ColorItem).color,
-        props.choiceColor ?? "black",
         props.choiceSelected
       )}
     </div>
@@ -98,7 +95,6 @@ const display = <T extends object | string>(
     {itemDisplay(
       itemText(props.selected),
       itemColor(props.selected),
-      props.color ?? "black",
       false
     )}
   </div>
@@ -108,13 +104,33 @@ interface DemoItemProperties<T extends object | string> {
   title: string;
   description: string;
   props: CompactSelectProps<T>;
-  theme: Theme;
   code?: string;
   sandbox?: string;
+  bindSelection?: boolean;
 }
 const DemoItem = <T extends object | string>(props: DemoItemProperties<T>) => {
   const [showCode, setShowCode] = useState<string>("");
   const [showCopied, setShowCopied] = useState<boolean>(false);
+  const [selection,setSelection] = useState<T[]>([]);
+  const [selectionKey,setSelectionKey] = useState<string>();
+
+  const selectionChanged = (items: T[]) => {
+    console.log("Selection changed");
+    console.log(items);
+    setSelection(items);
+    setSelectionKey(props.title)
+  }
+  const compactSelectProps = (): CompactSelectProps<T> => {
+    return props.bindSelection 
+    ? {
+      selected: selection,
+      onChange: selectionChanged,
+      ...props.props
+    }
+    : {
+      ...props.props
+    }
+  }
 
   return (
     <div className="demo" key={"demo" + props.title}>
@@ -125,13 +141,7 @@ const DemoItem = <T extends object | string>(props: DemoItemProperties<T>) => {
       <div className="demo-item">
         <CompactSelect
           key={props.title}
-          backgroundColor={props.theme.color3}
-          color={props.theme.selectFont}
-          choiceHoverBackgroundColor={props.theme.color5}
-          disableBackgroundColor={props.theme.color4}
-          toolTipBackgroundColor={props.theme.color4}
-          border={`${props.theme.color2} solid 2px`}
-          {...props.props}
+          {...compactSelectProps()}
         />
         <div className="icons">
           <AiOutlineCode
@@ -152,6 +162,11 @@ const DemoItem = <T extends object | string>(props: DemoItemProperties<T>) => {
           <AiOutlineEdit onClick={() => window.open(props.sandbox, "_blank")} />
         </div>
       </div>
+      {
+        selectionKey === props.title && <div>
+          <p>selection={selection.toString()}</p>
+        </div>
+      }
       {showCode === props.title && (
         <div className="code">
           <CodeBlock
@@ -169,13 +184,13 @@ const DemoItem = <T extends object | string>(props: DemoItemProperties<T>) => {
 
 export interface Category {
   name: string;
-  demo: (theme: Theme) => JSX.Element;
+  demo: () => JSX.Element;
 }
 
 export const categories: Category[] = [
   {
     name: "Binding",
-    demo: (theme: Theme) => (
+    demo: () => (
       <div className="demo">
         <DemoItem
           title="String binding"
@@ -185,7 +200,6 @@ export const categories: Category[] = [
             title: "Bind String",
             choices: choices,
           }}
-          theme={theme}
           code={`import CompactSelect from "compact-select";
 import { choices } from "./data";
 import "./styles.css";
@@ -213,7 +227,7 @@ export default function App() {
             itemText: (item) => item.name,
             itemDisabled: (item) => item.disabled,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { objectChoices } from "./data";
 import "./styles.css";
@@ -241,7 +255,7 @@ export default function App() {
             title: "Typed binding",
             choices: typedObjectChoices,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { typedObjectChoices } from "./data";
 import "./styles.css";
@@ -263,7 +277,7 @@ return (
   },
   {
     name: "Single select",
-    demo: (theme: Theme) => (
+    demo: () => (
       <div className="demo">
         <DemoItem
           title="Single string"
@@ -275,7 +289,7 @@ return (
             maximumSelections: 1,
             minimumSelections: 1,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { choices } from "./data";
 import "./styles.css";
@@ -305,7 +319,7 @@ export default function App() {
             itemValue: (item) => item.name,
             itemText: (item) => item.name,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { objectChoices } from "./data";
 import "./styles.css";
@@ -325,12 +339,46 @@ export default function App() {
 }`}
           sandbox="https://codesandbox.io/s/simple-single-no-value-compact-select-oskfme"
         />
+        <DemoItem
+          title="Single bound selection"
+          description="A single selection control bound to state."
+          props={{
+            width: "300px",
+            title: "One String",
+            choices: choices,
+            maximumSelections: 1,
+            minimumSelections: 1,
+          }}
+          
+          bindSelection
+          code={`import CompactSelect from "compact-select";
+          import { useState } from "react";
+          import { choices } from "./data";
+          import "./styles.css";
+          
+          export default function App() {
+            const [selected, setSelected] = useState<String[]>([]);
+            return (
+              <div className="Space">
+                <CompactSelect
+                  title="test"
+                  choices={choices}
+                  selected={selected}
+                  maximumSelections={1}
+                  minimumSelections={1}
+                  onChange={setSelected}
+                />
+              </div>
+            );
+          }`}
+          sandbox="https://codesandbox.io/s/simple-single-string-compact-select-bound-to-sate-tlbmhf"
+        />
       </div>
     ),
   },
   {
     name: "Multi select",
-    demo: (theme: Theme) => (
+    demo: () => (
       <div className="demo">
         <DemoItem
           title="Multi string"
@@ -340,7 +388,7 @@ export default function App() {
             title: "Multi string",
             choices: choices,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { choices } from "./data";
 import "./styles.css";
@@ -368,7 +416,7 @@ export default function App() {
             itemValue: (item) => item.name,
             itemText: (item) => item.name,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { objectChoices } from "./data";
 import "./styles.css";
@@ -386,14 +434,45 @@ export default function App() {
     </div>
   );
 }`}
-          sandbox="https://codesandbox.io/s/fixed-value-compact-select-vc6y74"
+          sandbox="https://codesandbox.io/s/multi-string-compact-select-bound-gr13pq"
+        />
+         <DemoItem
+          title="Multi bound selection"
+          description="A multi string selection control with the selection bound to state."
+          props={{
+            width: "300px",
+            title: "Multi string",
+            choices: choices,
+          }}
+          bindSelection
+          
+          code={`import { useState } from "react";
+          import CompactSelect from "compact-select";
+          import { choices } from "./data";
+          import "./styles.css";
+          
+          export default function App() {
+            const [selected, setSelected] = useState<String[]>([]);
+            
+            return (
+              <div className="Space">
+                <CompactSelect
+                  title="test"
+                  choices={choices}
+                  selected={selected}
+                  onChange={setSelected}
+                />
+              </div>
+            );
+          }`}
+          sandbox="https://codesandbox.io/s/multi-string-compact-select-2wbrc2"
         />
       </div>
     ),
   },
   {
     name: "Dropdown lists",
-    demo: (theme: Theme) => (
+    demo: () => (
       <div className="demo">
         <DemoItem
           title="Single string dropdown"
@@ -405,7 +484,7 @@ export default function App() {
             maximumSelections: 1,
             selectType: "dropdown",
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { choices } from "./data";
 import "./styles.css";
@@ -435,7 +514,7 @@ export default function App() {
             itemValue: (item) => item.name,
             itemText: (item) => item.name,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { objectChoices } from "./data";
 import "./styles.css";
@@ -460,7 +539,7 @@ export default function App() {
   },
   {
     name: "Switches",
-    demo: (theme: Theme) => (
+    demo: () => (
       <div className="demo">
         <DemoItem
           title="String switch"
@@ -472,7 +551,7 @@ export default function App() {
             selectType: "switch",
             minimumSelections: 1,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { choices } from "./data";
 import "./styles.css";
@@ -496,7 +575,7 @@ export default function App() {
   },
   {
     name: "Look ups",
-    demo: (theme: Theme) => (
+    demo: () => (
       <div className="demo">
         <DemoItem
           title="String look-up"
@@ -506,7 +585,7 @@ export default function App() {
             title: "String look-up",
             typeAheadLookUp: fetchItems,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { fetchItems } from "./data";
 import "./styles.css";
@@ -534,7 +613,7 @@ export default function App() {
             itemText: (item) => item.name,
             cacheLookUp: true,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { slowFetchObjects } from "./data";
 import "./styles.css";
@@ -565,7 +644,7 @@ export default function App() {
             cacheTimeToLive: 10,
             cacheExpiryCheck: 10,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { slowFetchItems } from "./data";
 import "./styles.css";
@@ -590,7 +669,7 @@ export default function App() {
   },
   {
     name: "Disabled",
-    demo: (theme: Theme) => (
+    demo: () => (
       <div className="demo">
         <DemoItem
           title="Disbaled string"
@@ -602,7 +681,7 @@ export default function App() {
             selected: ["Sarah", "Dianna"],
             disabled: true,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { choices } from "./data";
 import "./styles.css";
@@ -629,7 +708,7 @@ export default function App() {
             title: "Typed look-up",
             choices: typedObjectChoices,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { choices } from "./data";
 import "./styles.css";
@@ -651,7 +730,7 @@ export default function App() {
   },
   {
     name: "Paste select",
-    demo: (theme: Theme) => (
+    demo: () => (
       <div className="demo">
         <div className="copy-text">
           <p>Copy for string and object paste</p>
@@ -666,7 +745,7 @@ export default function App() {
             typeAheadLookUp: fetchItems,
             itemSearch: searchItems,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { fetchItems, searchItems } from "./data";
 import "./styles.css";
@@ -697,7 +776,7 @@ export default function App() {
             typeAheadLookUp: fetchTyped,
             itemSearch: searchTyped,
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { fetchTyped,searchTyped } from "./data";
 import "./styles.css";
@@ -720,7 +799,7 @@ export default function App() {
   },
   {
     name: "Custom styling",
-    demo: (theme: Theme) => (
+    demo: () => (
       <div className="demo">
         <DemoItem
           title="Custom styles"
@@ -735,11 +814,11 @@ export default function App() {
             },
             clearSelectionClassName: "icon-spin",
             choiceStyle: {
-              textShadow: `2px 2px ${theme.selectFont}`,
+              textShadow: `2px 2px var(compactSelectFontColor)`,
             },
             choiceSelectedIconClassName: "icon-blink",
           }}
-          theme={theme}
+          
           code={`import CompactSelect from "compact-select";
 import { choices } from "./data";
 import "./styles.css";
@@ -770,7 +849,7 @@ export default function App() {
   },
   {
     name: "Custom components",
-    demo: (theme: Theme) => (
+    demo: () => (
       <div className="demo">
         <DemoItem
           title="Custom component"
@@ -783,7 +862,7 @@ export default function App() {
             displayComponent: display,
             maximumSelections: 1,
           }}
-          theme={theme}
+          
           code={`import CSS from "csstype";
 import CompactSelect, {
   ChoiceStyle,

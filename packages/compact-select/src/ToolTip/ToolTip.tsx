@@ -8,17 +8,6 @@ const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
   show,
   toolTipClassName,
   toolTipStyle,
-  toolTipBackgroundColor,
-  toolTipBackgroundImage,
-  toolTipFontFamily,
-  toolTipFontWeight,
-  toolTipFontSize,
-  toolTipColor,
-  toolTipTextAlign,
-  toolTipBorderColor,
-  toolTipBorder,
-  toolTopBorderRadius,
-  toolTipFontStyle,
   toolTipPosition,
   children,
 }) => {
@@ -49,37 +38,24 @@ const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
     }
   };
 
-  const toolTip = (): CSS.Properties => {
-    return toolTipStyle
-      ? toolTipStyle
-      : {
-          color: toolTipColor ?? "black",
-          font: toolTipFontFamily,
-          fontWeight: toolTipFontWeight,
-          fontSize: toolTipFontSize ?? "small",
-          fontStyle: toolTipFontStyle,
-          textAlign: toolTipTextAlign ?? "center",
-          borderColor: toolTipBorderColor,
-          borderRadius: toolTopBorderRadius ?? "5px",
-          border: toolTipBorder,
-          backgroundColor: toolTipBackgroundColor,
-          backgroundImage: toolTipBackgroundImage,
-          ...position(),
-        };
-  };
 
   return (
-    <div
-      className={"toolTip" + (toolTipClassName ? ` ${toolTipClassName}` : "")}
-    >
+    <div className="toolTip">
       {children}
       {show && tip !== "" && (
-        <span className="toolTipText" style={toolTip()}>
+        <span 
+          className={"toolTipText"+ (toolTipClassName ? ` ${toolTipClassName}` : "")} 
+          style={{
+            ...toolTipStyle,
+            ...position()
+          }}
+        >
           {tip}
         </span>
       )}
     </div>
   );
 };
+
 
 export default ToolTip;

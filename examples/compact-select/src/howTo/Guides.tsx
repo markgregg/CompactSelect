@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { CodeBlock, googlecode } from "react-code-blocks";
-import { Theme } from "../interfaces/theme";
 import "./HowTo.css";
 
 type GuideEntry = {
@@ -10,12 +9,11 @@ type GuideEntry = {
 };
 
 interface GuideProperties {
-  theme: Theme;
   title: string;
   entries: GuideEntry[];
 }
 
-const Guide: FC<GuideProperties> = ({ title, entries, theme }) => {
+const Guide: FC<GuideProperties> = ({ title, entries }) => {
   return (
     <div className="guide" key={"guide" + title}>
       <h2 className="guide-title">{title}</h2>
@@ -60,15 +58,14 @@ const Guide: FC<GuideProperties> = ({ title, entries, theme }) => {
 
 export interface GuideItem {
   name: string;
-  guide: (theme: Theme) => JSX.Element;
+  guide: () => JSX.Element;
 }
 
 export const guides: GuideItem[] = [
   {
     name: "Binding",
-    guide: (theme: Theme) => (
+    guide: () => (
       <Guide
-        theme={theme}
         title="Binding"
         entries={[
           {

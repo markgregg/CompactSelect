@@ -1,16 +1,13 @@
-import React, { useState, FC } from "react";
-import { Theme } from "../interfaces/theme";
+import { useState, FC } from "react";
 import "./VerticalMenu.css";
 
 interface VerticalMenuProps {
-  theme: Theme;
   title: string;
   options: string[];
   onSelect: (option: string) => void;
 }
 
 const VerticalMenu: FC<VerticalMenuProps> = ({
-  theme,
   title,
   options,
   onSelect,
@@ -21,10 +18,6 @@ const VerticalMenu: FC<VerticalMenuProps> = ({
   return (
     <div
       className="vmenu"
-      style={{
-        backgroundColor: theme.page2,
-        color: theme.selectFont,
-      }}
     >
       <h3 className="vmenu-heading">{title}</h3>
       <ul className="vmenu-items">
@@ -35,8 +28,8 @@ const VerticalMenu: FC<VerticalMenuProps> = ({
             style={{
               backgroundColor:
                 highlight === option || option === active
-                  ? theme.page3
-                  : theme.page2,
+                  ? "var(--pageColor3)"
+                  : "var(--pageColor2)",
             }}
             onMouseEnter={() => setHighlight(option)}
             onMouseLeave={() => setHighlight(undefined)}

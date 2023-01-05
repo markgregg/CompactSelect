@@ -16,7 +16,7 @@ export interface SelectProps<T extends Choice | object | string> {
   cacheLookUp?: boolean; //should cache items
   cacheTimeToLive?: number; //how long should items exist for in seconds
   cacheExpiryCheck?: number; //how often should item expiry be checked in seconds
-  onChange?: (selected: T[] | T | undefined) => void; //notify of change
+  onChange?: (selected: T[]) => void; //notify of change
   disabled?: boolean; // is control disable
   loadingText?: string; //custom loading text
   noItemText?: string; //custom no item text

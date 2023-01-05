@@ -13,22 +13,5 @@ export interface ChoiceStyle {
   choiceSelectedIconStyle?: CSS.Properties;
   choiceSelectedIconClassName?: string;
   choiceSelectedIcon?: IconType;
-  choiceFontWeight?: CSS.Property.FontWeight;
-  choiceFontFamily?: CSS.Property.FontFamily;
-  choiceFontSize?: CSS.Property.FontSize;
-  choiceColor?: CSS.Property.Color;
-  choiceFontStyle?: CSS.Property.FontStyle;
-  choiceBackgroundColor?: CSS.Property.BackgroundColor;
-  choiceBackgroundImage?: CSS.Property.BackgroundImage;
-  choiceSelectedBorder?: CSS.Property.Border;
-  choiceDisabledColor?: CSS.Property.Color;
-  choiceDisabledBackgroundColor?: CSS.Property.BackgroundColor;
-  choiceDisabledBackgroundImage?: CSS.Property.BackgroundImage;
-  choiceSelectIndiacatorType?: 'icon' | 'color' | 'border';
-  choiceSelectedIconSize?: CSS.Property.FontSize;
-  choiceSelectedColor?: CSS.Property.Color;
-  choiceSelectedBackgroundColor?: CSS.Property.BackgroundColor;
-  choiceSelectedBackgroundImage?: CSS.Property.BackgroundImage;
-  choiceHoverBackgroundColor?: CSS.Property.BackgroundColor;
-  choiceHoverBackgroundImage?: CSS.Property.BackgroundImage;
+  hideSelectedIcon?: boolean;
 }
