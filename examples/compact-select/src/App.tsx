@@ -44,7 +44,7 @@ const App = () => {
                   className="menu-item"
                   style={{
                     color:
-                      pg === pageHighlight ? "var(--pageColor3)" : "var(--pageFont)"
+                      pg === pageHighlight ? "var(--compactSelectFonHighlightColor)" : "var(--compactSelectFontColor)"
                   }}
                   onClick={() => setPage(pg)}
                   onMouseEnter={() => setPageHighlight(pg)}

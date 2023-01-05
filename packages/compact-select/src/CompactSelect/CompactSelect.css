@@ -78,6 +78,7 @@
   border: none;
   max-width: var(--compactSelectInputTextMaxWidth,100%);
   color: var(--compactSelectFontColor, black);
+  width: 100%;
 }
 
 .csCompactInputDisabled {

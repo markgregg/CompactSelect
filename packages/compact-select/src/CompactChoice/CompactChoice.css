@@ -7,21 +7,25 @@
 .csCompactSelectChoice {
   background-color: var(--compactSelectBackgroundColor);
   border: var(--compactSelectChoiceSelectedIndicatorBorder);
+  background-image: var(--compactSelectChoiceBackgroundImage);
 }
 
 .csCompactSelectChoiceSelected {
   color: var(--compactSelectSelectedFontColor);
   background-color: var(--compactSelectSelectedBackgroundColor);
+  background-image: var(--compactSelectSelectedBackgroundImage);
 }
 
 .csCompactSelectChoiceHighlighted {
   color: var(--compactSelectHighlightedFontColor);
   background-color: var(--compactSelectHighlightedBackgroundColor, lightgray);
+  background-image: var(--compactSelectHighlightedBackgroundImage);
 }
 
 .csCompactSelectChoiceDisabled {
   color: var(--compactSelectDisabledFontColor, darkgray);
   background-color: var(--compactSelectDisabledBackgroundColor, Gainsboro);
+  background-image: var(--compactSelectDisabledBackgroundImage);
 }
 
 .csCompactChoiceText {

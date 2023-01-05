@@ -361,7 +361,9 @@ const CompactSelect = <T extends object | string>(
 
   //shows the list and sets the highlighted index to -1
   const showList = () => {
+    state.lookedUpChoices = undefined;
     updateInputText("");
+    updateVisibleChoices();
     state.showChoices = true;
     adjustHighlightedIndex(state.visibleChoices.length > 0 ? 0 : -1);
     setShowChoices(true);

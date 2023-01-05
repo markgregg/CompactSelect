@@ -14,6 +14,7 @@ export const applyTheme = (theme: string) => {
     case Themes.Blue: 
       document.documentElement.style.setProperty("--compactSelectBackgroundColor", "#353576");
       document.documentElement.style.setProperty("--compactSelectFontColor", "White");
+      document.documentElement.style.setProperty("--compactSelectFonHighlightColor", "LightGray");
       document.documentElement.style.setProperty("--compactSelectDisabledBackgroundColor", "#5555ad");
       document.documentElement.style.setProperty("--compactSelectToolTipBackgroundColor", "#5555ad");
       document.documentElement.style.setProperty("--compactSelectHighlightedBackgroundColor", "#9c9ccb");
@@ -26,6 +27,7 @@ export const applyTheme = (theme: string) => {
      case Themes.Dark: 
       document.documentElement.style.setProperty("--compactSelectBackgroundColor", "#430770");
       document.documentElement.style.setProperty("--compactSelectFontColor", "Gainsboro");
+      document.documentElement.style.setProperty("--compactSelectFonHighlightColor", "DarkGray");
       document.documentElement.style.setProperty("--compactSelectDisabledBackgroundColor", "#512E6B");
       document.documentElement.style.setProperty("--compactSelectToolTipBackgroundColor", "#512E6B");
       document.documentElement.style.setProperty("--compactSelectHighlightedBackgroundColor", "#9C2BF1");
@@ -38,6 +40,7 @@ export const applyTheme = (theme: string) => {
     case Themes.Light: 
       document.documentElement.style.setProperty("--compactSelectBackgroundColor", "#E7C504");
       document.documentElement.style.setProperty("--compactSelectFontColor", "#3D350B");
+      document.documentElement.style.setProperty("--compactSelectFonHighlightColor", "DarkGray");
       document.documentElement.style.setProperty("--compactSelectDisabledBackgroundColor", "#d5b70e");
       document.documentElement.style.setProperty("--compactSelectToolTipBackgroundColor", "#d5b70e");
       document.documentElement.style.setProperty("--compactSelectHighlightedBackgroundColor", "#FCE355");
@@ -50,6 +53,7 @@ export const applyTheme = (theme: string) => {
     case Themes.Minimal: 
       document.documentElement.style.setProperty("--compactSelectBackgroundColor", "White");
       document.documentElement.style.setProperty("--compactSelectFontColor", "Black");
+      document.documentElement.style.setProperty("--compactSelectFonHighlightColor", "DarkGray");
       document.documentElement.style.setProperty("--compactSelectDisabledBackgroundColor", "Gainsboro");
       document.documentElement.style.setProperty("--compactSelectToolTipBackgroundColor", "Gainsboro");
       document.documentElement.style.setProperty("--compactSelectHighlightedBackgroundColor", "#849513");

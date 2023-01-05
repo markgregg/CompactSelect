@@ -157,6 +157,10 @@ Add any of the below vairbales to a css/scss file.
 - --compactSelectDisabledBackgroundColor   (default Gainsboro)
 - --compactSelectSelectedIconSize  (default large)
 - --compactSelectSelectedIconColor  (default green)
+- --compactSelectChoiceBackgroundImage
+- --compactSelectSelectedBackgroundImage
+- --compactSelectHighlightedBackgroundImage
+- --compactSelectDisabledBackgroundImage
 
 ### Tool tip
 - --compactSelectToolTipFontColor   (default black)
