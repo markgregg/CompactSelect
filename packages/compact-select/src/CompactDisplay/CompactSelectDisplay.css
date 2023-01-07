@@ -8,11 +8,11 @@
 }
 
 .csCompactSelectTextDisplayTitle {
-  font-weight: var(--compactSelectFontColor, 100);
+  font-weight: var(--compactSelectTitleFontWeight, 100);
 }
 
 .csCompactSelectTextDisplaySelectedItem {
-  font-weight: var(--compactSelectFontColor, bold);
+  font-weight: var(--compactSelectSelectedItemFontWeight, bold);
 }
 
 .csCompactSelectTextDisplayDisabled {

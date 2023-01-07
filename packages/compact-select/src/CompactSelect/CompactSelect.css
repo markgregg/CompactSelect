@@ -1,13 +1,8 @@
-.csCompactWrapper {
-  display: inline-block;
-}
-
 .csCompactSelect {
   display: flex;
   flex-direction: row;
   align-items: center;
   position: relative;
-  padding: 4px;
   font-weight: var(--compactSelectFontWeight);
   font-family: var(--compactSelectFontFamily);
   font-size: var(--compactSelectFontSize);
@@ -17,8 +12,14 @@
   border: var(--compactSelectBorder, 2px solid WhiteSmoke);
 }
 
+.csContentSelectWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .compactSelectStandard {
-  background-color: var(--compactSelectBackgroundColor);
+  background-color: var(--compactSelectBackgroundColor, white);
   background-image: var(--compactSelectBackgroundImage);
 }
 
@@ -27,17 +28,14 @@
   background-image: var(--compactSelectDisabledBackgroundImage);
 }
 
-.csCompactDropDownIcon {
-  width: 30px;
-}
-
 .csCompactDropDownIconDisabled {
-  background-color: var(--compactSelectDisabledBackgroundColor, Gainsboro);
+  color: var(--compactSelectDisabledFontColor);
 }
 
 .csCompactClearSelection {
-  width: 30px;
   font-size: var(--compactSelectClearSelectionIconSize, large);
+  align-content: center;
+  display: flex;
 }
 
 .csCompactClearSelectionStandard {
@@ -94,6 +92,7 @@ input:focus {
   position: absolute;
   top: -30px;
   font-size:  var(--compactSelectTitleFontSize, small);
+  font-weight: var(--compactSelectTitleFontWeight, 100);
 }
 
 .csCompactSelectTitleDisabled {
@@ -109,7 +108,7 @@ input:focus {
   z-index: 1;
   border: var(--compactSelectBorder, 2px solid WhiteSmoke);
   max-height: var(--compactSelectChoiceListMaxHeight, 300px);
-  background-color: var(--compactSelectBackgroundColor);
+  background-color: var(--compactSelectBackgroundColor, white);
   background-image: var(--compactSelectBackgroundImage);
 }
 

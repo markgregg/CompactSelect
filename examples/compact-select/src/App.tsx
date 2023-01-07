@@ -9,12 +9,12 @@ import { applyTheme, themes, Themes } from "./themes/themes";
 const pages = ["About", "Examples"];
 
 const App = () => {
-  const [themeName, setThemeName] = useState<string>(Themes.Minimal.toString());
+  const [themeName, setThemeName] = useState<string>(Themes.None.toString());
   const [page, setPage] = useState<string>("Examples");
   const [pageHighlight, setPageHighlight] = useState<string>();
   
   useEffect(()=> {
-    applyTheme(Themes.Minimal);
+    applyTheme(Themes.None);
   },[])
 
   const setTheme = (theme: string[]) => {

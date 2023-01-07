@@ -134,6 +134,8 @@ Add any of the below vairbales to a css/scss file.
 - --compactSelectBackgroundImage
 - --compactSelectDisabledBackgroundColor
 - --compactSelectDisabledBackgroundImage
+- --compactSelectTitleFontWeight  (default 100)
+- --compactSelectSelectedItemFontWeight  (default bold)
 
 ### Input box
 - --compactSelectInputTextMaxWidth (default 100%)

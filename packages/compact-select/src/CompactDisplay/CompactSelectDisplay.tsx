@@ -10,7 +10,7 @@ const CompactDisplay = <T extends object | string>(
     props.selected.length === 0 &&
     (!props.choicesShown ||
       !props.selectType ||
-      props.selectType !== "standard");
+      props.selectType === "switch");
 
   const textDisplayClassNameForState = (): string =>
     props.disabled

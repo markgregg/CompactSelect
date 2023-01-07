@@ -1,5 +1,5 @@
 export enum Themes {
-  Minimal = "Minimal",
+  None = "None",
   Dark = "Dark",
   Light = "Light",
   Blue = "Blue",
@@ -50,14 +50,14 @@ export const applyTheme = (theme: string) => {
       document.documentElement.style.setProperty("--pageColor3", "#FCE355");
       document.documentElement.style.setProperty("--pageFont", "#3D350B");
       break;
-    case Themes.Minimal: 
-      document.documentElement.style.setProperty("--compactSelectBackgroundColor", "White");
-      document.documentElement.style.setProperty("--compactSelectFontColor", "Black");
-      document.documentElement.style.setProperty("--compactSelectFonHighlightColor", "DarkGray");
-      document.documentElement.style.setProperty("--compactSelectDisabledBackgroundColor", "Gainsboro");
-      document.documentElement.style.setProperty("--compactSelectToolTipBackgroundColor", "Gainsboro");
-      document.documentElement.style.setProperty("--compactSelectHighlightedBackgroundColor", "#849513");
-      document.documentElement.style.setProperty("--compactSelectBorder", "Gainsboro solid 2px");
+    case Themes.None: 
+      document.documentElement.style.setProperty("--compactSelectBackgroundColor", null);
+      document.documentElement.style.setProperty("--compactSelectFontColor", null);
+      document.documentElement.style.setProperty("--compactSelectFonHighlightColor", null);
+      document.documentElement.style.setProperty("--compactSelectDisabledBackgroundColor", null);
+      document.documentElement.style.setProperty("--compactSelectToolTipBackgroundColor", null);
+      document.documentElement.style.setProperty("--compactSelectHighlightedBackgroundColor",null);
+      document.documentElement.style.setProperty("--compactSelectBorder", null);
       document.documentElement.style.setProperty("--pageColor1", "White");
       document.documentElement.style.setProperty("--pageColor2", "#CEE538");
       document.documentElement.style.setProperty("--pageColor3", "#849513");

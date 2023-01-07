@@ -11,7 +11,7 @@ import CSS from "csstype";
 import { Cache, createCache } from "../cache/cache";
 import { errorMessage } from "../utils/domUtils";
 import { generateGuid } from "../utils/guidGenerator";
-import { TiDeleteOutline } from "react-icons/ti";
+import { MdClear } from "react-icons/md";
 import { RiArrowDropDownFill } from "react-icons/ri";
 import CompactChoice from "../CompactChoice";
 import ToolTip from "../ToolTip";
@@ -191,7 +191,6 @@ const CompactSelect = <T extends object | string>(
     }
   };
 
-  //state not required for visual updates
   const [state] = useState<State<T>>({
     token: "",
     selected: getSelection(),
@@ -209,7 +208,6 @@ const CompactSelect = <T extends object | string>(
     selectId: generateGuid(),
   });
 
-  //state use to trigger visual updates
   const [inputText, setInputText] = useState<string>("");
   const [showChoices, setShowChoices] = useState<boolean>(false);
   const [visibleChoices, setVisibleChoices] = useState<T[]>([]);
@@ -634,7 +632,7 @@ const CompactSelect = <T extends object | string>(
 
       //get items from text, if not checking case convert to lower case
       const items = text.split(",").map((s) => s.trim());
-      if (props.choices) {
+      if (props.choices && props.choices.length > 0) {
         //if we have choices then search choices
         const searchItems = !props.caseSensitive
           ? items.map((s) => s.toLowerCase())
@@ -691,7 +689,7 @@ const CompactSelect = <T extends object | string>(
     setShowToolTip(false);
   };
 
-  const compactSelectWrapperStyle = (): CSS.Properties => {
+  const compactSelectStyle = (): CSS.Properties => {
     return {
       height: props.height,
       minHeight: props.minHeight,
@@ -821,18 +819,16 @@ const CompactSelect = <T extends object | string>(
     );
 
   return (
-    <div 
-      className="csCompactWrapper"
-      style={compactSelectWrapperStyle()}
+    <div
+      className={"csCompactSelect" + compactSelectClass()}
+      style={compactSelectStyle()}
+      onMouseEnter={checkToolTip}
+      onMouseLeave={hideToolTip}
+      onPaste={pasteText}
+      onClick={textInputClicked}
     >
       {toolTip(
-        <div
-          className={"csCompactSelect" + compactSelectClass()}
-          onMouseEnter={checkToolTip}
-          onMouseLeave={hideToolTip}
-          onPaste={pasteText}
-          onClick={textInputClicked}
-        >
+        <div className="csContentSelectWrapper">
           {(!props.maximumSelections || props.maximumSelections < 1) &&
             state.selected.length > 0 &&
             props.selectType !== "switch" && (
@@ -846,7 +842,7 @@ const CompactSelect = <T extends object | string>(
                     style={clearSelectedStyle()}
                   />
                 ) : (
-                  <TiDeleteOutline
+                  <MdClear
                     className={clearSelectionClassName()}
                     style={clearSelectedStyle()}
                   />
@@ -885,9 +881,7 @@ const CompactSelect = <T extends object | string>(
             </div>
             {!props.hideDropdownIcon &&
               props.selectType !== "switch" && (
-                <div
-                  className="csCompactDropDownIcon"
-                >
+                <div>
                   {props.dropdownIcon ? (
                     <props.dropdownIcon
                       className={dropIconClassName()}
@@ -949,6 +943,7 @@ const CompactSelect = <T extends object | string>(
         </div>
       )}
     </div>
+    
   );
 };
 

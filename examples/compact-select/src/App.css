@@ -76,8 +76,12 @@
 }
 
 .theme {
+  width: 60px;
   display: block;
   align-self: flex-end;
+  --compactSelectBorder: none;
+  --compactSelectBackgroundColor: var(--pageColor2);
+  --compactSelectHighlightedBackgroundColor: var(--pageColor3);
 }
 
 .clipboardCopy {

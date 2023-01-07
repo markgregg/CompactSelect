@@ -106,32 +106,43 @@ interface DemoItemProperties<T extends object | string> {
   props: CompactSelectProps<T>;
   code?: string;
   sandbox?: string;
-  bindSelection?: boolean;
+  bindSelection?: string;
 }
 const DemoItem = <T extends object | string>(props: DemoItemProperties<T>) => {
   const [showCode, setShowCode] = useState<string>("");
   const [showCopied, setShowCopied] = useState<boolean>(false);
   const [selection,setSelection] = useState<T[]>([]);
-  const [selectionKey,setSelectionKey] = useState<string>();
+  const [multiSelection,setMultiSelection] = useState<T[]>([]);
 
-  const selectionChanged = (items: T[]) => {
-    console.log("Selection changed");
-    console.log(items);
-    setSelection(items);
-    setSelectionKey(props.title)
+  const selectionChanged = (items: T[], single: boolean) => {
+    if( single ) {
+      setSelection(items);
+    } else {
+      setMultiSelection(items);
+    }
   }
+
   const compactSelectProps = (): CompactSelectProps<T> => {
-    return props.bindSelection 
-    ? {
-      selected: selection,
-      onChange: selectionChanged,
-      ...props.props
-    }
-    : {
-      ...props.props
+    switch(props.bindSelection) {
+      case "single": 
+        return {
+          selected: selection,
+          onChange: items => selectionChanged(items, true),
+          ...props.props
+        }
+      case "multi": 
+        return {
+          selected: multiSelection,
+          onChange: items => selectionChanged(items, false),
+          ...props.props
+        }
+      default:
+        return {
+          ...props.props
+        }
     }
   }
-
+ 
   return (
     <div className="demo" key={"demo" + props.title}>
       <h2 className="demo-title">{props.title}</h2>
@@ -163,9 +174,15 @@ const DemoItem = <T extends object | string>(props: DemoItemProperties<T>) => {
         </div>
       </div>
       {
-        selectionKey === props.title && <div>
-          <p>selection={selection.toString()}</p>
-        </div>
+        (
+          props.bindSelection === "single" && <div>
+            <p>selection={selection.toString()}</p>
+          </div>) ||
+        (
+          props.bindSelection === "multi" && <div>
+            <p>selection={multiSelection.toString()}</p>
+          </div>
+        )
       }
       {showCode === props.title && (
         <div className="code">
@@ -194,7 +211,7 @@ export const categories: Category[] = [
       <div className="demo">
         <DemoItem
           title="String binding"
-          description="The simpliest way to use a compact select - set the choices property to an array of strings"
+          description="The simple list of strings"
           props={{
             width: "300px",
             title: "Bind String",
@@ -218,7 +235,7 @@ export default function App() {
         />
         <DemoItem
           title="Object binding"
-          description="You can bind to an array of objects by passing them to the choices property, and set the item, text and disbaled (if required) getters."
+          description="Bound to an array of objecvts, getters provide the item, text, value and disbaled state (if required) getters."
           props={{
             width: "300px",
             title: "Object binding",
@@ -249,7 +266,7 @@ export default function App() {
         />
         <DemoItem
           title="Typed object binding"
-          description="Typed object binding is much like using an array of JSON objects, except the objects must implement the choice interface."
+          description="Bound to an array of objects that implement the Choice interface."
           props={{
             width: "300px",
             title: "Typed binding",
@@ -281,7 +298,7 @@ return (
       <div className="demo">
         <DemoItem
           title="Single string"
-          description="Demos a compact select where the user can select one string."
+          description="Minimum and maximum selections set to 1."
           props={{
             width: "300px",
             title: "One String",
@@ -310,7 +327,7 @@ export default function App() {
         />
         <DemoItem
           title="Single or no value"
-          description="Demos a compact select where the user can select one or no values."
+          description="Maximum selections set to 1."
           props={{
             width: "300px",
             title: "One/Zero value",
@@ -341,16 +358,15 @@ export default function App() {
         />
         <DemoItem
           title="Single bound selection"
-          description="A single selection control bound to state."
+          description="Bound to state."
           props={{
             width: "300px",
-            title: "One String",
+            title: "Single bound",
             choices: choices,
             maximumSelections: 1,
             minimumSelections: 1,
           }}
-          
-          bindSelection
+          bindSelection="single"
           code={`import CompactSelect from "compact-select";
           import { useState } from "react";
           import { choices } from "./data";
@@ -382,7 +398,7 @@ export default function App() {
       <div className="demo">
         <DemoItem
           title="Multi string"
-          description="A multi string selection control. No or many strings can be selected."
+          description="Unlimited number of selections."
           props={{
             width: "300px",
             title: "Multi string",
@@ -407,7 +423,7 @@ export default function App() {
         />
         <DemoItem
           title="Fixed multi value"
-          description="A three value selection control. Up to three values can be selected"
+          description="Limited to a specific number of selections, in this case three."
           props={{
             width: "300px",
             title: "Three objects",
@@ -438,14 +454,13 @@ export default function App() {
         />
          <DemoItem
           title="Multi bound selection"
-          description="A multi string selection control with the selection bound to state."
+          description="Bound to state"
           props={{
             width: "300px",
-            title: "Multi string",
+            title: "Multi bound",
             choices: choices,
           }}
-          bindSelection
-          
+          bindSelection="multi"
           code={`import { useState } from "react";
           import CompactSelect from "compact-select";
           import { choices } from "./data";
@@ -476,9 +491,9 @@ export default function App() {
       <div className="demo">
         <DemoItem
           title="Single string dropdown"
-          description="A single string dropdown selection control. A single string can be selected."
+          description="A simple single value dropdown list with no lookup"
           props={{
-             width: "200px",
+             width: "300px",
             title: "String dropdown",
             choices: choices,
             maximumSelections: 1,
@@ -505,9 +520,9 @@ export default function App() {
         />
         <DemoItem
           title="Multi value dropdown"
-          description="A multi value dropdown selection control. Multiple values can be selected."
+          description="A multi value dropdown list."
           props={{
-             width: "200px",
+            width: "300px",
             title: "Values dropdown",
             choices: objectChoices,
             selectType: "dropdown",
@@ -543,8 +558,9 @@ export default function App() {
       <div className="demo">
         <DemoItem
           title="String switch"
-          description="A string switch control. Alternates between the available values."
+          description="A switch that alternates between values."
           props={{
+            width: "120px",
             hideTitle: true,
             title: "String switch",
             choices: choices,

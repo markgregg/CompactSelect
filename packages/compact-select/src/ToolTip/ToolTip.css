@@ -1,5 +1,6 @@
 .toolTip {
   position: relative;
+  width: 100%;
 }
 
 .toolTipText {
