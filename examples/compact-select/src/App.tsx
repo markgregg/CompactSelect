@@ -11,7 +11,6 @@ const pages = ["About", "Examples"];
 const App = () => {
   const [themeName, setThemeName] = useState<string>(Themes.None.toString());
   const [page, setPage] = useState<string>("Examples");
-  const [pageHighlight, setPageHighlight] = useState<string>();
   
   useEffect(()=> {
     applyTheme(Themes.None);
@@ -42,13 +41,7 @@ const App = () => {
                 <div
                   key={pg}
                   className="menu-item"
-                  style={{
-                    color:
-                      pg === pageHighlight ? "var(--compactSelectFonHighlightColor)" : "var(--compactSelectFontColor)"
-                  }}
                   onClick={() => setPage(pg)}
-                  onMouseEnter={() => setPageHighlight(pg)}
-                  onMouseLeave={() => setPageHighlight(undefined)}
                 >
                   <p className="menu-text">{pg}</p>
                 </div>

@@ -64,6 +64,11 @@
   font-size: medium;
   font-weight: bold;
   text-align: center;
+  color: var(--pageFont);
+}
+
+.menu-item:hover {
+  color: var(--compactSelectFonHighlightColor,darkgray);
 }
 
 .menu-text {

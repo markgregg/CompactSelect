@@ -235,7 +235,7 @@ export default function App() {
         />
         <DemoItem
           title="Object binding"
-          description="Bound to an array of objecvts, getters provide the item, text, value and disbaled state (if required) getters."
+          description="Bound to an array of objects, getters provide the text, value and disbaled state (if required)."
           props={{
             width: "300px",
             title: "Object binding",
