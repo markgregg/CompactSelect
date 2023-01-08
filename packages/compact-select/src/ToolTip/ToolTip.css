@@ -15,7 +15,7 @@
   border-radius: 5px;
   text-align: var(--compactSelectToolTipTextAlign, center);
   border: var(--compactSelectToolTipBorder);
-  background-color: var(--compactSelectToolTipBackgroundColor);
+  background-color: var(--compactSelectToolTipBackgroundColor, white);
   background-image: var(--compactSelectToolTipBackgroundImage);
 }
 
