@@ -18,7 +18,7 @@ import {
 } from "../types";
 import"./CompactSelect.css";
 import CompactDisplay from "../CompactDisplay";
-import { CompactSelectModel, createCompactSelectModel } from "./CompactSelectModel";
+import { CompactSelectModel, compactSelectModelFunctions } from "./CompactSelectModel";
 
 export interface CompactSelectProps<T extends object | string>
   extends SelectProps<T>,
@@ -27,21 +27,29 @@ export interface CompactSelectProps<T extends object | string>
     DisplayStyle,
     ToolTipStyle {}
 
+
 const CompactSelect = <T extends object | string>(
   props: CompactSelectProps<T>
 ) => {
   const [,setRefresh] = useState<number>(0);
-  const [model,] = useState<CompactSelectModel<T>>(createCompactSelectModel({refresh: setRefresh,...(props as SelectProps<T>)}))
+  const [model,] = useState<CompactSelectModel<T>>(compactSelectModelFunctions.createCompactSelectModel({refresh: setRefresh,...(props as SelectProps<T>)}));
 
   useEffect(() => {
-    model.updateSelection(props.selected);
+    model.selected = compactSelectModelFunctions.getSelection(props),
+    compactSelectModelFunctions.updateVisibleChoices(model, props);
+    model.updateDisplay();
   }, [props.selected]);
 
   useEffect(() => {
+    compactSelectModelFunctions.updateVisibleChoices(model, props);
+    model.updateDisplay();
+  }, [props.choices]);
+
+  useEffect(() => {
     //detected when to close item list
-    document.addEventListener("click", model.clickedAway, true);
+    document.addEventListener("click", e => compactSelectModelFunctions.clickedAway(e, model), true);
     return () => {
-      document.removeEventListener("click", model.clickedAway, true);
+      document.removeEventListener("click", e => compactSelectModelFunctions.clickedAway(e, model), true);
     };
   }, []);
 
@@ -124,9 +132,11 @@ const CompactSelect = <T extends object | string>(
       itemText: props.itemText,
       item,
       choiceSelected: selected,
-      onSelected: selected ? model.deselectItem : model.selectItem,
+      onSelected: selected 
+        ? item => compactSelectModelFunctions.deselectItem(item, model, props) 
+        : item => compactSelectModelFunctions.selectItem(item, model, props),
       choiceHighlighted: highlighted,
-      choiceDisabled: model.isDisabled(item),
+      choiceDisabled: compactSelectModelFunctions.isDisabled(item, props),
       ...(props as ChoiceStyle),
     };
   };
@@ -141,7 +151,7 @@ const CompactSelect = <T extends object | string>(
         key={
           (highlighted ? "high-" : "") +
           (selected ? "selected-" : "") +
-          model.getItemValue(item)
+          compactSelectModelFunctions.getItemValue(item, props)
         }
       >
         {props.choiceComponent({ ...choiceProps(highlighted, selected, item) })}
@@ -151,7 +161,7 @@ const CompactSelect = <T extends object | string>(
         key={
           (highlighted ? "high-" : "") +
           (selected ? "selected-" : "") +
-          model.getItemValue(item)
+          compactSelectModelFunctions.getItemValue(item, props)
         }
         {...choiceProps(highlighted, selected, item)}
       />
@@ -178,10 +188,10 @@ const CompactSelect = <T extends object | string>(
     <div
       className={"csCompactSelect" + compactSelectClass()}
       style={compactSelectStyle()}
-      onMouseEnter={model.checkToolTip}
-      onMouseLeave={model.hideToolTip}
-      onPaste={model.pasteText}
-      onClick={model.textInputClicked}
+      onMouseEnter={() => compactSelectModelFunctions.checkToolTip(model)}
+      onMouseLeave={() => compactSelectModelFunctions.hideToolTip(model)}
+      onPaste={e => compactSelectModelFunctions.pasteText(e, model, props)}
+      onClick={() => compactSelectModelFunctions.textInputClicked(model, props)}
     >
       {toolTip(
         <div className="csContentSelectWrapper">
@@ -190,7 +200,7 @@ const CompactSelect = <T extends object | string>(
             props.selectType !== "switch" && (
               <div
                 className="csCompactClearSelection"
-                onClick={model.clearSelection}
+                onClick={e => compactSelectModelFunctions.clearSelection(e, model, props)}
               >
                 {props.clearSelectionIcon ? (
                   <props.clearSelectionIcon
@@ -226,8 +236,8 @@ const CompactSelect = <T extends object | string>(
                   autoCapitalize="off"
                   autoComplete="off"
                   autoCorrect="off"
-                  onChange={model.textChanged}
-                  onKeyDownCapture={model.inputKeyPressed}
+                  onChange={e => compactSelectModelFunctions.textChanged(e, model, props)}
+                  onKeyDownCapture={e => compactSelectModelFunctions.inputKeyPressed(e, model, props)}
                 />
               ) : props.displayComponent ? (
                 props.displayComponent(displayTextProps())
@@ -272,7 +282,7 @@ const CompactSelect = <T extends object | string>(
                     <li
                       id={`item_${index}`}
                       key={`item_${index}`}
-                      onMouseOverCapture={() => model.adjustHighlightedIndexOnly(index)}
+                      onMouseOverCapture={() => compactSelectModelFunctions.adjustHighlightedIndexOnly(index, model)}
                     >
                       {constructChoice(
                         model.highlightedIndex === index,
