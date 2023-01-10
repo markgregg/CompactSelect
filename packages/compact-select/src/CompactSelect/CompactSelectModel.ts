@@ -284,7 +284,6 @@ export const compactSelectModelFunctions: CompactSelectFunctions = {
     } else if( model.highlightedIndex === -1 ) {
       compactSelectModelFunctions.adjustHighlightedIndex(0,model);
     }
-    model.visibleChoices = model.visibleChoices;
     compactSelectModelFunctions.updateDisplayText(model, props);
   },
 

@@ -35,7 +35,7 @@ const CompactSelect = <T extends object | string>(
   const [model,] = useState<CompactSelectModel<T>>(compactSelectModelFunctions.createCompactSelectModel({refresh: setRefresh,...(props as SelectProps<T>)}));
 
   useEffect(() => {
-    model.selected = compactSelectModelFunctions.getSelection(props),
+    model.selected = compactSelectModelFunctions.getSelection(props);
     compactSelectModelFunctions.updateVisibleChoices(model, props);
     model.updateDisplay();
   }, [props.selected]);
