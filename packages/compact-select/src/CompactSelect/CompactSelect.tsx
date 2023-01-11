@@ -1,6 +1,8 @@
 import {
   useState,
+  useMemo,
   useEffect,
+  useRef,
 } from "react";
 import CSS from "csstype";
 import { MdClear } from "react-icons/md";
@@ -18,7 +20,7 @@ import {
 } from "../types";
 import"./CompactSelect.css";
 import CompactDisplay from "../CompactDisplay";
-import { CompactSelectModel, compactSelectModelFunctions } from "./CompactSelectModel";
+import { CompactSelectModel, createCompactSelectModel } from "./CompactSelectModel";
 
 export interface CompactSelectProps<T extends object | string>
   extends SelectProps<T>,
@@ -31,25 +33,20 @@ export interface CompactSelectProps<T extends object | string>
 const CompactSelect = <T extends object | string>(
   props: CompactSelectProps<T>
 ) => {
-  const [,setRefresh] = useState<number>(0);
-  const [model,] = useState<CompactSelectModel<T>>(compactSelectModelFunctions.createCompactSelectModel({refresh: setRefresh,...(props as SelectProps<T>)}));
-
-  useEffect(() => {
-    model.selected = compactSelectModelFunctions.getSelection(props);
-    compactSelectModelFunctions.updateVisibleChoices(model, props);
-    model.updateDisplay();
-  }, [props.selected]);
-
-  useEffect(() => {
-    compactSelectModelFunctions.updateVisibleChoices(model, props);
-    model.updateDisplay();
-  }, [props.choices]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [,refresh] = useState<number>(0);
+  const refreshDisplay = () => {
+    refresh(performance.now());
+  }
+  const model = useMemo<CompactSelectModel<T>>( () => createCompactSelectModel(props), [] );
+  model.updateProps(props);
+  model.refresh = refreshDisplay;
 
   useEffect(() => {
     //detected when to close item list
-    document.addEventListener("click", e => compactSelectModelFunctions.clickedAway(e, model), true);
+    document.addEventListener("click", e => model.clickedAway(e), true);
     return () => {
-      document.removeEventListener("click", e => compactSelectModelFunctions.clickedAway(e, model), true);
+      document.removeEventListener("click", e => model.clickedAway(e), true);
     };
   }, []);
 
@@ -133,10 +130,10 @@ const CompactSelect = <T extends object | string>(
       item,
       choiceSelected: selected,
       onSelected: selected 
-        ? item => compactSelectModelFunctions.deselectItem(item, model, props) 
-        : item => compactSelectModelFunctions.selectItem(item, model, props),
+        ? item => model.deselectItem(item) 
+        : item => model.selectItem(item),
       choiceHighlighted: highlighted,
-      choiceDisabled: compactSelectModelFunctions.isDisabled(item, props),
+      choiceDisabled: model.isDisabled(item),
       ...(props as ChoiceStyle),
     };
   };
@@ -151,7 +148,7 @@ const CompactSelect = <T extends object | string>(
         key={
           (highlighted ? "high-" : "") +
           (selected ? "selected-" : "") +
-          compactSelectModelFunctions.getItemValue(item, props)
+          model.getItemValue(item)
         }
       >
         {props.choiceComponent({ ...choiceProps(highlighted, selected, item) })}
@@ -161,7 +158,7 @@ const CompactSelect = <T extends object | string>(
         key={
           (highlighted ? "high-" : "") +
           (selected ? "selected-" : "") +
-          compactSelectModelFunctions.getItemValue(item, props)
+          model.getItemValue(item)
         }
         {...choiceProps(highlighted, selected, item)}
       />
@@ -188,10 +185,10 @@ const CompactSelect = <T extends object | string>(
     <div
       className={"csCompactSelect" + compactSelectClass()}
       style={compactSelectStyle()}
-      onMouseEnter={() => compactSelectModelFunctions.checkToolTip(model)}
-      onMouseLeave={() => compactSelectModelFunctions.hideToolTip(model)}
-      onPaste={e => compactSelectModelFunctions.pasteText(e, model, props)}
-      onClick={() => compactSelectModelFunctions.textInputClicked(model, props)}
+      onMouseEnter={() => model.checkToolTip()}
+      onMouseLeave={() => model.hideToolTip()}
+      onPaste={e => model.pasteText(e)}
+      onClick={() => model.textInputClicked(inputRef)}
     >
       {toolTip(
         <div className="csContentSelectWrapper">
@@ -200,7 +197,7 @@ const CompactSelect = <T extends object | string>(
             props.selectType !== "switch" && (
               <div
                 className="csCompactClearSelection"
-                onClick={e => compactSelectModelFunctions.clearSelection(e, model, props)}
+                onClick={e => model.clearSelection(e)}
               >
                 {props.clearSelectionIcon ? (
                   <props.clearSelectionIcon
@@ -220,7 +217,7 @@ const CompactSelect = <T extends object | string>(
               {model.showChoices &&
               (!props.selectType || props.selectType === "standard") ? (
                 <input
-                  ref={model.inputRef}
+                  ref={inputRef}
                   id={"csInput" + model.selectId}
                   className={"csCompactInput" + inputClassName()}
                   style={inputStyle()}
@@ -236,8 +233,8 @@ const CompactSelect = <T extends object | string>(
                   autoCapitalize="off"
                   autoComplete="off"
                   autoCorrect="off"
-                  onChange={e => compactSelectModelFunctions.textChanged(e, model, props)}
-                  onKeyDownCapture={e => compactSelectModelFunctions.inputKeyPressed(e, model, props)}
+                  onChange={e => model.textChanged(e)}
+                  onKeyDownCapture={e => model.inputKeyPressed(e)}
                 />
               ) : props.displayComponent ? (
                 props.displayComponent(displayTextProps())
@@ -282,7 +279,7 @@ const CompactSelect = <T extends object | string>(
                     <li
                       id={`item_${index}`}
                       key={`item_${index}`}
-                      onMouseOverCapture={() => compactSelectModelFunctions.adjustHighlightedIndexOnly(index, model)}
+                      onMouseOverCapture={() => model.adjustHighlightedIndexOnly(index)}
                     >
                       {constructChoice(
                         model.highlightedIndex === index,

@@ -9,18 +9,15 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "lerna run build --scope compact-select",
-    "clean": "lerna run clean --scope compact-select",
-    "watch": "lerna run watch --scope compact-select",
-    "package": "lerna exec --scope select-flex-package -- npm pack"
+    "publish": "cd packages/compact-select && npm run build && npm publish",
+    "run-test": "cd examples/compact-select && npm run postinstall && npm run start",
+    "run-live": "cd examples/compact-select && npm update compact-select && npm run start",
+    "deploy": "cd examples/compact-select && npm run deploy",
+    "install": "cd packages/compact-select && npm install && cd ../../examples/compact-select && npm install"
   },
   "devDependencies": {
-    "lerna": "^4.0.0",
     "prettier": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
-  },
-  "dependencies": {
-    "compact-select-example": "file:examples/compact-select"
   }
 }
