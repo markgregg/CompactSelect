@@ -1,3 +1,4 @@
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
@@ -19,6 +20,7 @@ export default {
   ],
   external: [...Object.keys(pkg.peerDependencies || {})],
   plugins: [
+    peerDepsExternal(),
     nodeResolve(),
     commonjs(),
     typescript({
