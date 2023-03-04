@@ -37,7 +37,7 @@
 }
 
 .csCompactChoiceSelectedIcon {
-  font-size: var(--compactSelectSelectedIconSize, large);
+  font-size: var(--compactSelectSelectedIconSize, small);
   color: var(--compactSelectSelectedIconColor, green);
 }
 

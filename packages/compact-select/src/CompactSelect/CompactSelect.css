@@ -33,7 +33,7 @@
 }
 
 .csCompactClearSelection {
-  font-size: var(--compactSelectClearSelectionIconSize, large);
+  font-size: var(--compactSelectClearSelectionIconSize, small);
   align-content: center;
   display: flex;
 }
@@ -90,7 +90,7 @@ input:focus {
 
 .csCompactSelectTitle {
   position: absolute;
-  top: -30px;
+  top: -100%;
   font-size:  var(--compactSelectTitleFontSize, small);
   font-weight: var(--compactSelectTitleFontWeight, 100);
 }

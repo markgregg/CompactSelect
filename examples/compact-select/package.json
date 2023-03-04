@@ -3,7 +3,7 @@
   "homepage": "https://markgregg.github.io/CompactSelect/",
   "version": "1.0.0",
   "dependencies": {
-    "compact-select": "^0.14.0",
+    "compact-select": "^0.14.3",
     "expo-app-loading": "^2.1.1",
     "expo-font": "^11.0.1",
     "react": "^17.0.2",

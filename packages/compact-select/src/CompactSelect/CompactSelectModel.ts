@@ -18,7 +18,6 @@ import"./CompactSelect.css";
 export interface CompactSelectModel<T extends Choice | object | string> {
   token: string;
   inputText: string;
-  filterText: string;
   showChoices: boolean;
   lookedUpChoices?: T[];
   selected: T[];
@@ -110,7 +109,6 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
     token: "",
     selected: getSelection(initialProps),
     inputText: "",
-    filterText: "",
     showChoices: false,
     visibleChoices: [],
     lookedUpChoices: [],
@@ -132,7 +130,9 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
       if( props.selected !== model.props.selected) {
         model.selected = getSelection(props);
         model.updateVisibleChoices();
-
+      }
+      if( props.choices !== model.props.choices ) {
+        model.updateVisibleChoices();
       }
       model.props = props;
     },
