@@ -13,6 +13,7 @@
 }
 
 .csContentSelectWrapper {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -55,6 +56,7 @@
   flex-direction: row;
   align-items: center;
   flex: 1;
+  position: relative;
 }
 
 .csCompactTextWrapper {
@@ -90,9 +92,11 @@ input:focus {
 
 .csCompactSelectTitle {
   position: absolute;
-  top: -100%;
-  font-size:  var(--compactSelectTitleFontSize, small);
-  font-weight: var(--compactSelectTitleFontWeight, 100);
+    font-size: var(--compactSelectTitleFontSize, small);
+    font-weight: var(--compactSelectTitleFontWeight, 100);
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    bottom: 100%;
 }
 
 .csCompactSelectTitleDisabled {
@@ -101,7 +105,7 @@ input:focus {
 
 .csCompactChoiceContainer {
   position: absolute;
-  top: 40px;
+  top: calc(100% + 5px);
   width: -webkit-fill-available;
   overflow: auto;
   border-radius: 5px;

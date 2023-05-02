@@ -1,7 +1,7 @@
 import { FC } from "react";
 import CSS from "csstype";
 import { ToolTipProps, ToolTipStyle } from "../types";
-import "./Tooltip.css"
+import "./ToolTip.css";
 
 const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
   tip,
@@ -32,7 +32,7 @@ const ToolTip: FC<ToolTipProps & ToolTipStyle> = ({
         };
       default:
         return {
-          top: "100%",
+          top: "calc(100% + 5px)",
           left: "0%",
         };
     }

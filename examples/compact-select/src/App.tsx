@@ -1,8 +1,8 @@
-import CompactSelect from "compact-select";
+import CompactSelect from "../src/packages/compact-select/src";
 import React, { useEffect, useState } from "react";
-import About from "./About/About";
+import About from "./about/About";
 import Examples from "./Examples/Examples";
-import HowTo from "./HowTo/HowTo";
+import HowTo from "./howTo/HowTo";
 import "./App.css";
 import { applyTheme, themes, Themes } from "./themes/themes";
 

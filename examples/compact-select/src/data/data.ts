@@ -9,7 +9,7 @@ import {
 } from "react-icons/md";
 import { GiCheckMark } from "react-icons/gi";
 import { IconType } from "react-icons/lib";
-import { Choice } from "compact-select";
+import { Choice } from "../packages/compact-select/src";
 
 export const clearIconMap = new Map<string, IconType>();
 clearIconMap.set("Circle Cross", TiDeleteOutline);
@@ -2309,4 +2309,18 @@ export const colorChoices: ColorItem[] = [
   { text: "George", value: "109", disabled: false, color: "gray" },
   { text: "Adam", value: "110", disabled: false, color: "purple" },
   { text: "Sharon", value: "111", disabled: false, color: "crimson" },
+];
+
+export const longChoices = [
+  "mark sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
+  "andrew sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
+  "Nuala sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
+  "Sarah sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
+  "Jane sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
+  "Peter sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
+  "Dianna sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
+  "Carol sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
+  "George sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
+  "Adam sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
+  "Sharon sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
 ];

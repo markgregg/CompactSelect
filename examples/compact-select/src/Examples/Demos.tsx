@@ -6,7 +6,7 @@ import CompactSelect, {
   CompactSelectProps, 
   DisplayProps,
   DisplayStyle,
-} from "compact-select";
+} from "../packages/compact-select/src";
 import { CodeBlock, googlecode } from "react-code-blocks";
 import { ClipboardCopy } from "../components";
 import { AiOutlineEdit, AiOutlineCopy, AiOutlineCode } from "react-icons/ai";
@@ -16,6 +16,7 @@ import {
   choices,
   colorChoices,
   ColorItem,
+  longChoices,
   objectChoices,
   typedObjectChoices,
 } from "../data/data";
@@ -480,6 +481,38 @@ export default function App() {
               </div>
             );
           }`}
+          sandbox="https://codesandbox.io/s/multi-string-compact-select-2wbrc2"
+        />
+      </div>
+    ),
+  },
+  {
+    name: "Long strings",
+    demo: () => (
+      <div className="demo">
+        <DemoItem
+          title="Long string"
+          description="Truncated text."
+          props={{
+            width: "300px",
+            title: "Long string",
+            choices: longChoices,
+          }}
+          
+          code={`import CompactSelect from "compact-select";
+import { choices } from "./data";
+import "./styles.css";
+
+export default function App() {
+  return (
+    <div className="Space">
+      <CompactSelect
+        title="test"
+        choices={choices}
+      />
+    </div>
+  );
+}`}
           sandbox="https://codesandbox.io/s/multi-string-compact-select-2wbrc2"
         />
       </div>

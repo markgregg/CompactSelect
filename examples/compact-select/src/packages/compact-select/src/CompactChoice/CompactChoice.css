@@ -30,6 +30,8 @@
 
 .csCompactChoiceText {
   margin: 2px;
+  white-space: nowrap; 
+  overflow: visible;
 }
 
 .csCompactSelectedIndicatorDiv {

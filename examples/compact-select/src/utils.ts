@@ -1,4 +1,4 @@
-import { Choice } from "compact-select";
+import { Choice } from "../src/packages/compact-select/src";
 import {
   bigChoices,
   bigObjectChoices,
