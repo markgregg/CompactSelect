@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/CompactSelect/static/css/main.eea399b4.css",
-    "main.js": "/CompactSelect/static/js/main.d767e57f.js",
+    "main.css": "/CompactSelect/static/css/main.cb8bee17.css",
+    "main.js": "/CompactSelect/static/js/main.f4b29c7f.js",
     "react-syntax-highlighter/refractor-core-import.js": "/CompactSelect/static/js/react-syntax-highlighter/refractor-core-import.421d4011.chunk.js",
     "react-syntax-highlighter_languages_refractor_abap.js": "/CompactSelect/static/js/react-syntax-highlighter_languages_refractor_abap.a979c581.chunk.js",
     "react-syntax-highlighter_languages_refractor_actionscript.js": "/CompactSelect/static/js/react-syntax-highlighter_languages_refractor_actionscript.c1869d5c.chunk.js",
@@ -156,8 +156,8 @@
     "react-syntax-highlighter_languages_refractor_yaml.js": "/CompactSelect/static/js/react-syntax-highlighter_languages_refractor_yaml.efdb2108.chunk.js",
     "static/js/787.6d21474a.chunk.js": "/CompactSelect/static/js/787.6d21474a.chunk.js",
     "index.html": "/CompactSelect/index.html",
-    "main.eea399b4.css.map": "/CompactSelect/static/css/main.eea399b4.css.map",
-    "main.d767e57f.js.map": "/CompactSelect/static/js/main.d767e57f.js.map",
+    "main.cb8bee17.css.map": "/CompactSelect/static/css/main.cb8bee17.css.map",
+    "main.f4b29c7f.js.map": "/CompactSelect/static/js/main.f4b29c7f.js.map",
     "refractor-core-import.421d4011.chunk.js.map": "/CompactSelect/static/js/react-syntax-highlighter/refractor-core-import.421d4011.chunk.js.map",
     "react-syntax-highlighter_languages_refractor_abap.a979c581.chunk.js.map": "/CompactSelect/static/js/react-syntax-highlighter_languages_refractor_abap.a979c581.chunk.js.map",
     "react-syntax-highlighter_languages_refractor_actionscript.c1869d5c.chunk.js.map": "/CompactSelect/static/js/react-syntax-highlighter_languages_refractor_actionscript.c1869d5c.chunk.js.map",
@@ -313,7 +313,7 @@
     "787.6d21474a.chunk.js.map": "/CompactSelect/static/js/787.6d21474a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.eea399b4.css",
-    "static/js/main.d767e57f.js"
+    "static/css/main.cb8bee17.css",
+    "static/js/main.f4b29c7f.js"
   ]
 }
