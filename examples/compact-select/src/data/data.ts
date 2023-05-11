@@ -2324,3 +2324,33 @@ export const longChoices = [
   "Adam sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
   "Sharon sdfsdkj k jk kljklj kjk ljkl jklj kljkl jkl jklasdsdassdsadsaadf",
 ];
+
+export const groups = [
+  {
+    label: "group 1",
+    choices: [
+      "mark",
+      "andrew",
+      "Nuala",
+      "Sarah"
+    ]
+  },
+  {
+    label: "group 2",
+    choices: [
+      "Jane",
+      "Peter",
+      "Dianna",
+      "Carol"
+    ]
+  },
+  {
+    label: "group 3",
+    choices: [
+      "George",
+      "Adam",
+      "Sharon",
+      "Sara"
+    ]
+  }
+];

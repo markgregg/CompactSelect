@@ -1,11 +1,17 @@
 import { Choice } from './choice';
 
+export interface Group<T extends Choice | object | string> {
+  label: string;
+  choices: T[];
+}
+
+
 export interface SelectProps<T extends Choice | object | string> {
   title: string; //select title and key for cache
   maximumSelections?: number; //min items that can be selected
   minimumSelections?: number; //max items that can be selected
   selectType?: 'standard' | 'dropdown' | 'switch'; //how the control behaves
-  choices?: T[]; //available static choices
+  choices?: (T | Group<T>)[]; //available static choices
   selected?: T[] | T; //currently selected items
   itemValue?: (item: T) => string; //if using a complex class the key value
   itemText?: (item: T) => string; //if using a complex class the display value
@@ -24,4 +30,5 @@ export interface SelectProps<T extends Choice | object | string> {
   toolTipValueLimit?: number; //Maxium number of items to display
   hideListOnSelect?: boolean; //automatically hide the option list when an Item is selected/deselected
   clearInputOnSelect?: boolean; //clear input text if an item is selcted
+  allowSelectAll?: boolean;
 }

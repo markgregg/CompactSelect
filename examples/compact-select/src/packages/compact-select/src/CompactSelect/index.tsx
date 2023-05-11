@@ -5,7 +5,7 @@ import {
   useRef,
 } from "react";
 import CSS from "csstype";
-import { MdClear } from "react-icons/md";
+import { MdClear, MdDoneAll } from "react-icons/md";
 import { RiArrowDropDownFill } from "react-icons/ri";
 import CompactChoice from "../CompactChoice";
 import ToolTip from "../ToolTip";
@@ -17,12 +17,15 @@ import {
   DisplayStyle,
   DisplayProps,
   ChoiceProps,
+  Choice,
 } from "../types";
 import"./CompactSelect.css";
 import CompactDisplay from "../CompactDisplay";
 import { CompactSelectModel, createCompactSelectModel } from "./CompactSelectModel";
+import { Group } from "../types/selectProps";
 
-export interface CompactSelectProps<T extends object | string>
+
+export interface CompactSelectProps<T extends Choice | object | string>
   extends SelectProps<T>,
     SelectStyle,
     ChoiceStyle,
@@ -30,7 +33,7 @@ export interface CompactSelectProps<T extends object | string>
     ToolTipStyle {}
 
 
-const CompactSelect = <T extends object | string>(
+const CompactSelect = <T extends Choice | object | string>(
   props: CompactSelectProps<T>
 ) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -181,8 +184,47 @@ const CompactSelect = <T extends object | string>(
       />
     );
 
+  const showItems = (items: (T | Group<T>)[], index: number) => {
+    return items.map(item => {
+      if( typeof item === 'object' && 'choices' in item ) {
+        const tmpIdx = index;
+        index += item.choices.length;
+        return <div 
+            key={item.label}
+            className="csCompactChoiceListCategory"
+          >
+          <div>{item.label}</div>
+          {
+            <ul className="csCompactChoiceList">
+              {
+                item.choices.length > 0 &&
+                  showItems(item.choices, tmpIdx)
+              }   
+            </ul>
+          }
+        </div>
+      } else {
+        const itemIndex = index++;
+        return <li
+          id={`item_${itemIndex}`}
+          key={`item_${itemIndex}`}
+          onMouseOverCapture={() => model.adjustHighlightedIndexOnly(itemIndex)}
+        >
+          {
+            constructChoice(
+              model.highlightedIndex === itemIndex,
+              model.selected.indexOf(item) !== -1,
+              item
+            )
+          }
+        </li>
+      }
+    })
+  }
+
   return (
     <div
+      id={"csInput" + model.selectId}
       className={"csCompactSelect" + compactSelectClass()}
       style={compactSelectStyle()}
       onMouseEnter={() => model.checkToolTip()}
@@ -218,7 +260,6 @@ const CompactSelect = <T extends object | string>(
               (!props.selectType || props.selectType === "standard") ? (
                 <input
                   ref={inputRef}
-                  id={"csInput" + model.selectId}
                   className={"csCompactInput" + inputClassName()}
                   style={inputStyle()}
                   value={
@@ -242,6 +283,17 @@ const CompactSelect = <T extends object | string>(
                 <CompactDisplay {...displayTextProps()} />
               )}
             </div>
+            {
+              props.allowSelectAll && model.showChoices &&
+              (!props.selectType || props.selectType === "standard") &&
+              model.inputText.length > 0 && 
+                <div
+                  className="csCompactSelectAll"
+                  onClick={() => model.selectAll()}
+                >
+                  <MdDoneAll/>
+                </div>
+            } 
             {!props.hideDropdownIcon &&
               props.selectType !== "switch" && (
                 <div>
@@ -274,20 +326,10 @@ const CompactSelect = <T extends object | string>(
               style={props.choiceListStyle}
             >
               <ul className="csCompactChoiceList">
-                {model.visibleChoices.length > 0 &&
-                  model.visibleChoices.map((item, index) => (
-                    <li
-                      id={`item_${index}`}
-                      key={`item_${index}`}
-                      onMouseOverCapture={() => model.adjustHighlightedIndexOnly(index)}
-                    >
-                      {constructChoice(
-                        model.highlightedIndex === index,
-                        model.selected.indexOf(item) !== -1,
-                        item
-                      )}
-                    </li>
-                  ))}
+                {
+                  model.visibleChoices.length > 0 &&
+                    showItems(model.visibleChoices, 0)
+                }
                 {model.visibleChoices.length === 0 &&
                   !props.choices &&
                   !model.lookedUpChoices && (

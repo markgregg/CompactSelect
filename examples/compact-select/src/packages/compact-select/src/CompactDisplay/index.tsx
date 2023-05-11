@@ -1,8 +1,8 @@
 import CSS from "csstype";
-import { DisplayProps, DisplayStyle } from "../types";
+import { Choice, DisplayProps, DisplayStyle } from "../types";
 import "./CompactSelectDisplay.css";
 
-const CompactDisplay = <T extends object | string>(
+const CompactDisplay = <T extends Choice | object | string>(
   props: DisplayProps<T> & DisplayStyle
 ) => {
 

@@ -16,6 +16,7 @@ import {
   choices,
   colorChoices,
   ColorItem,
+  groups,
   longChoices,
   objectChoices,
   typedObjectChoices,
@@ -497,6 +498,71 @@ export default function App() {
             width: "300px",
             title: "Long string",
             choices: longChoices,
+          }}
+          
+          code={`import CompactSelect from "compact-select";
+import { choices } from "./data";
+import "./styles.css";
+
+export default function App() {
+  return (
+    <div className="Space">
+      <CompactSelect
+        title="test"
+        choices={choices}
+      />
+    </div>
+  );
+}`}
+          sandbox="https://codesandbox.io/s/multi-string-compact-select-2wbrc2"
+        />
+      </div>
+    ),
+  },
+  {
+    name: "Select All",
+    demo: () => (
+      <div className="demo">
+        <DemoItem
+          title="Select all"
+          description="Truncated text."
+          props={{
+            width: "300px",
+            title: "Select all",
+            choices: choices,
+            allowSelectAll: true
+          }}
+          
+          code={`import CompactSelect from "compact-select";
+import { choices } from "./data";
+import "./styles.css";
+
+export default function App() {
+  return (
+    <div className="Space">
+      <CompactSelect
+        title="test"
+        choices={choices}
+      />
+    </div>
+  );
+}`}
+          sandbox="https://codesandbox.io/s/multi-string-compact-select-2wbrc2"
+        />
+      </div>
+    ),
+  },
+  {
+    name: "Groups",
+    demo: () => (
+      <div className="demo">
+        <DemoItem
+          title="Groups"
+          description="Grouped items."
+          props={{
+            width: "300px",
+            title: "Groups",
+            choices: groups,
           }}
           
           code={`import CompactSelect from "compact-select";

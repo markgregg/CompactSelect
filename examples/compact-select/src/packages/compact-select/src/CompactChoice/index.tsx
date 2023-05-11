@@ -6,7 +6,7 @@ import { ChoiceProps } from "../types";
 import { errorMessage } from "../utils/domUtils";
 import "./CompactChoice.css"
 
-const CompactChoice = <T extends object | string>(
+const CompactChoice = <T extends Choice | object | string>(
   props: ChoiceProps<T> & ChoiceStyle
 ) => {
   const selectItem = (event: MouseEvent<HTMLDivElement>) => {

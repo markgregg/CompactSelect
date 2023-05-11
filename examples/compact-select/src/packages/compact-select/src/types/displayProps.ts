@@ -1,4 +1,6 @@
-export interface DisplayProps<T extends object | string> {
+import { Choice } from "./choice";
+
+export interface DisplayProps<T extends Choice | object | string> {
   title: string;
   text: string;
   selected: T[];

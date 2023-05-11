@@ -14,6 +14,8 @@ import {
   SelectProps,
 } from "../types";
 import"./CompactSelect.css";
+import { Group } from "../types/selectProps";
+
 
 export interface CompactSelectModel<T extends Choice | object | string> {
   token: string;
@@ -21,7 +23,8 @@ export interface CompactSelectModel<T extends Choice | object | string> {
   showChoices: boolean;
   lookedUpChoices?: T[];
   selected: T[];
-  visibleChoices: T[];
+  visibleChoices: (T | Group<T>)[];
+  flattenedVisibleChoices: T[];
   cache?: Cache<T>;
   highlightedIndex: number;
   selectId: string;
@@ -29,6 +32,7 @@ export interface CompactSelectModel<T extends Choice | object | string> {
   displayText: string;
   caption: string;
   props: SelectProps<T>;
+  flattenedChoices: T[] | undefined,
   refresh?: () => void;
 
   updateProps: (props: SelectProps<T>) => void;
@@ -40,8 +44,10 @@ export interface CompactSelectModel<T extends Choice | object | string> {
   toolTipLimit: () => number;
   onChange: (items: T[]) => void;
   fetchChoices: (text: string) => void;
-  shouldFilter: (item: T) => boolean;
-  getVisibleChoices: () => T[];
+  isShown: (item: T) => boolean;
+  shouldShow: (item: T | Group<T>) => boolean;
+  filterItems: (items: (T | Group<T>)[]) => (T | Group<T>)[];
+  getVisibleChoices: () => (T | Group<T>)[];
   updateDisplayText: () => void;
   updateVisibleChoices: () => void;
   updateChoices: (items: T[]) => void;
@@ -62,6 +68,7 @@ export interface CompactSelectModel<T extends Choice | object | string> {
   pasteText: (event: ClipboardEvent) => void;
   checkToolTip: () => void;
   hideToolTip: () => void;
+  selectAll: () => void;
   clearSelection: (event: ReactMouseEvent) => void;
   getDisplayText: (selection: T[]) => string;
   getCaption: (selection: T[]) => string;
@@ -70,9 +77,18 @@ export interface CompactSelectModel<T extends Choice | object | string> {
 
 const defaultToolTipLimit = 20;
 
+
 export const createCompactSelectModel = <T extends Choice | object | string>(initialProps: SelectProps<T>) : CompactSelectModel<T> => {
 
-  const getSelection = (props: SelectProps<T>): T[] => {
+  const flattenChoices = (items: (T | Group<T>)[]): T[] | undefined => {
+    return items.flatMap( choice => {
+      return choice !== undefined && choice !== null && typeof choice === 'object' && 'choices' in choice
+        ? choice.choices as T[]
+        : choice as T
+    }) ?? [];
+  }
+
+  const getSelection = (props: SelectProps<T>, choices?: T[]): T[] => {
     try {
       if (
         props.selectType === "switch" ||
@@ -88,8 +104,8 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
         if (props.selected && typeof props.selected === "string") {
           return [props.selected];
         }
-        if (props.choices && props.choices.length > 0) {
-          return [props.choices[0]];
+        if (choices && choices.length > 0) {
+          return [choices[0]];
         }
         return [];
       }
@@ -104,13 +120,16 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
     return [];
   };
 
+  const flattenedChoices = initialProps.choices ? flattenChoices(initialProps.choices) : undefined;
 
   const model: CompactSelectModel<T> = {
     token: "",
-    selected: getSelection(initialProps),
+    flattenedChoices,
+    selected: getSelection(initialProps, flattenedChoices),
     inputText: "",
     showChoices: false,
     visibleChoices: [],
+    flattenedVisibleChoices: [],
     lookedUpChoices: [],
     highlightedIndex: -1,
     showToolTip: false,
@@ -127,6 +146,7 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
     props: initialProps,
     
     updateProps: (props: SelectProps<T>) => {
+      model.flattenedChoices = props.choices ? flattenChoices(props.choices) : undefined;
       if( props.selected !== model.props.selected) {
         model.selected = getSelection(props);
         model.updateVisibleChoices();
@@ -259,15 +279,34 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
       }
     },
 
-    //check if item should be filtered
-    shouldFilter: (item: T): boolean => {
+    isShown: (item: T): boolean => {
       return model.getMatchItem(item).includes(
         !model.props.caseSensitive ? model.inputText.toLowerCase() : model.inputText
-      );
+      )
+    },
+
+    //check if item should be filtered in
+    shouldShow: (item: T | Group<T>): boolean => {
+      return typeof item === 'object' && 'choices' in item
+        ? item.choices.find( subItem => model.shouldShow(subItem)) !== undefined 
+        : model.isShown(item) && !model.selected.includes(item);
+    },
+
+    filterItems: (items: (T | Group<T>)[]): (T | Group<T>)[] => {
+      return items
+        .filter( item => model.shouldShow(item) )
+        .map( item => 
+          typeof item === 'object' && 'choices' in item
+            ? {
+              label: item.label,
+              choices: model.filterItems(item.choices)
+            } as Group<T>
+            : item
+        )
     },
 
     //determine visible choices based on available choices and what is selected
-    getVisibleChoices: (): T[] => {
+    getVisibleChoices: (): (T | Group<T>)[] => {
       try {
         //if not lookup choices availale and no choices supplied show selected items
         if (!model.lookedUpChoices && !model.props.choices) {
@@ -275,15 +314,9 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
         }
 
         //filter out selected items and items that do not contain text input
-        return model.selected
-          .filter((item) => !model.inputText || model.shouldFilter(item))
-          .concat(
-            (model.lookedUpChoices ?? model.props.choices ?? []).filter(
-              (item) =>
-                model.selected.indexOf(item) === -1 &&
-                (!model.inputText || model.shouldFilter(item))
-            )
-          );
+        return ( model.selected
+          .filter((item) => !model.inputText || model.isShown(item)) as (T | Group<T>)[])
+          .concat( model.filterItems(model.lookedUpChoices ?? model.props.choices ?? []) );
       } catch (error) {
         console.log(
           `Failed to get visible choices, reason: ${errorMessage(error)}`
@@ -308,10 +341,11 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
     //updates the visible item state
     updateVisibleChoices: () => {
       model.visibleChoices = model.getVisibleChoices();
-      if( model.visibleChoices.length === 0 ) {
+      model.flattenedVisibleChoices = flattenChoices(model.visibleChoices) ?? [];
+      if( model.flattenedVisibleChoices.length === 0 ) {
         model.adjustHighlightedIndex(-1);
-      } else if (model.highlightedIndex >= model.visibleChoices.length) {
-        model.adjustHighlightedIndex(model.visibleChoices.length - 1);
+      } else if (model.highlightedIndex >= model.flattenedVisibleChoices.length) {
+        model.adjustHighlightedIndex(model.flattenedVisibleChoices.length - 1);
       } else if( model.highlightedIndex === -1 ) {
         model.adjustHighlightedIndex(0);
       }
@@ -343,7 +377,7 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
       model.inputText = "";
       model.updateVisibleChoices();
       model.showChoices = true;
-      model.adjustHighlightedIndex(model.visibleChoices.length > 0 ? 0 : -1);
+      model.adjustHighlightedIndex(model.flattenedVisibleChoices.length > 0 ? 0 : -1);
       model.showChoices = true;
       model.hideToolTip();
       model.updateDisplay();
@@ -390,15 +424,15 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
       //if behaving as a switch move to the next item in the list
       if (model.props.selectType === "switch") {
         try {
-          if (model.props.choices) {
+          if (model.flattenedChoices) {
             var index =
               model.selected.length > 0
-                ? model.props.choices.indexOf(model.selected[0]) + 1
+                ? model.flattenedChoices.indexOf(model.selected[0]) + 1
                 : 0;
-            if (index + 1 > model.props.choices.length) {
+            if (index + 1 > model.flattenedChoices.length) {
               index = 0;
             }
-            model.selected = [model.props.choices[index]];
+            model.selected = [model.flattenedChoices[index]];
             model.updateSelected();
             model.updateDisplay();
           }
@@ -481,6 +515,18 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
       }
     },
 
+    selectAll: () => {
+      try {
+        model.flattenedVisibleChoices
+          .filter( item => !model.selected.includes(item))
+          .forEach(model.selectItem);
+        model.updateVisibleChoices();
+        model.updateDisplay();
+      } catch(error) {
+        console.log(`Failed to selected all items, reason: ${errorMessage(error)}`);
+      }
+    },
+
     //called when clear all selected items clicked.
     clearSelection: (event: ReactMouseEvent) => {
       if (model.props.disabled) {
@@ -511,15 +557,15 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
 
     findNextEnabled: (index: number,): number => {
       while (
-        index < model.visibleChoices.length &&
-        model.isDisabled(model.visibleChoices[index])
+        index < model.flattenedVisibleChoices.length &&
+        model.isDisabled(model.flattenedVisibleChoices[index])
       )
         index++;
       return index;
     },
 
     findPrevEnabled: (index: number): number => {
-      while (index > 0 && model.isDisabled(model.visibleChoices[index])) index--;
+      while (index > 0 && model.isDisabled(model.flattenedVisibleChoices[index])) index--;
       return index;
     },
 
@@ -547,9 +593,9 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
             //if the highlited item less than max move down
             if (
               model.showChoices &&
-              model.visibleChoices.length > 0
+              model.flattenedVisibleChoices.length > 0
             ) {
-              const index = (model.highlightedIndex === -1 || model.highlightedIndex >= model.visibleChoices.length - 1)
+              const index = (model.highlightedIndex === -1 || model.highlightedIndex >= model.flattenedVisibleChoices.length - 1)
                 ? model.findNextEnabled(0)
                 : model.findNextEnabled(model.highlightedIndex + 1);
                 model.adjustHighlightedIndexOnly(index);
@@ -560,10 +606,10 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
             //if the highlited item greater than 0 move up
             if (
               model.showChoices &&
-              model.visibleChoices.length > 0
+              model.flattenedVisibleChoices.length > 0
             ) {
               const index = (model.highlightedIndex <= -1)
-                ? model.findPrevEnabled(model.visibleChoices.length - 1)
+                ? model.findPrevEnabled(model.flattenedVisibleChoices.length - 1)
                 : model.findPrevEnabled(model.highlightedIndex - 1);
                 model.adjustHighlightedIndexOnly(index);
             }
@@ -571,7 +617,7 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
             break;
           case "Home":
             //move to start
-            if (model.showChoices && model.visibleChoices.length > 0) {
+            if (model.showChoices && model.flattenedVisibleChoices.length > 0) {
               const index = model.findNextEnabled(0);
               model.adjustHighlightedIndexOnly(index);
             }
@@ -579,8 +625,8 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
             break;
           case "End":
             //move to end
-            if (model.showChoices && model.visibleChoices.length > 0) {
-              const index = model.findPrevEnabled(model.visibleChoices.length - 1);
+            if (model.showChoices && model.flattenedVisibleChoices.length > 0) {
+              const index = model.findPrevEnabled(model.flattenedVisibleChoices.length - 1);
               model.adjustHighlightedIndexOnly(index);
             }
             event.preventDefault();
@@ -590,16 +636,16 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
             //select item
             if (
               model.highlightedIndex > -1 &&
-              model.highlightedIndex < model.visibleChoices.length
+              model.highlightedIndex < model.flattenedVisibleChoices.length
             ) {
               if (
-                model.selected.indexOf(model.visibleChoices[model.highlightedIndex]) ===
+                model.selected.indexOf(model.flattenedVisibleChoices[model.highlightedIndex]) ===
                 -1
               ) {
-                model.selectItem(model.visibleChoices[model.highlightedIndex]);
+                model.selectItem(model.flattenedVisibleChoices[model.highlightedIndex]);
                 
               } else {
-                model.deselectItem(model.visibleChoices[model.highlightedIndex]);
+                model.deselectItem(model.flattenedVisibleChoices[model.highlightedIndex]);
               }
               if( model.props.clearInputOnSelect ) {
                 model.inputText = "";
@@ -623,13 +669,13 @@ export const createCompactSelectModel = <T extends Choice | object | string>(ini
 
         //get items from text, if not checking case convert to lower case
         const items = text.split(",").map((s) => s.trim());
-        if (model.props.choices && model.props.choices.length > 0) {
+        if (model.flattenedChoices && model.flattenedChoices.length > 0) {
           //if we have choices then search choices
           const searchItems = !model.props.caseSensitive
             ? items.map((s) => s.toLowerCase())
             : items;
           model.selected = model.selected.concat(
-            model.props.choices.filter(
+            model.flattenedChoices.filter(
               (item) =>
                 searchItems.indexOf(
                   !model.props.caseSensitive

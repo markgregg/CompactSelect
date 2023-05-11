@@ -1,4 +1,6 @@
-export interface ChoiceProps<T extends object | string> {
+import { Choice } from "./choice";
+
+export interface ChoiceProps<T extends Choice | object | string> {
   item: T;
   choiceSelected: boolean;
   choiceHighlighted?: boolean;
